@@ -1,0 +1,512 @@
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x004274F7 в функции main() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 61. Попытка записать данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x15E4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004274F7 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (61):
+
+     59:     {
+     60: 
+=>   61:         enemies[n] = {400, random (30, 770), 100, RGB (255, 0, 0)};
+     62: 
+     63:     }
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in int main() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (51):
+
+     49: 
+     50:     txCreateWindow (800, 800);
+=>   51:     txDisableAutoPause ();
+     52: 
+     53:     Tank tank = {70, 380, TX_GREEN};
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:20, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:50:23
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x004274F7 в функции main() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 61. Попытка записать данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x15E4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004274F7 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (61):
+
+     59:     {
+     60: 
+=>   61:         enemies[n] = {400, random (30, 770), 100, RGB (255, 0, 0)};
+     62: 
+     63:     }
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in int main() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (51):
+
+     49: 
+     50:     txCreateWindow (800, 800);
+=>   51:     txDisableAutoPause ();
+     52: 
+     53:     Tank tank = {70, 380, TX_GREEN};
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:20, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:50:23
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00427AF2 в функции draw() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 146. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x17E0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00427AF2 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: draw() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (146):
+
+    144:         int width = 40.0 / 100.0 * health_;
+    145: 
+=>  146:         int c = 255.0 / 100.0 * health_;
+    147: 
+    148:         COLORREF color = RGB (255 - c, c, 0);
+
+# 1 0x00427CCA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: drawEnemies() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (176):
+
+    174:     {
+    175: 
+=>  176:         enemies[n].draw ();
+    177: 
+    178:     }
+
+# 2 0x00427613 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (90):
+
+     88:         tank.draw ();
+     89: 
+=>   90:         drawEnemies (enemies);
+     91: 
+     92:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Enemy::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (142):
+
+    140:         txSetColor (TX_BLACK);
+    141:         txSetFillColor (TX_BLACK);
+=>  142:         txRectangle (x, y, x1, y1);
+    143: 
+    144:         int width = 40.0 / 100.0 * health_;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:46, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:50:48
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00427AF2 в функции draw() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 146. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x17E0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00427AF2 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: draw() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (146):
+
+    144:         int width = 40.0 / 100.0 * health_;
+    145: 
+=>  146:         int c = 255.0 / 100.0 * health_;
+    147: 
+    148:         COLORREF color = RGB (255 - c, c, 0);
+
+# 1 0x00427CCA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: drawEnemies() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (176):
+
+    174:     {
+    175: 
+=>  176:         enemies[n].draw ();
+    177: 
+    178:     }
+
+# 2 0x00427613 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (90):
+
+     88:         tank.draw ();
+     89: 
+=>   90:         drawEnemies (enemies);
+     91: 
+     92:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Enemy::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (142):
+
+    140:         txSetColor (TX_BLACK);
+    141:         txSetFillColor (TX_BLACK);
+=>  142:         txRectangle (x, y, x1, y1);
+    143: 
+    144:         int width = 40.0 / 100.0 * health_;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:46, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:50:48
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00427AF2 в функции draw() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 146. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x1118 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00427AF2 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: draw() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (146):
+
+    144:         int width = 40.0 / 100.0 * health_;
+    145: 
+=>  146:         int c = 255.0 / 100.0 * health_;
+    147: 
+    148:         COLORREF color = RGB (255 - c, c, 0);
+
+# 1 0x00427CCA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: drawEnemies() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (176):
+
+    174:     {
+    175: 
+=>  176:         enemies[n].draw ();
+    177: 
+    178:     }
+
+# 2 0x00427613 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (90):
+
+     88:         tank.draw ();
+     89: 
+=>   90:         drawEnemies (enemies);
+     91: 
+     92:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Enemy::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (142):
+
+    140:         txSetColor (TX_BLACK);
+    141:         txSetFillColor (TX_BLACK);
+=>  142:         txRectangle (x, y, x1, y1);
+    143: 
+    144:         int width = 40.0 / 100.0 * health_;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:46, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:51:08
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00427AF2 в функции draw() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 146. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x1118 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00427AF2 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: draw() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (146):
+
+    144:         int width = 40.0 / 100.0 * health_;
+    145: 
+=>  146:         int c = 255.0 / 100.0 * health_;
+    147: 
+    148:         COLORREF color = RGB (255 - c, c, 0);
+
+# 1 0x00427CCA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: drawEnemies() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (176):
+
+    174:     {
+    175: 
+=>  176:         enemies[n].draw ();
+    177: 
+    178:     }
+
+# 2 0x00427613 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (90):
+
+     88:         tank.draw ();
+     89: 
+=>   90:         drawEnemies (enemies);
+     91: 
+     92:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Enemy::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (142):
+
+    140:         txSetColor (TX_BLACK);
+    141:         txSetFillColor (TX_BLACK);
+=>  142:         txRectangle (x, y, x1, y1);
+    143: 
+    144:         int width = 40.0 / 100.0 * health_;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:46, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:51:08
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00427AF2 в функции draw() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 146. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x15D0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00427AF2 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: draw() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (146):
+
+    144:         int width = 40.0 / 100.0 * health_;
+    145: 
+=>  146:         int c = 255.0 / 100.0 * health_;
+    147: 
+    148:         COLORREF color = RGB (255 - c, c, 0);
+
+# 1 0x00427CCA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: drawEnemies() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (176):
+
+    174:     {
+    175: 
+=>  176:         enemies[n].draw ();
+    177: 
+    178:     }
+
+# 2 0x00427613 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (90):
+
+     88:         tank.draw ();
+     89: 
+=>   90:         drawEnemies (enemies);
+     91: 
+     92:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Enemy::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (142):
+
+    140:         txSetColor (TX_BLACK);
+    141:         txSetFillColor (TX_BLACK);
+=>  142:         txRectangle (x, y, x1, y1);
+    143: 
+    144:         int width = 40.0 / 100.0 * health_;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:46, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:51:32
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00427AF2 в функции draw() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 146. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x004FF2E4 (32-bit), Flags: CMdRE0, Thread: 0x15D0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00427AF2 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: draw() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (146):
+
+    144:         int width = 40.0 / 100.0 * health_;
+    145: 
+=>  146:         int c = 255.0 / 100.0 * health_;
+    147: 
+    148:         COLORREF color = RGB (255 - c, c, 0);
+
+# 1 0x00427CCA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: drawEnemies() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (176):
+
+    174:     {
+    175: 
+=>  176:         enemies[n].draw ();
+    177: 
+    178:     }
+
+# 2 0x00427613 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (90):
+
+     88:         tank.draw ();
+     89: 
+=>   90:         drawEnemies (enemies);
+     91: 
+     92:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Enemy::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (142):
+
+    140:         txSetColor (TX_BLACK);
+    141:         txSetFillColor (TX_BLACK);
+=>  142:         txRectangle (x, y, x1, y1);
+    143: 
+    144:         int width = 40.0 / 100.0 * health_;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 25 2019 05:50:46, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 25 2019 05:51:32
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
