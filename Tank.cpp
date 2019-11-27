@@ -23,6 +23,10 @@ struct Tank
 
     double vy_;
 
+    int gun_length;
+    double gun_vx;
+    double gun_vy;
+
     COLORREF color_;
 
     int health_;
@@ -30,6 +34,8 @@ struct Tank
     void draw ();
 
     void move (int side);
+
+    void check ();
 
 };
 
@@ -68,9 +74,12 @@ struct Bullet
     double x_;
     double y_;
 
+    double vx_;
+    double vy_;
+
     int damage_;
 
-    int speed_;
+    double speed_;
 
     double deflection_;
 
@@ -119,11 +128,11 @@ void moveBullets (Bullet * bullets, EnemyBullet * enemyBullets);
 
 void addBullet (Bullet * bullets, Bullet bullet);
 
-void checkBullets (Bullet * bullets, Enemy * enemies, int * score);
+void checkBullets (Bullet * bullets, Enemy * enemies, Tank * tank, int * score);
 
 void checkEnemyBullets (EnemyBullet * enemyBullets, Tank * tank);
 
-bool checkBullet (Bullet bullet, Enemy enemy);
+int checkBullet (Bullet bullet, Enemy enemy, Tank tank);
 
 bool checkEnemyBullet (EnemyBullet bullet, Tank tank);
 
@@ -162,7 +171,7 @@ int main ()
 
         int score = 0;
 
-        Tank tank = {70, 380, 0, TX_GREEN, 100};
+        Tank tank = {70, 380, 0, 40, NULL, NULL, TX_GREEN, 100};
 
         Enemy enemies[6] = {};
 
@@ -229,7 +238,7 @@ int main ()
 
             else tank.move (-1);
 
-            if (GetAsyncKeyState (VK_SPACE))
+            if (txMouseButtons () == 1 || GetAsyncKeyState (VK_SPACE))
 
             {
 
@@ -237,7 +246,7 @@ int main ()
 
                 {
 
-                    Bullet bullet = {tank.x_ + 80, tank.y_ + 20, random (damage_min, damage_max), random (3, 5), random (-5, 5), TX_WHITE, true};
+                    Bullet bullet = {tank.x_ + 40 + tank.gun_vx * tank.gun_length, tank.y_ + 20 + tank.gun_vy * tank.gun_length, tank.gun_vx + random (-0.1, 0.1), tank.gun_vy + random (-0.1, 0.1), random (damage_min, damage_max), random (3, 5), random (-5, 5), TX_WHITE, true};
 
                     addBullet (bullets, bullet);
 
@@ -269,9 +278,11 @@ int main ()
 
             enemyShoot (enemyBullets, enemies);
 
-            checkBullets (bullets, enemies, &score);
+            checkBullets (bullets, enemies, &tank, &score);
 
             checkEnemyBullets (enemyBullets, &tank);
+
+            tank.check ();
 
             if (tank.health_ <= 0)
 
@@ -331,7 +342,7 @@ void Tank::draw ()
     txCircle (x_ + 60 - 20, y_ + 20, 15);
 
     txSetColor (subcolor, 5);
-    txLine (x_ + 60 - 20, y_ + 20, x_ + 80, y_ + 20);
+    txLine (x_ + 40, y_ + 20, x_ + 40 + gun_vx * gun_length, y_ + 20 + gun_vy * gun_length);
 
     int x = x_ + 10;
     int y = y_ + 50;
@@ -446,6 +457,24 @@ void Tank::move (int side)
 
 //-----------------------------------------------------------------------------
 
+void Tank::check ()
+
+{
+
+    POINT mPos = txMousePos ();
+
+    double a = mPos.x - (x_ + 40);
+    double b = mPos.y - (y_ + 20);
+
+    double c = sqrt (a * a + b * b);
+
+    gun_vx = a / c;
+    gun_vy = b / c;
+
+}
+
+//-----------------------------------------------------------------------------
+
 void Enemy::draw ()
 
 {
@@ -517,14 +546,25 @@ void Bullet::move ()
 
     {
 
-        x_ += speed_;
-        y_ += deflection_ / 20;
+        x_ += vx_ * speed_;
+        y_ += vy_ * speed_;
 
-        if (x_ > 800)
+        if (x_ > 800 || x_ < 0 || y_ > 800 || y_ < 0)
 
         {
 
-            visible_ = false;
+            if (floor (random (1, 20)) == 1)
+
+            {
+
+                 vx_ = -vx_;
+                 vy_ = -vy_;
+
+                 color_ = RGB (255, 0, 0);
+
+            }
+
+            else visible_ = false;
 
         }
 
@@ -648,7 +688,7 @@ void addEnemyBullet (EnemyBullet * enemyBullets, EnemyBullet enemyBullet)
 
 //-----------------------------------------------------------------------------
 
-void checkBullets (Bullet * bullets, Enemy * enemies, int * score)
+void checkBullets (Bullet * bullets, Enemy * enemies, Tank * tank, int * score)
 
 {
 
@@ -668,7 +708,9 @@ void checkBullets (Bullet * bullets, Enemy * enemies, int * score)
 
                 {
 
-                    if (checkBullet (bullets[n], enemies[b]))
+                    int result = checkBullet (bullets[n], enemies[b], * tank);
+
+                    if (result == 1)
 
                     {
 
@@ -692,6 +734,14 @@ void checkBullets (Bullet * bullets, Enemy * enemies, int * score)
 
                     }
 
+                    if (result == 2)
+
+                    {
+
+                        tank -> health_ = 0;
+
+                    }
+
                 }
 
             }
@@ -704,7 +754,7 @@ void checkBullets (Bullet * bullets, Enemy * enemies, int * score)
 
 //-----------------------------------------------------------------------------
 
-bool checkBullet (Bullet bullet, Enemy enemy)
+int checkBullet (Bullet bullet, Enemy enemy, Tank tank)
 
 {
 
@@ -717,11 +767,19 @@ bool checkBullet (Bullet bullet, Enemy enemy)
 
     {
 
-        return true;
+        return 1;
 
     }
 
-    return false;
+    if (bullet.x_ - 3 <= tank.x_ + 60 && bullet.x_ + 3 > tank.x_ && bullet.y_ - 3 <= tank.y_ + 40 && bullet.y_ + 3 > tank.y_)
+
+    {
+
+        return 2;
+
+    }
+
+    return 0;
 
 }
 
