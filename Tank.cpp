@@ -1,4 +1,16 @@
 #include <TXLib.h>
+#include "Buttons.h"
+
+//-----------------------------------------------------------------------------
+
+enum GameOverResult
+
+{
+
+    ResultRestart,
+    ResultExit
+
+};
 
 //-----------------------------------------------------------------------------
 
@@ -6,12 +18,18 @@ struct Tank
 
 {
 
-    int x_;
-    int y_;
+    double x_;
+    double y_;
+
+    double vy_;
 
     COLORREF color_;
 
+    int health_;
+
     void draw ();
+
+    void move (int side);
 
 };
 
@@ -26,7 +44,20 @@ struct Enemy
 
     COLORREF color_;
 
+    bool moving_;
+
+    double moving_vx;
+    double moving_vy;
+
+    int moving_length;
+
+    int moving_time;
+
     void draw ();
+
+    void move ();
+
+    void setPosition (int x, int y);
 
 };
 
@@ -34,12 +65,37 @@ struct Bullet
 
 {
 
-    int x_;
-    int y_;
+    double x_;
+    double y_;
 
     int damage_;
 
     int speed_;
+
+    double deflection_;
+
+    COLORREF color_;
+
+    bool visible_;
+
+    void draw ();
+
+    void move ();
+
+};
+
+struct EnemyBullet
+
+{
+
+    double x_;
+    double y_;
+
+    int damage_;
+
+    int speed_;
+
+    double deflection_;
 
     COLORREF color_;
 
@@ -57,19 +113,31 @@ COLORREF addColor (COLORREF color, int r, int g, int b);
 
 void drawEnemies (Enemy * enemies);
 
-void drawBullets (Bullet * bullets);
+void drawBullets (Bullet * bullets, EnemyBullet * enemyBulelts);
 
-void moveBullets (Bullet * bullets);
+void moveBullets (Bullet * bullets, EnemyBullet * enemyBullets);
 
 void addBullet (Bullet * bullets, Bullet bullet);
 
-void checkBullets (Bullet * bullets, Enemy * enemies, int damage, int * score);
+void checkBullets (Bullet * bullets, Enemy * enemies, int * score);
+
+void checkEnemyBullets (EnemyBullet * enemyBullets, Tank * tank);
 
 bool checkBullet (Bullet bullet, Enemy enemy);
+
+bool checkEnemyBullet (EnemyBullet bullet, Tank tank);
 
 void addScore (int * score);
 
 void drawScore (int score);
+
+void moveEnemies (Enemy * enemies);
+
+void addEnemyBullet (EnemyBullet * enemyBullets, EnemyBullet enemyBullet);
+
+void enemyShoot (EnemyBullet * enemyBullets, Enemy * enemies);
+
+int gameOver (int score);
 
 //-----------------------------------------------------------------------------
 
@@ -77,113 +145,168 @@ int main ()
 
 {
 
-    COLORREF bkcolor = RGB (45, 45, 45);
-
-    int speed = 4;
-    int enemy_n = 3;
-    int damage = 12;
-    int bullet_speed = 3;
-
     txCreateWindow (800, 800);
     txDisableAutoPause ();
-
-    int score = 0;
-
-    Tank tank = {70, 380, TX_GREEN};
-
-    Enemy enemies[4] = {};
-
-    for (int n = 0; n < enemy_n; n++)
-
-    {
-
-        enemies[n] = {random (300, 750), random (50, 750), 100, TX_RED};
-
-    }
-
-    enemies[3] = {};
-
-    Bullet bullets[100] = {};
-
-    for (int n = 0; n < 100; n++)
-
-    {
-
-        bullets[n] = {tank.x_ + 80, tank.y_ + 20, damage, bullet_speed, TX_WHITE, false};
-
-    }
-
-    int space_pressed = 300;
 
     while (!GetAsyncKeyState (VK_ESCAPE))
 
     {
 
-        txSetFillColor (bkcolor);
-        txClear ();
+        COLORREF bkcolor = RGB (45, 45, 45);
 
-        if (GetAsyncKeyState ('W'))
+        int speed = 4;
+        int enemy_n = 5;
+
+        int damage_min =  5;
+        int damage_max = 15;
+
+        int score = 0;
+
+        Tank tank = {70, 380, 0, TX_GREEN, 100};
+
+        Enemy enemies[6] = {};
+
+        for (int n = 0; n < enemy_n; n++)
 
         {
 
-            tank.y_ -= speed;
+            enemies[n] = {random (300, 750), random (50, 750), 100, TX_RED, false};
 
         }
 
-        if (GetAsyncKeyState ('S'))
+        enemies[5] = {};
+
+        Bullet bullets[100] = {};
+        EnemyBullet enemyBullets[100] = {};
+
+        for (int n = 0; n < 100; n++)
 
         {
 
-            tank.y_ += speed;
+            bullets[n].visible_ = false;
+
+            enemyBullets[n].visible_ = false;
 
         }
 
-        if (GetAsyncKeyState (VK_SPACE))
+        int space_pressed = 300;
+
+        while (!GetAsyncKeyState (VK_ESCAPE))
 
         {
 
-            if (space_pressed >= 300)
+            txSetFillColor (bkcolor);
+            txClear ();
+            txClearConsole ();
+
+            if (GetAsyncKeyState ('W'))
 
             {
 
-                Bullet bullet = {tank.x_ + 80, tank.y_ + 20, damage, bullet_speed, TX_WHITE, true};
+                if (tank.y_ - speed >= 0)
 
-                addBullet (bullets, bullet);
+                {
 
-                space_pressed = 0;
+                    tank.move (0);
+
+                }
 
             }
 
+            else if (GetAsyncKeyState ('S'))
+
+            {
+
+                if (tank.y_ + speed <= 800 - 40)
+
+                {
+
+                    tank.move (1);
+
+                }
+
+            }
+
+            else tank.move (-1);
+
+            if (GetAsyncKeyState (VK_SPACE))
+
+            {
+
+                if (space_pressed >= 300)
+
+                {
+
+                    Bullet bullet = {tank.x_ + 80, tank.y_ + 20, random (damage_min, damage_max), random (3, 5), random (-5, 5), TX_WHITE, true};
+
+                    addBullet (bullets, bullet);
+
+                    space_pressed = 0;
+
+                }
+
+            }
+
+            else
+
+            {
+
+                space_pressed = 300;
+
+            }
+
+            if (space_pressed < 300)
+
+            {
+
+                space_pressed += 15;
+
+            }
+
+            moveBullets (bullets, enemyBullets);
+
+            moveEnemies (enemies);
+
+            enemyShoot (enemyBullets, enemies);
+
+            checkBullets (bullets, enemies, &score);
+
+            checkEnemyBullets (enemyBullets, &tank);
+
+            if (tank.health_ <= 0)
+
+            {
+
+                int result = gameOver (score);
+
+                if (result == ResultRestart)
+
+                {
+
+                    break;
+
+                }
+
+                if (result == ResultExit)
+
+                {
+
+                    return 0;
+
+                }
+
+            }
+
+            tank.draw ();
+
+            drawEnemies (enemies);
+            drawBullets (bullets, enemyBullets);
+
+            drawScore (score);
+
+            txSleep (1);
+
         }
-
-        else
-
-        {
-
-            space_pressed = 300;
-
-        }
-
-        if (space_pressed < 300)
-
-        {
-
-            space_pressed += 15;
-
-        }
-
-        tank.draw ();
-
-        drawEnemies (enemies);
-        drawBullets (bullets);
-
-        drawScore (score);
-
-        moveBullets (bullets);
-
-        checkBullets (bullets, enemies, damage, &score);
-
-        txSleep (1);
 
     }
 
@@ -209,6 +332,115 @@ void Tank::draw ()
 
     txSetColor (subcolor, 5);
     txLine (x_ + 60 - 20, y_ + 20, x_ + 80, y_ + 20);
+
+    int x = x_ + 10;
+    int y = y_ + 50;
+    int x1 = x + 40;
+    int y1 = y + 15;
+
+    txSetColor (TX_BLACK);
+    txSetFillColor (TX_BLACK);
+    txRectangle (x, y, x1, y1);
+
+    int width = 40.0 / 100.0 * health_;
+
+    int c = 255.0 / 100.0 * health_;
+
+    COLORREF color = RGB (255 - c, c, 0);
+
+    txSetColor (color);
+    txSetFillColor (color);
+    txRectangle (x + 1, y + 1, x + width - 1, y1 - 1);
+
+    char text[100] = "";
+
+    sprintf (text, "%d", health_);
+
+    txSetColor (RGB (c, 255 - c, 0));
+    txSelectFont ("Arial", 15);
+    txDrawText (x, y, x1, y1, text);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Tank::move (int side)
+
+{
+
+    if (y_ + vy_ > 0 && y_ + vy_ < 760)
+
+    {
+
+        y_ += vy_;
+
+    }
+
+    else
+
+    {
+
+        vy_ = -vy_;
+
+    }
+
+    if (side == 1)
+
+    {
+
+        if (vy_ <= 5)
+
+        {
+
+            vy_ += 0.1;
+
+        }
+
+    }
+
+    else if (side == 0)
+
+    {
+
+        if (vy_ >= -5)
+
+        {
+
+            vy_ -= 0.1;
+
+        }
+
+    }
+
+    else
+
+    {
+
+        if (vy_ < 0)
+
+        {
+
+            vy_ += 0.1;
+
+        }
+
+        else if (vy_ > 0)
+
+        {
+
+            vy_ -= 0.1;
+
+        }
+
+        if (vy_ > 0 && vy_ < 0.1 || vy_ < 0 && vy_ > -0.1)
+
+        {
+
+            vy_ = 0;
+
+        }
+
+    }
 
 }
 
@@ -286,6 +518,7 @@ void Bullet::move ()
     {
 
         x_ += speed_;
+        y_ += deflection_ / 20;
 
         if (x_ > 800)
 
@@ -329,7 +562,7 @@ void drawEnemies (Enemy * enemies)
 
 //-----------------------------------------------------------------------------
 
-void drawBullets (Bullet * bullets)
+void drawBullets (Bullet * bullets, EnemyBullet * enemyBullets)
 
 {
 
@@ -338,6 +571,7 @@ void drawBullets (Bullet * bullets)
     {
 
         bullets[n].draw ();
+        enemyBullets[n].draw ();
 
     }
 
@@ -345,7 +579,7 @@ void drawBullets (Bullet * bullets)
 
 //-----------------------------------------------------------------------------
 
-void moveBullets (Bullet * bullets)
+void moveBullets (Bullet * bullets, EnemyBullet * enemyBullets)
 
 {
 
@@ -354,6 +588,7 @@ void moveBullets (Bullet * bullets)
     {
 
         bullets[n].move ();
+        enemyBullets[n].move ();
 
     }
 
@@ -387,7 +622,33 @@ void addBullet (Bullet * bullets, Bullet bullet)
 
 //-----------------------------------------------------------------------------
 
-void checkBullets (Bullet * bullets, Enemy * enemies, int damage, int * score)
+void addEnemyBullet (EnemyBullet * enemyBullets, EnemyBullet enemyBullet)
+
+{
+
+    for (int n = 0; n < 100; n++)
+
+    {
+
+        if (!enemyBullets[n].visible_)
+
+        {
+
+            enemyBullets[n] = enemyBullet;
+
+            return;
+
+        }
+
+    }
+
+    enemyBullets[0] = enemyBullet;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void checkBullets (Bullet * bullets, Enemy * enemies, int * score)
 
 {
 
@@ -411,7 +672,9 @@ void checkBullets (Bullet * bullets, Enemy * enemies, int damage, int * score)
 
                     {
 
-                        enemies[b].health_ -= random (5, damage);
+                        enemies[b].health_ -= bullets[n].damage_;
+
+                        enemies[b].setPosition (enemies[b].x_ + 7, enemies[b].y_);
 
                         if (enemies[b].health_ <= 0)
 
@@ -445,7 +708,12 @@ bool checkBullet (Bullet bullet, Enemy enemy)
 
 {
 
-    if (bullet.y_ - enemy.y_ < 23 && bullet.y_ - enemy.y_ > -23 && bullet.x_ - enemy.x_ < 23 && bullet.x_ - enemy.x_ > -23)
+    int a = bullet.x_ - enemy.x_;
+    int b = bullet.y_ - enemy.y_;
+
+    int c = sqrt (a * a + b * b);
+
+    if (c <= 23)
 
     {
 
@@ -483,5 +751,252 @@ void drawScore (int score)
     sprintf (text, "Score: %d", score);
 
     txTextOut (5, 5, text);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Enemy::move ()
+
+{
+
+    if (!moving_)
+
+    {
+
+        if (floor (random (1, 300)) == 1)
+
+        {
+
+            moving_ = true;
+            moving_time = 0;
+
+            moving_vx = random (-1, 1) / 20;
+            moving_vy = random (-1, 1) / 20;
+            moving_length = 50;
+
+        }
+
+    }
+
+    else
+
+    {
+
+        if (moving_time <= moving_length)
+
+        {
+
+            setPosition (x_ + moving_vx * moving_time, y_ + moving_vy * moving_time);
+
+            moving_time ++;
+
+        }
+
+        else
+
+        {
+
+            moving_ = false;
+
+        }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void moveEnemies (Enemy * enemies)
+
+{
+
+    for (int n = 0; enemies[n].x_; n++)
+
+    {
+
+        enemies[n].move ();
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Enemy::setPosition (int x, int y)
+
+{
+
+    if (x <= 800 - 20 && x > 300 + 20 && y <= 800 - 40 && y > 20)
+
+    {
+
+        x_ = x;
+        y_ = y;
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void EnemyBullet::draw ()
+
+{
+
+    if (visible_)
+
+    {
+
+        txSetColor (color_);
+        txSetFillColor (color_);
+        txCircle (x_, y_, 3);
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void EnemyBullet::move ()
+
+{
+
+    if (visible_)
+
+    {
+
+        x_ -= speed_;
+        y_ += deflection_ / 20;
+
+        if (x_ <= 0)
+
+        {
+
+            visible_ = false;
+
+        }
+
+        draw ();
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void enemyShoot (EnemyBullet * enemyBullets, Enemy * enemies)
+
+{
+
+    for (int n = 0; enemies[n].x_; n++)
+
+    {
+
+        if (floor (random (1, 200)) == 1)
+
+        {
+
+            EnemyBullet enemyBullet = {enemies[n].x_ - 20, enemies[n].y_, random (5, 15), random (3, 5), random (-5, 5), RGB (0, 179, 255), true};
+
+            addEnemyBullet (enemyBullets, enemyBullet);
+
+        }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool checkEnemyBullet (EnemyBullet enemyBullet, Tank tank)
+
+{
+
+    if (enemyBullet.x_ - 3 <= tank.x_ + 60 && enemyBullet.x_ + 3 > tank.x_ && enemyBullet.y_ - 3 <= tank.y_ + 40 && enemyBullet.y_ + 3 > tank.y_)
+
+    {
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void checkEnemyBullets (EnemyBullet * enemyBullets, Tank * tank)
+
+{
+
+    for (int n = 0; enemyBullets[n].x_; n++)
+
+    {
+
+        if (enemyBullets[n].visible_)
+
+        {
+
+            if (checkEnemyBullet (enemyBullets[n], * tank))
+
+            {
+
+                tank -> health_ -= 25;
+
+                enemyBullets[n].visible_ = false;
+
+            }
+
+        }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+int gameOver (int score)
+
+{
+
+    Button buttons[] = {
+
+        {275, 385, 100, 30, "Restart", "Arial", 30, txDC (), RGB (60, 60, 60), TX_WHITE, TX_WHITE, false, 2},
+        {425, 385, 100, 30,    "Exit", "Arial", 30, txDC (), RGB (60, 60, 60), TX_WHITE, TX_WHITE, false, 2},
+        EndButton
+
+    };
+
+    while (!GetAsyncKeyState (VK_ESCAPE))
+
+    {
+
+        txSetFillColor (RGB (45, 45, 45));
+        txClear ();
+
+        const char * text = "Game over";
+
+        txSelectFont ("Segoe Script", 50);
+        txSetColor (TX_WHITE);
+        txTextOut (400 - txGetTextExtentX (text) / 2, 400 - txGetTextExtentY (text) / 2 - 100, text);
+
+        char scoreText[100] = "";
+
+        sprintf (scoreText, "Score: %d", score);
+
+        txSelectFont ("Arial", 30);
+        txTextOut (400 - txGetTextExtentX (scoreText)/ 2, 400 - txGetTextExtentY (scoreText) / 2 - 70, scoreText);
+
+        int result = manageButtons (buttons);
+
+        if (result != -1) return result;
+
+        txSleep (1);
+
+    }
+
+    return ResultExit;
 
 }

@@ -510,3 +510,195 @@ Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
 Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x760635D2 в функции RaiseException(). Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x005002E4 (32-bit), Flags: CMdRE0, Thread: 0xADC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x760635D2 in C:\Windows\System32\KERNELBASE.dll: RaiseException()
+# 1 0x758D2585 in C:\Windows\System32\msvcrt.dll: modf()
+# 2 0x758D2350 in C:\Windows\System32\msvcrt.dll: modf()
+# 3 0x758D4B48 in C:\Windows\System32\msvcrt.dll: modf()
+# 4 0x758CF1E0 in C:\Windows\System32\msvcrt.dll: modf()
+# 5 0x758C43C8 in C:\Windows\System32\msvcrt.dll: sqrt()
+
+# 6 0x00428668 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkBullets() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (414):
+
+    412:                 {
+    413: 
+=>  414:                     if (checkBullet (bullets[n], enemies[b]))
+    415: 
+    416:                     {
+
+# 7 0x00427A7D in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (187):
+
+    185:         moveBullets (bullets);
+    186: 
+=>  187:         checkBullets (bullets, enemies, &score);
+    188: 
+    189:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Bullet::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (275):
+
+    273:         txSetColor (color_);
+    274:         txSetFillColor (color_);
+=>  275:         txCircle (x_, y_, 3);
+    276: 
+    277:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 26 2019 05:01:06, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 26 2019 05:01:10
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x760635D2 в функции RaiseException(). Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x005002E4 (32-bit), Flags: CMdRE0, Thread: 0xADC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x760635D2 in C:\Windows\System32\KERNELBASE.dll: RaiseException()
+# 1 0x758D2585 in C:\Windows\System32\msvcrt.dll: modf()
+# 2 0x758D2350 in C:\Windows\System32\msvcrt.dll: modf()
+# 3 0x758D4B48 in C:\Windows\System32\msvcrt.dll: modf()
+# 4 0x758CF1E0 in C:\Windows\System32\msvcrt.dll: modf()
+# 5 0x758C43C8 in C:\Windows\System32\msvcrt.dll: sqrt()
+
+# 6 0x00428668 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkBullets() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (414):
+
+    412:                 {
+    413: 
+=>  414:                     if (checkBullet (bullets[n], enemies[b]))
+    415: 
+    416:                     {
+
+# 7 0x00427A7D in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (187):
+
+    185:         moveBullets (bullets);
+    186: 
+=>  187:         checkBullets (bullets, enemies, &score);
+    188: 
+    189:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Bullet::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (275):
+
+    273:         txSetColor (color_);
+    274:         txSetFillColor (color_);
+=>  275:         txCircle (x_, y_, 3);
+    276: 
+    277:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 26 2019 05:01:06, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 26 2019 05:01:10
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 7248, функция: HWND__* {anonymous}::TX::txCreateWindow(double, double, bool),
+
+Сообщение: Окно рисования уже создано!
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300], Instance: 0x005032E4 (32-bit), Flags: CMdRE0, Thread: 0x187C (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0040306C in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: txCreateWindow() at C:/Users/Фёдор/Downloads/TX/TXLib.h (7248)
+
+# 1 0x00427DE0 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (156):
+
+    154:         int damage_max = 15;
+    155: 
+=>  156:         txCreateWindow (800, 800);
+    157:         txDisableAutoPause ();
+    158: 
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in HWND__* {anonymous}::TX::txCreateWindow(double, double, bool) at C:\Users\Фёдор\Downloads\TX\TXLib.h (7248):
+
+   7246:         {
+   7247: $       SetLastErrorEx (ERROR_INVALID_DATA, 0);
+=> 7248: $       _TX_ON_DEBUG (TX_ERROR ("\a" "Окно рисования уже создано!"));
+   7249: $       return wnd;
+   7250:         }
+
+# 1 in int main() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (156):
+
+    154:         int damage_max = 15;
+    155: 
+=>  156:         txCreateWindow (800, 800);
+    157:         txDisableAutoPause ();
+    158: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-11-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Nov 26 2019 17:34:09, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Nov 26 2019 17:34:13
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
