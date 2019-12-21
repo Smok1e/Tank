@@ -83,6 +83,8 @@ struct GameObject
 
     virtual void hit (GameObject * object);
 
+    void check ();
+
 };
 
 GameObject::GameObject () :
@@ -458,7 +460,6 @@ int run (ObjectManager * manager)
 
     {
 
-
         manager -> manageObjects ();
 
         time += 4;
@@ -566,6 +567,7 @@ void Tank::draw ()
 
     int x = x_ - 20;
     int y = y_ + 25;
+
     int x1 = x + 40;
     int y1 = y + 15;
 
@@ -963,6 +965,7 @@ void Enemy::move ()
     }
 
 }
+
 //-----------------------------------------------------------------------------
 
 void Enemy::setPosition (int x, int y)
