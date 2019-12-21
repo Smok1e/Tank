@@ -1,53 +1,8 @@
-#include <TXLib.h>
-#include "Buttons.h"
-
-//-----------------------------------------------------------------------------
-
-const int wWidth = 800;
-const int wHeight = 800;
-
-const int OBJECTS_MAX = 300;
-
-const int ENEMY_N = 5;
-
-const int SPEED = 4;
-
-const int DAMAGE_MIN = 5;
-const int DAMAGE_MAX = 15;
-
-const int ENEMY_SHOOTING_FREQ = 200;
-
-const int FOOD_SPAWNING_FREQ = 20;
-
-const bool DEBUG_MODE = false;
-
-//-----------------------------------------------------------------------------
-
-enum GameOverResult
-
-{
-
-    ResultRestart,
-    ResultExit
-
-};
-
-enum ObjectType
-
-{
-
-    TypeNone,
-    TypeTank
-
-};
-
-//-----------------------------------------------------------------------------
-
-double rnd (double from, double to);
-
-//-----------------------------------------------------------------------------
-
 class ObjectManager;
+
+//----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
 
 struct GameObject
 
@@ -147,8 +102,6 @@ struct Tank : GameObject
 
     virtual void control () override;
 
-    virtual void hit (GameObject * object) override;
-
     void check ();
 
 };
@@ -168,7 +121,7 @@ Tank::Tank (double x, double y, double speed, COLORREF color, int gun_length_) :
 
 //-----------------------------------------------------------------------------
 
-struct Enemy : GameObject
+struct Enemy: GameObject
 
 {
 
@@ -197,15 +150,13 @@ struct Enemy : GameObject
 
     virtual void hit (GameObject * object) override;
 
-    void Reset ();
-
     void setPosition (int x, int y);
 
 };
 
 Enemy::Enemy () :
 
-    GameObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 20, TX_RED, true),
+    GameObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 2, 2, 20, TX_RED, true),
 
     health_       (100),
     moving_       (false),
@@ -224,28 +175,6 @@ Enemy::Enemy (double x, double y, double vx, double vy, COLORREF color) :
     moving_length (0),
     moving_time   (0),
     isEnd_        (false)
-
-{}
-
-//-----------------------------------------------------------------------------
-
-struct Food : GameObject
-
-{
-
-    HDC image_;
-
-    Food (double x, double y);
-
-    virtual void draw () override;
-
-};
-
-Food::Food (double x, double y) :
-
-    GameObject (x, y, 0, 0, 7, 0, true),
-
-    image_ (txLoadImage ("Resources\\food.bmp"))
 
 {}
 
@@ -339,139 +268,6 @@ EnemyBullet::EnemyBullet (double x, double y, double vx, double vy, ObjectManage
     speed_   (rnd (3, 4))
 
 {}
-
-//-----------------------------------------------------------------------------
-
-struct ObjectManager
-
-{
-
-    GameObject * objects_[OBJECTS_MAX];
-
-    COLORREF bkcolor_;
-
-    int score_;
-
-    ObjectManager ();
-
-    void drawObjects ();
-
-    void moveObjects ();
-
-    void controlObjects ();
-
-    void manageObjects ();
-
-    void checkCollision ();
-
-    int objectsAmount ();
-
-    int addObject (GameObject * object);
-
-    int removeObject (GameObject * object);
-
-};
-
-ObjectManager::ObjectManager () :
-
-    objects_ ({}),
-    score_   (0),
-    bkcolor_ (RGB (45, 45, 45))
-
-{}
-
-//-----------------------------------------------------------------------------
-
-COLORREF addColor (COLORREF color, int r, int g, int b);
-
-void drawScore (int score);
-
-int gameOver (int score);
-
-double sqrDistance (double x, double y, double x1, double y1);
-
-void info (const char * text);
-
-void title (int time);
-
-bool collisionDetection (const GameObject * obj1, const GameObject * obj2);
-
-double sqr (double d);
-
-int run (ObjectManager * manager);
-
-template <typename T>
-
-T * getObject (ObjectManager * manager);
-
-template <typename T>
-
-T * checkType (GameObject * object);
-
-//-----------------------------------------------------------------------------
-
-int main ()
-
-{
-
-    if (DEBUG_MODE)
-
-    {
-
-        _txConsoleMode = SW_SHOW;
-
-        SetConsoleTitle ("Debug");
-
-        printf ("Debug console included.\n");
-
-    }
-
-    txCreateWindow (wWidth, wHeight);
-
-    txBegin ();
-
-    txDisableAutoPause ();
-
-    ObjectManager manager;
-
-    for (int n = 0; n < ENEMY_N; n++) manager.addObject (new Enemy);
-
-    Tank * tank = new Tank {70, 40, SPEED, TX_GREEN, 40};
-
-    manager.addObject (tank);
-
-    int result = run (&manager);
-
-    return 0;
-
-}
-
-//-----------------------------------------------------------------------------
-
-int run (ObjectManager * manager)
-
-{
-
-    int time = 0;
-
-    while (!GetAsyncKeyState (VK_ESCAPE))
-
-    {
-
-
-        manager -> manageObjects ();
-
-        time += 4;
-
-        if (time >= 400) time = 0;
-
-        title (time);
-
-        txSleep (1);
-
-    }
-
-}
 
 //-----------------------------------------------------------------------------
 
@@ -834,40 +630,6 @@ void Tank::control ()
 
 //-----------------------------------------------------------------------------
 
-void Tank::hit (GameObject * object)
-
-{
-
-    if (checkType <EnemyBullet> (object))
-
-    {
-
-        EnemyBullet * bullet = checkType <EnemyBullet> (object);
-
-        health_ -= 25;
-
-        manager_ -> removeObject (bullet);
-
-    }
-
-    else if (checkType <Food> (object))
-
-    {
-
-        Food * food = checkType <Food> (object);
-
-        health_ += 10;
-
-        txDeleteDC (food -> image_);
-
-        manager_ -> removeObject (food);
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
 void Enemy::draw ()
 
 {
@@ -1008,35 +770,6 @@ void Enemy::control ()
 
     }
 
-    if (health_ <= 0)
-
-    {
-
-        if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1)
-
-        {
-
-            manager_ -> addObject (new Food {x_, y_});
-
-        }
-
-        Reset ();
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void Enemy::Reset ()
-
-{
-
-    x_ = rnd (50, wWidth - 50);
-    y_ = rnd (50, wHeight - 50);
-
-    health_ = 100;
-
 }
 
 //-----------------------------------------------------------------------------
@@ -1048,12 +781,6 @@ void Enemy::hit (GameObject * object)
     if (checkType <Bullet> (object))
 
     {
-
-        Bullet * bullet = checkType <Bullet> (object);
-
-        health_ -= bullet -> damage_;
-
-        manager_ -> removeObject (bullet);
 
     }
 
@@ -1130,417 +857,5 @@ void EnemyBullet::move ()
         manager_ -> removeObject (this);
 
     }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void Food::draw ()
-
-{
-
-    txTransparentBlt (txDC (), x_ - txGetExtentX (image_) / 2, y_ - txGetExtentY (image_) / 2, 0, 0, image_, 0, 0, TX_WHITE);
-
-}
-
-//-----------------------------------------------------------------------------
-
-COLORREF addColor (COLORREF color, int r, int g, int b)
-
-{
-
-    return RGB (txExtractColor (color, TX_RED) + r, txExtractColor (color, TX_GREEN) + g, txExtractColor (color, TX_BLUE) + b);
-
-}
-
-//-----------------------------------------------------------------------------
-
-void drawScore (int score)
-
-{
-
-    txSetColor (TX_WHITE);
-    txSelectFont ("Arial", 30);
-
-    char text[100] = "";
-
-    sprintf (text, "Score: %d", score);
-
-    txTextOut (5, 5, text);
-
-}
-
-//-----------------------------------------------------------------------------
-
-int gameOver (int score)
-
-{
-
-    Button buttons[] = {
-
-        {wWidth / 2 - 125, wHeight / 2 - 25, 100, 30, "Restart", "Arial", 30, txDC (), RGB (60, 60, 60), TX_WHITE, TX_WHITE, false, 2},
-        {wWidth / 2 +  25, wHeight / 2 - 25, 100, 30,    "Exit", "Arial", 30, txDC (), RGB (60, 60, 60), TX_WHITE, TX_WHITE, false, 2},
-        EndButton
-
-    };
-
-    while (!GetAsyncKeyState (VK_ESCAPE))
-
-    {
-
-        txSetFillColor (RGB (45, 45, 45));
-        txClear ();
-
-        const char * text = "Game over";
-
-        txSelectFont ("Segoe Script", 50);
-        txSetColor (TX_WHITE);
-        txTextOut (wWidth / 2 - txGetTextExtentX (text) / 2, wHeight / 2 - txGetTextExtentY (text) / 2 - 100, text);
-
-        char scoreText[100] = "";
-
-        sprintf (scoreText, "Score: %d", score);
-
-        txSelectFont ("Arial", 30);
-        txTextOut (wWidth / 2 - txGetTextExtentX (scoreText)/ 2, wHeight / 2 - txGetTextExtentY (scoreText) / 2 - 70, scoreText);
-
-        int result = manageButtons (buttons);
-
-        if (result != -1) return result;
-
-        txSleep (1);
-
-    }
-
-    return ResultExit;
-
-}
-
-//-----------------------------------------------------------------------------
-
-double sqrDistance (double x, double y, double x1, double y1)
-
-{
-
-    double a = x - x1;
-    double b = y - y1;
-
-    double c = sqr(a) + sqr (b);
-
-    return c;
-
-}
-
-//-----------------------------------------------------------------------------
-
-double rnd (double from, double to)
-
-{
-
-    return from + 1.0 * rand () / RAND_MAX * (to - from);
-
-}
-
-//-----------------------------------------------------------------------------
-
-void info (const char * text)
-
-{
-
-    if (DEBUG_MODE)
-
-    {
-
-        printf (text);
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void title (int time)
-
-{
-
-    char text[100] = "";
-
-    char symbol = ' ';
-
-    if (time < 100 && time >= 0)
-
-    {
-
-        symbol = '|';
-
-    }
-
-    if (time < 200 && time >= 100)
-
-    {
-
-        symbol = '/';
-
-    }
-
-    if (time < 300 && time >= 200)
-
-    {
-
-        symbol = '-';
-
-    }
-
-    if (time < 400 && time >= 300)
-
-    {
-
-        symbol = '\\';
-
-    }
-
-    sprintf (text, "%ctank%c", symbol, symbol);
-
-    SetWindowText (txWindow (), text);
-
-}
-
-//-----------------------------------------------------------------------------
-
-bool collisionDetection (const GameObject * obj1, const GameObject * obj2)
-
-{
-
-    double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
-
-    if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
-
-    {
-
-        return true;
-
-    }
-
-    return false;
-
-}
-
-//-----------------------------------------------------------------------------
-
-double sqr (double d)
-
-{
-
-    return d * d;
-
-}
-
-//-----------------------------------------------------------------------------
-
-void ObjectManager::drawObjects ()
-
-{
-
-    txSetFillColor (bkcolor_);
-    txClear ();
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (!objects_[n]) continue;
-
-        objects_[n] -> draw ();
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void ObjectManager::moveObjects ()
-
-{
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (!objects_[n]) continue;
-
-        objects_[n] -> move ();
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void ObjectManager::controlObjects ()
-
-{
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (!objects_[n]) continue;
-
-        objects_[n] -> control ();
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
-int ObjectManager::addObject (GameObject * object)
-
-{
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (!objects_[n])
-
-        {
-
-            object -> manager_ = this;
-
-            objects_[n] = object;
-
-            return n;
-
-        }
-
-    }
-
-    return -1;
-
-}
-
-//-----------------------------------------------------------------------------
-
-void ObjectManager::manageObjects ()
-
-{
-
-    moveObjects ();
-    controlObjects ();
-    drawObjects ();
-    checkCollision ();
-
-}
-
-//-----------------------------------------------------------------------------
-
-void ObjectManager::checkCollision ()
-
-{
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (!objects_[n]) continue;
-
-        for (int i = n + 1; i < OBJECTS_MAX; i++)
-
-        {
-
-            if (!objects_[i]) continue;
-
-            if (collisionDetection (objects_[n], objects_[i])) objects_[n] -> hit (objects_[i]);
-
-        }
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
-int ObjectManager::objectsAmount ()
-
-{
-
-    int amount = 0;
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (objects_[n]) amount++;
-
-    }
-
-    return amount;
-
-}
-
-//-----------------------------------------------------------------------------
-
-int ObjectManager::removeObject (GameObject * object)
-
-{
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (objects_[n] == object)
-
-        {
-
-            objects_[n] = nullptr;
-
-            return n;
-
-        }
-
-    }
-
-    return -1;
-
-}
-
-//-----------------------------------------------------------------------------
-
-template <typename T>
-
-T * getObject (ObjectManager * manager)
-
-{
-
-    for (int n = 0; n < OBJECTS_MAX; n++)
-
-    {
-
-        if (!manager -> objects_[n]) continue;
-
-        T * object = dynamic_cast <T*> (manager -> objects_[n]);
-
-        if (object) return object;
-
-    }
-
-    return nullptr;
-
-}
-
-//-----------------------------------------------------------------------------
-
-template <typename T>
-
-T * checkType (GameObject * object)
-
-{
-
-    T * ptr = dynamic_cast <T*> (object);
-
-    if (ptr) return ptr;
-
-    return nullptr;
 
 }

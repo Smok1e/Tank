@@ -168,7 +168,7 @@ Tank::Tank (double x, double y, double speed, COLORREF color, int gun_length_) :
 
 //-----------------------------------------------------------------------------
 
-struct Enemy : GameObject
+struct Enemy: GameObject
 
 {
 
@@ -205,7 +205,7 @@ struct Enemy : GameObject
 
 Enemy::Enemy () :
 
-    GameObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 20, TX_RED, true),
+    GameObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 2, 2, 20, TX_RED, true),
 
     health_       (100),
     moving_       (false),
@@ -229,23 +229,23 @@ Enemy::Enemy (double x, double y, double vx, double vy, COLORREF color) :
 
 //-----------------------------------------------------------------------------
 
-struct Food : GameObject
+struct GameObject::Food
 
 {
 
     HDC image_;
-
-    Food (double x, double y);
-
+    
+    Food ();
+    
     virtual void draw () override;
 
 };
 
 Food::Food (double x, double y) :
 
-    GameObject (x, y, 0, 0, 7, 0, true),
-
-    image_ (txLoadImage ("Resources\\food.bmp"))
+    GameObject (x, y, 0, 0, 0, 7, 0, true),
+    
+    image_ (txLoadImage ("resources\\food.bmp"))
 
 {}
 
@@ -849,19 +849,17 @@ void Tank::hit (GameObject * object)
         manager_ -> removeObject (bullet);
 
     }
-
+    
     else if (checkType <Food> (object))
-
+    
     {
-
-        Food * food = checkType <Food> (object);
-
-        health_ += 10;
-
-        txDeleteDC (food -> image_);
-
-        manager_ -> removeObject (food);
-
+    
+         Food * food = checkType <Food> (object);
+         
+         health_ += 10;
+         
+         manager_ -> removeObject (food);
+    
     }
 
 }
@@ -1012,12 +1010,12 @@ void Enemy::control ()
 
     {
 
-        if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1)
-
+        if (floor (rnd (1, FOOD_SPAWNING_FREQ))
+        
         {
-
-            manager_ -> addObject (new Food {x_, y_});
-
+        
+            manager -> addObject (new Food {x_, y_})
+        
         }
 
         Reset ();
@@ -1026,7 +1024,7 @@ void Enemy::control ()
 
 }
 
-//-----------------------------------------------------------------------------
+//-----------------------------------------a------------------------------------
 
 void Enemy::Reset ()
 
