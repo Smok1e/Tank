@@ -21,6 +21,8 @@ const int FOOD_SPAWNING_FREQ = 4;
 
 const bool DEBUG_MODE = false;
 
+const double EPSILON = 0.1;
+
 //-----------------------------------------------------------------------------
 
 enum GameOverResult
@@ -58,7 +60,7 @@ double rnd (double from, double to);
 
 class ObjectManager;
 
-struct GameObject
+struct AbstractObject
 
 {
 
@@ -78,11 +80,11 @@ struct GameObject
 
     ObjectManager * manager_;
 
-    GameObject ();
+    AbstractObject ();
 
-    GameObject (ObjectManager * manager);
+    AbstractObject (ObjectManager * manager);
 
-    GameObject (double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager, int type = TypeNone);
+    AbstractObject (double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager, int type = TypeNone);
 
     virtual void draw ();
 
@@ -90,13 +92,13 @@ struct GameObject
 
     virtual void control ();
 
-    virtual void hit (GameObject * object);
+    virtual void hit (AbstractObject * object);
 
     virtual void remove ();
 
 };
 
-GameObject::GameObject () :
+AbstractObject::AbstractObject () :
 
     x_       (0),
     y_       (0),
@@ -109,7 +111,7 @@ GameObject::GameObject () :
 
 {}
 
-GameObject::GameObject (ObjectManager * manager) :
+AbstractObject::AbstractObject (ObjectManager * manager) :
 
     x_       (0),
     y_       (0),
@@ -122,7 +124,7 @@ GameObject::GameObject (ObjectManager * manager) :
 
 {}
 
-GameObject::GameObject (double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager = NULL, int type) :
+AbstractObject::AbstractObject (double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager = NULL, int type) :
 
     x_       (x),
     y_       (y),
@@ -152,15 +154,19 @@ struct Animation
 
     int frame_;
 
-    Animation (const char * path, int frame_n_);
+    Animation (HDC spritesheet, int frame_n_);
 
     void draw (double x, double y);
 
+    void setFrame (int frame);
+
+    void advanceFrame ();
+
 };
 
-Animation::Animation (const char * path, int frame_n) :
+Animation::Animation (HDC spritesheet, int frame_n) :
 
-    spritesheet_ (txLoadImage (path)),
+    spritesheet_ (spritesheet),
     width_       (0),
     height_      (0),
     frame_n_     (frame_n),
@@ -172,6 +178,30 @@ Animation::Animation (const char * path, int frame_n) :
     height_ = txGetExtentY (spritesheet_);
 
 }
+
+//-----------------------------------------------------------------------------
+
+struct GameObject : AbstractObject
+
+{
+
+    Animation animation_;
+
+    GameObject (HDC spritesheet, int frame_n, double x, double y, double r);
+
+    virtual void draw () override;
+
+    virtual void remove () override;
+
+};
+
+GameObject::GameObject (HDC spritesheet, int frame_n, double x, double y, double r) :
+
+    AbstractObject (x, y, 0, 0, r, 0, true),
+
+    animation_ (spritesheet, frame_n)
+
+{}
 
 //-----------------------------------------------------------------------------
 
@@ -189,15 +219,13 @@ struct Tank : GameObject
 
     int reloading_;
 
-    //HDC image_;
-
     Tank (double x, double y, double speed, COLORREF color, int gun_length_);
 
     virtual void draw () override;
 
     virtual void control () override;
 
-    virtual void hit (GameObject * object) override;
+    virtual void hit (AbstractObject * object) override;
 
     void check ();
 
@@ -207,7 +235,7 @@ struct Tank : GameObject
 
 Tank::Tank (double x, double y, double speed, COLORREF color, int gun_length_) :
 
-    GameObject (x, y, 0, 0, 20, color, true, NULL, TypeTank),
+    GameObject (txLoadImage ("Resources\\Images\\Tank.bmp"), 72, x, y, 30),
 
     gun_length (gun_length_),
     health_    (100),
@@ -220,7 +248,7 @@ Tank::Tank (double x, double y, double speed, COLORREF color, int gun_length_) :
 
 //-----------------------------------------------------------------------------
 
-struct Enemy : GameObject
+struct Enemy : AbstractObject
 
 {
 
@@ -247,7 +275,7 @@ struct Enemy : GameObject
 
     virtual void control () override;
 
-    virtual void hit (GameObject * object) override;
+    virtual void hit (AbstractObject * object) override;
 
     void Reset ();
 
@@ -257,7 +285,7 @@ struct Enemy : GameObject
 
 Enemy::Enemy () :
 
-    GameObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 20, TX_RED, true),
+    AbstractObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 20, TX_RED, true),
 
     health_       (100),
     moving_       (false),
@@ -269,7 +297,7 @@ Enemy::Enemy () :
 
 Enemy::Enemy (double x, double y, double vx, double vy, COLORREF color) :
 
-    GameObject (x, y, vx, vy, 20, color, true),
+    AbstractObject (x, y, vx, vy, 20, color, true),
 
     health_       (100),
     moving_       (false),
@@ -281,7 +309,7 @@ Enemy::Enemy (double x, double y, double vx, double vy, COLORREF color) :
 
 //-----------------------------------------------------------------------------
 
-struct Food : GameObject
+struct Food : AbstractObject
 
 {
 
@@ -291,7 +319,7 @@ struct Food : GameObject
 
     virtual void draw () override;
 
-    virtual void hit (GameObject * object) override;
+    virtual void hit (AbstractObject * object) override;
 
     virtual void remove () override;
 
@@ -299,7 +327,7 @@ struct Food : GameObject
 
 Food::Food (double x, double y) :
 
-    GameObject (x, y, 0, 0, 15, 0, true),
+    AbstractObject (x, y, 0, 0, 15, 0, true),
 
     image_ (txLoadImage ("Resources\\Images\\Food.bmp"))
 
@@ -307,7 +335,7 @@ Food::Food (double x, double y) :
 
 //-----------------------------------------------------------------------------
 
-struct Bullet : GameObject
+struct Bullet : AbstractObject
 
 {
 
@@ -325,13 +353,13 @@ struct Bullet : GameObject
 
     virtual void move () override;
 
-    virtual void hit (GameObject * object) override;
+    virtual void hit (AbstractObject * object) override;
 
 };
 
 Bullet::Bullet (ObjectManager * manager) :
 
-    GameObject (0, 0, 0, 0, 3, TX_BLACK, false, manager),
+    AbstractObject (0, 0, 0, 0, 3, TX_BLACK, false, manager),
 
     damage_     (0),
     speed_      (0),
@@ -341,7 +369,7 @@ Bullet::Bullet (ObjectManager * manager) :
 
 Bullet::Bullet (double x, double y, double vx, double vy, COLORREF color, int damage, double speed, double deflection, bool visible, ObjectManager * manager) :
 
-    GameObject (x, y, vx, vy, 3, color, visible, manager),
+    AbstractObject (x, y, vx, vy, 3, color, visible, manager),
 
     damage_     (damage),
     speed_      (speed),
@@ -351,7 +379,7 @@ Bullet::Bullet (double x, double y, double vx, double vy, COLORREF color, int da
 
 //-----------------------------------------------------------------------------
 
-struct EnemyBullet : GameObject
+struct EnemyBullet : AbstractObject
 
 {
 
@@ -369,13 +397,13 @@ struct EnemyBullet : GameObject
 
     virtual void move () override;
 
-    virtual void hit (GameObject * object) override;
+    virtual void hit (AbstractObject * object) override;
 
 };
 
 EnemyBullet::EnemyBullet () :
 
-    GameObject (0, 0, 0, 0, 0, 0, false),
+    AbstractObject (0, 0, 0, 0, 0, 0, false),
 
     damage_     (0),
     speed_      (0)
@@ -384,7 +412,7 @@ EnemyBullet::EnemyBullet () :
 
 EnemyBullet::EnemyBullet (ObjectManager * manager) :
 
-    GameObject (0, 0, 0, 0, 3, TX_BLACK, false, manager),
+    AbstractObject (0, 0, 0, 0, 3, TX_BLACK, false, manager),
 
     damage_     (0),
     speed_      (0)
@@ -393,7 +421,7 @@ EnemyBullet::EnemyBullet (ObjectManager * manager) :
 
 EnemyBullet::EnemyBullet (double x, double y, double vx, double vy, ObjectManager * manager) :
 
-    GameObject (x, y, vx, vy, 3, RGB (0, 179, 255), true, manager),
+    AbstractObject (x, y, vx, vy, 3, RGB (0, 179, 255), true, manager),
 
     damage_  (25),
     speed_   (rnd (3, 4))
@@ -402,7 +430,7 @@ EnemyBullet::EnemyBullet (double x, double y, double vx, double vy, ObjectManage
 
 //-----------------------------------------------------------------------------
 
-struct Medkit : GameObject
+struct Medkit : AbstractObject
 
 {
 
@@ -412,7 +440,7 @@ struct Medkit : GameObject
 
     virtual void draw () override;
 
-    virtual void hit (GameObject * object) override;
+    virtual void hit (AbstractObject * object) override;
 
     virtual void remove () override;
 
@@ -420,7 +448,7 @@ struct Medkit : GameObject
 
 Medkit::Medkit (double x, double y) :
 
-    GameObject (x, y, 0, 0, 15, 0, true),
+    AbstractObject (x, y, 0, 0, 15, 0, true),
 
     image_ (txLoadImage ("Resources\\Images\\Medkit.bmp"))
 
@@ -428,7 +456,7 @@ Medkit::Medkit (double x, double y) :
 
 //-----------------------------------------------------------------------------
 
-struct Wall : GameObject
+struct Wall : AbstractObject
 
 {
 
@@ -444,7 +472,7 @@ struct Wall : GameObject
 
 Wall::Wall () :
 
-    GameObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 50, 0, true),
+    AbstractObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 50, 0, true),
 
     image_ (txLoadImage ("Resources\\Images\\Wall_1.bmp"))
 
@@ -456,7 +484,7 @@ struct ObjectManager
 
 {
 
-    GameObject * objects_[OBJECTS_MAX];
+    AbstractObject * objects_[OBJECTS_MAX];
 
     COLORREF bkcolor_;
 
@@ -478,9 +506,9 @@ struct ObjectManager
 
     int objectsAmount ();
 
-    int addObject (GameObject * object);
+    int addObject (AbstractObject * object);
 
-    int removeObject (GameObject * object);
+    int removeObject (AbstractObject * object);
 
     void clearObjects ();
 
@@ -508,7 +536,7 @@ void info (const char * text);
 
 void title (int time);
 
-bool collisionDetection (const GameObject * obj1, const GameObject * obj2);
+bool collisionDetection (const AbstractObject * obj1, const AbstractObject * obj2);
 
 double sqr (double d);
 
@@ -520,11 +548,13 @@ T * getObject (ObjectManager * manager);
 
 template <typename T>
 
-T * checkType (GameObject * object);
+T * checkType (AbstractObject * object);
 
 HDC CaptureScreen (int x, int y, int width, int height);
 
 void drawFragment (int x, int y, HDC * image, int n, double width, double height, double alpha);
+
+double angle (double x0, double y0, double x1, double y1);
 
 //-----------------------------------------------------------------------------
 
@@ -641,7 +671,7 @@ int run (ObjectManager * manager)
 
                     POINT pos = txMousePos ();
 
-                    GameObject click = {pos.x, pos.y, 0, 0, 1, 0, false, NULL};
+                    AbstractObject click = {pos.x, pos.y, 0, 0, 1, 0, false, NULL};
 
                     for (int n = 0; n < OBJECTS_MAX; n++)
 
@@ -739,7 +769,7 @@ int run (ObjectManager * manager)
 
 //-----------------------------------------------------------------------------
 
-void GameObject::draw ()
+void AbstractObject::draw ()
 
 {
 
@@ -757,7 +787,7 @@ void GameObject::draw ()
 
 //-----------------------------------------------------------------------------
 
-void GameObject::move ()
+void AbstractObject::move ()
 
 {
 
@@ -799,7 +829,7 @@ void GameObject::move ()
 
 //-----------------------------------------------------------------------------
 
-void GameObject::hit (GameObject * object)
+void AbstractObject::hit (AbstractObject * object)
 
 {
 
@@ -807,7 +837,7 @@ void GameObject::hit (GameObject * object)
 
 //-----------------------------------------------------------------------------
 
-void GameObject::control ()
+void AbstractObject::control ()
 
 {
 
@@ -815,7 +845,7 @@ void GameObject::control ()
 
 //-----------------------------------------------------------------------------
 
-void GameObject::remove ()
+void AbstractObject::remove ()
 
 {
 
@@ -831,6 +861,28 @@ void Animation::draw (double x, double y)
 
     txAlphaBlend (txDC (), x, y, width_, height_, spritesheet_, width_ * frame_, 0, 1);
 
+}
+
+//-----------------------------------------------------------------------------
+
+void Animation::setFrame (int frame)
+
+{
+
+    assert (frame >= 0);
+
+    assert (frame < frame_n_);
+
+    frame_ = frame;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Animation::advanceFrame ()
+
+{
+
     frame_ ++;
 
     if (frame_ >= frame_n_) frame_ = 0;
@@ -839,45 +891,35 @@ void Animation::draw (double x, double y)
 
 //-----------------------------------------------------------------------------
 
+void GameObject::draw ()
+
+{
+
+}
+
+//-----------------------------------------------------------------------------
+
+void GameObject::remove ()
+
+{
+
+    txDeleteDC (animation_.spritesheet_);
+
+}
+
+//-----------------------------------------------------------------------------
+
 void Tank::draw ()
 
 {
-    COLORREF subcolor = addColor (color_, 0, -50, 0);
 
-    txSetColor (color_, 7);
-    txSetFillColor (color_);
-    txLine (x_, y_, x_ + gun_vx * gun_length, y_ + gun_vy * gun_length);
+    double A = 360 - angle (x_, y_, txMouseX (), txMouseY ());
 
-    txSetColor (subcolor);
-    txSetFillColor (subcolor);
-    txCircle (x_, y_, 20);
+    int frame = animation_.frame_n_ / 360.0 * A;
 
-    int x = x_ - 20;
-    int y = y_ + 25;
-    int x1 = x + 40;
-    int y1 = y + 15;
+    animation_.setFrame (frame);
 
-    txSetColor (TX_BLACK);
-    txSetFillColor (TX_BLACK);
-    txRectangle (x, y, x1, y1);
-
-    int width = 40.0 / 100.0 * health_;
-
-    int c = 255.0 / 100.0 * health_;
-
-    COLORREF color = RGB (255 - c, c, 0);
-
-    txSetColor (color);
-    txSetFillColor (color);
-    txRectangle (x + 1, y + 1, x + width - 1, y1 - 1);
-
-    char text[100] = "";
-
-    sprintf (text, "%d", health_);
-
-    txSetColor (RGB (c, 255 - c, 0));
-    txSelectFont ("Arial", 15);
-    txDrawText (x, y, x1, y1, text);
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
 
 }
 
@@ -1122,7 +1164,7 @@ void Tank::control ()
 
 //-----------------------------------------------------------------------------
 
-void Tank::hit (GameObject * object)
+void Tank::hit (AbstractObject * object)
 
 {
 
@@ -1385,7 +1427,7 @@ void Enemy::Reset ()
 
 //-----------------------------------------------------------------------------
 
-void Enemy::hit (GameObject * object)
+void Enemy::hit (AbstractObject * object)
 
 {
 
@@ -1483,7 +1525,7 @@ void Bullet::move ()
 
 //-----------------------------------------------------------------------------
 
-void Bullet::hit (GameObject * object)
+void Bullet::hit (AbstractObject * object)
 
 {
 
@@ -1573,7 +1615,7 @@ void EnemyBullet::move ()
 
 //-----------------------------------------------------------------------------
 
-void EnemyBullet::hit (GameObject * object)
+void EnemyBullet::hit (AbstractObject * object)
 
 {
 
@@ -1615,7 +1657,7 @@ void Food::draw ()
 
 //-----------------------------------------------------------------------------
 
-void Food::hit (GameObject * object)
+void Food::hit (AbstractObject * object)
 
 {
 
@@ -1673,7 +1715,7 @@ void Medkit::draw ()
 
 //-----------------------------------------------------------------------------
 
-void Medkit::hit (GameObject * object)
+void Medkit::hit (AbstractObject * object)
 
 {
 
@@ -1934,7 +1976,7 @@ void title (int time)
 
 //-----------------------------------------------------------------------------
 
-bool collisionDetection (const GameObject * obj1, const GameObject * obj2)
+bool collisionDetection (const AbstractObject * obj1, const AbstractObject * obj2)
 
 {
 
@@ -2023,7 +2065,7 @@ void ObjectManager::controlObjects ()
 
 //-----------------------------------------------------------------------------
 
-int ObjectManager::addObject (GameObject * object)
+int ObjectManager::addObject (AbstractObject * object)
 
 {
 
@@ -2116,7 +2158,7 @@ int ObjectManager::objectsAmount ()
 
 //-----------------------------------------------------------------------------
 
-int ObjectManager::removeObject (GameObject * object)
+int ObjectManager::removeObject (AbstractObject * object)
 
 {
 
@@ -2190,7 +2232,7 @@ T * getObject (ObjectManager * manager)
 
 template <typename T>
 
-T * checkType (GameObject * object)
+T * checkType (AbstractObject * object)
 
 {
 
@@ -2233,3 +2275,25 @@ void drawFragment (int x, int y, HDC * image, int n, double width, double height
 }
 
 //-----------------------------------------------------------------------------
+
+double angle (double x0, double y0, double x1, double y1)
+
+{
+
+    double dx = x1 - x0;
+    double dy = y1 - y0;
+
+    if (fabs (dx) < EPSILON) dx = 1;
+    if (fabs (dy) < EPSILON) dy = 1;
+
+    double A = atan (-dy / dx);
+
+    A = A / M_PI * 180;
+
+    if (dx < 0) A += 180;
+
+    if (dx > 0 && dy > 0) A += 360;
+
+    return A;
+
+}
