@@ -1400,6 +1400,14 @@ void Enemy::hit (GameObject * object)
         x_ += bullet -> vx_ * 7;
         y_ += bullet -> vy_ * 7;
 
+        if (health_ <= 0)
+
+        {
+
+            manager_ -> score_ ++;
+
+        }
+
         bullet -> remove ();
 
     }
@@ -1501,6 +1509,14 @@ void Bullet::hit (GameObject * object)
 
         enemy -> x_ += vx_ * 7;
         enemy -> y_ += vy_ * 7;
+
+        if (enemy -> health_ <= 0)
+
+        {
+
+            manager_ -> score_ ++;
+
+        }
 
         remove ();
 
@@ -1952,12 +1968,8 @@ void ObjectManager::drawObjects ()
 
 {
 
-    {
-
-        txSetFillColor (bkcolor_);
-        txClear ();
-
-    }
+    txSetFillColor (bkcolor_);
+    txClear ();
 
     for (int n = 0; n < OBJECTS_MAX; n++)
 
@@ -1968,6 +1980,8 @@ void ObjectManager::drawObjects ()
         objects_[n] -> draw ();
 
     }
+
+    drawScore (score_);
 
 }
 
