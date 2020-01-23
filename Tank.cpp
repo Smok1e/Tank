@@ -27,7 +27,16 @@ enum GameOverResult
 
 {
 
-    ResultRestart,
+    GameOverResultRestart,
+    GameOverResultExit
+
+};
+
+enum RunResult
+
+{
+
+    ResultGameOver,
     ResultExit
 
 };
@@ -537,36 +546,59 @@ int main ()
 
     txCreateWindow (wWidth, wHeight);
 
-    ObjectManager manager;
-
-    txBegin ();
-
-    txDisableAutoPause ();
-
-    for (int n = 0; n < ENEMY_N; n++) manager.addObject (new Enemy);
-
-    Tank * tank = new Tank {70, 40, SPEED, TX_GREEN, 40};
-
-    manager.addObject (tank);
-
-    int result = run (&manager);
-
-    /*Animation test = {"Resources/Images/Tank_Spritesheet.bmp", 72};
-
-    while (!GetAsyncKeyState (VK_ESCAPE))
+    while (true)
 
     {
 
-        txSetFillColor (RGB (45, 45, 45));
-        txClear ();
+        ObjectManager manager;
 
-        test.draw (100, 100);
+        txBegin ();
 
-        txSleep (10);
+        txDisableAutoPause ();
+
+        for (int n = 0; n < ENEMY_N; n++) manager.addObject (new Enemy);
+
+        Tank * tank = new Tank {70, 40, SPEED, TX_GREEN, 40};
+
+        manager.addObject (tank);
+
+        int result = run (&manager);
+
+        switch (result)
+
+        {
+
+            case ResultExit:
+
+            {
+
+                return 0;
+
+            }
+
+            case ResultGameOver:
+
+            {
+
+                switch (gameOver (manager.score_))
+
+                {
+
+                    case GameOverResultExit:
+
+                    {
+
+                        return 0;
+
+                    }
+
+                }
+
+            }
+
+        }
 
     }
-
-    txDeleteDC (test.spritesheet_);*/
 
     return 0;
 
@@ -683,11 +715,25 @@ int run (ObjectManager * manager)
 
         }
 
+        Tank * tank = getObject <Tank> (manager);
+
+        assert (tank);
+
+        if (tank -> health_ <= 0)
+
+        {
+            manager -> clearObjects ();
+            return ResultGameOver;
+
+        }
+
         txSleep (1);
 
     }
 
     manager -> clearObjects ();
+
+    return ResultExit;
 
 }
 
@@ -1358,7 +1404,7 @@ void Enemy::hit (GameObject * object)
 
     }
 
-    else if (checkType <EnemyBullet> (object))
+    /*else if (checkType <EnemyBullet> (object))
 
     {
 
@@ -1368,7 +1414,7 @@ void Enemy::hit (GameObject * object)
 
         bullet -> remove ();
 
-    }
+    }*/
 
 }
 
@@ -1527,7 +1573,7 @@ void EnemyBullet::hit (GameObject * object)
 
     }
 
-    else if (checkType <Enemy> (object))
+    /*else if (checkType <Enemy> (object))
 
     {
 
@@ -1537,7 +1583,7 @@ void EnemyBullet::hit (GameObject * object)
 
         remove ();
 
-    }
+    }*/
 
 }
 
@@ -1720,12 +1766,31 @@ int gameOver (int score)
 
     };
 
+    HDC image = txLoadImage ("Resources\\Images\\Die.bmp");
+    double width = txGetExtentX (image);
+    double height = txGetExtentY (image);
+
+    for (double alpha = 0; alpha < 1; alpha += 0.01)
+
+    {
+
+        txSetFillColor (TX_BLACK);
+        txClear ();
+
+        txAlphaBlend (txDC (), wWidth / 2 - width / 2, wHeight / 2 - height / 2, 0, 0, image, 0, 0, alpha);
+
+        txSleep (5);
+
+    }
+
     while (!GetAsyncKeyState (VK_ESCAPE))
 
     {
 
-        txSetFillColor (RGB (45, 45, 45));
+        txSetFillColor (TX_BLACK);
         txClear ();
+
+        txAlphaBlend (txDC (), wWidth / 2 - width / 2, wHeight / 2 - height / 2, 0, 0, image);
 
         const char * text = "Game over";
 
@@ -1742,11 +1807,21 @@ int gameOver (int score)
 
         int result = manageButtons (buttons);
 
-        if (result != -1) return result;
+        if (result != -1)
+
+        {
+
+            txDeleteDC (image);
+
+            return result;
+
+        }
 
         txSleep (1);
 
     }
+
+    txDeleteDC (image);
 
     return ResultExit;
 

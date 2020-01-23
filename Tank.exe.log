@@ -7549,3 +7549,103 @@ Run file:	W:\Tank\Tank.exe
 Directory:	W:\Tank
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Tank.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 11714, функция: POINT {anonymous}::TX::txGetExtent(HDC),
+
+Сообщение: Параметр "dc" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057A8D0 (64-bit), Flags: CMdRE0, Thread: 0x2AE0 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in POINT {anonymous}::TX::txGetExtent(HDC) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11714):
+
+  11712: $0  static POINT err = {-1, -1};
+  11713: 
+=>11714: $   if (_TX_DEFAULT_HDC_FAILED (dc)) return err;
+  11715: 
+  11716: $   BITMAP bmap = {0};
+
+# 1 in int gameOver(int) at W:\Tank\Tank.cpp (1769):
+
+   1767:     };
+   1768: 
+=> 1769:     HDC image = txLoadImage ("Recources\\Images\\Die.bmp");
+   1770:     double width = txGetExtentX (image);
+   1771:     double height = txGetExtentY (image);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 17:20:07, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 17:20:17
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Tank.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 11714, функция: POINT {anonymous}::TX::txGetExtent(HDC),
+
+Сообщение: Параметр "dc" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057A8D0 (64-bit), Flags: CMdRE0, Thread: 0x2AE0 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in POINT {anonymous}::TX::txGetExtent(HDC) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11714):
+
+  11712: $0  static POINT err = {-1, -1};
+  11713: 
+=>11714: $   if (_TX_DEFAULT_HDC_FAILED (dc)) return err;
+  11715: 
+  11716: $   BITMAP bmap = {0};
+
+# 1 in int gameOver(int) at W:\Tank\Tank.cpp (1771):
+
+   1769:     HDC image = txLoadImage ("Recources\\Images\\Die.bmp");
+   1770:     double width = txGetExtentX (image);
+=> 1771:     double height = txGetExtentY (image);
+   1772: 
+   1773:     while (!GetAsyncKeyState (VK_ESCAPE))
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 17:20:07, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 17:20:16
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
