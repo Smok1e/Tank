@@ -3968,3 +3968,3584 @@ Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
 Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp, строка: 1078, функция: virtual void Enemy::control(),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "tank".
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005748C0 (64-bit), Flags: CMdRE0, Thread: 0x15CC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+
+# 1 0x000000000042945C in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: control() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1078):
+
+   1076:         Tank * tank = getObject <Tank> (manager_);
+   1077: 
+=> 1078:         assert (tank);
+   1079: 
+   1080:         double a = x_ - (tank -> x_);
+
+# 2 0x000000000042A804 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: controlObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1508):
+
+   1506:         if (!objects_[n]) continue;
+   1507: 
+=> 1508:         objects_[n] -> control ();
+   1509: 
+   1510:     }
+
+# 3 0x000000000042A896 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1549):
+
+   1547: 
+   1548:     moveObjects ();
+=> 1549:     controlObjects ();
+   1550:     drawObjects ();
+   1551:     checkCollision ();
+
+# 4 0x0000000000427CD9 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (469):
+
+    467:     {
+    468: 
+=>  469:         manager -> manageObjects ();
+    470: 
+    471:         time += 4;
+
+# 5 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 20:07:33, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 20:07:51
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 9137, функция: bool {anonymous}::TX::_txBuffer_Delete(HDC__**),
+
+Сообщение: Параметр "*dc" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005748C0 (64-bit), Flags: CMdRE0, Thread: 0x143C (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+# 1 0x000000000040E1C8 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txBuffer_Delete() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9137)
+# 2 0x000000000041F556 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: txDeleteDC() at C:/Users/Фёдор/Downloads/TX/TXLib.h (11756)
+# 3 0x000000000041F7BA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: txDeleteDC() at C:/Users/Фёдор/Downloads/TX/TXLib.h (11772)
+
+# 4 0x0000000000429C2E in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: remove() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1259):
+
+   1257: {
+   1258: 
+=> 1259:     txDeleteDC (image_);
+   1260: 
+   1261:     manager_ -> removeObject (this);
+
+# 5 0x0000000000428CFE in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: hit() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (934):
+
+    932:         txDeleteDC (food -> image_);
+    933: 
+=>  934:         food -> remove ();
+    935: 
+    936:     }
+
+# 6 0x000000000042A968 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkCollision() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1573):
+
+   1571:             if (!objects_[i]) continue;
+   1572: 
+=> 1573:             if (collisionDetection (objects_[n], objects_[i])) objects_[n] -> hit (objects_[i]);
+   1574: 
+   1575:         }
+
+# 7 0x000000000042A8A8 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1551):
+
+   1549:     controlObjects ();
+   1550:     drawObjects ();
+=> 1551:     checkCollision ();
+   1552: 
+   1553: }
+
+# 8 0x0000000000427CD9 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (469):
+
+    467:     {
+    468: 
+=>  469:         manager -> manageObjects ();
+    470: 
+    471:         time += 4;
+
+# 9 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txBuffer_Delete(HDC__**) at C:\Users\Фёдор\Downloads\TX\TXLib.h (9137):
+
+   9135: $   if (!*dc) return false;
+   9136: 
+=> 9137: $   if (_TX_HDC_FAILED (*dc)) return false;
+   9138: 
+   9139: $   if (!Win32::GetObjectType (Win32::GetCurrentObject (*dc, OBJ_BITMAP))) return false;
+
+# 1 in bool {anonymous}::TX::txDeleteDC(HDC__**) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11756):
+
+  11754: 
+  11755: $   HDC  dc = *pdc;
+=>11756: $   bool ok = _txBuffer_Delete (pdc);
+  11757: $   if (!ok) return false;
+  11758: 
+
+# 2 in bool {anonymous}::TX::txDeleteDC(HDC) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11772):
+
+  11770: bool txDeleteDC (HDC dc)
+  11771:     {
+=>11772: $1  return txDeleteDC (&dc);
+  11773:     }
+  11774: 
+
+# 3 in virtual void Food::remove() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (1259):
+
+   1257: {
+   1258: 
+=> 1259:     txDeleteDC (image_);
+   1260: 
+   1261:     manager_ -> removeObject (this);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 20:09:40, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 20:09:47
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp, строка: 1078, функция: virtual void Enemy::control(),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "tank".
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005748C0 (64-bit), Flags: CMdRE0, Thread: 0x17A0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+
+# 1 0x000000000042945C in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: control() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1078):
+
+   1076:         Tank * tank = getObject <Tank> (manager_);
+   1077: 
+=> 1078:         assert (tank);
+   1079: 
+   1080:         double a = x_ - (tank -> x_);
+
+# 2 0x000000000042A804 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: controlObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1508):
+
+   1506:         if (!objects_[n]) continue;
+   1507: 
+=> 1508:         objects_[n] -> control ();
+   1509: 
+   1510:     }
+
+# 3 0x000000000042A896 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1549):
+
+   1547: 
+   1548:     moveObjects ();
+=> 1549:     controlObjects ();
+   1550:     drawObjects ();
+   1551:     checkCollision ();
+
+# 4 0x0000000000427CD9 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (469):
+
+    467:     {
+    468: 
+=>  469:         manager -> manageObjects ();
+    470: 
+    471:         time += 4;
+
+# 5 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 20:09:40, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 20:11:07
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp, строка: 1084, функция: virtual void Enemy::control(),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "tank".
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005748C0 (64-bit), Flags: CMdRE0, Thread: 0x2748 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+
+# 1 0x00000000004294C0 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: control() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1084):
+
+   1082:         Tank * tank = getObject <Tank> (manager_);
+   1083: 
+=> 1084:         assert (tank);
+   1085: 
+   1086:         double a = x_ - (tank -> x_);
+
+# 2 0x000000000042A868 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: controlObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1514):
+
+   1512:         if (!objects_[n]) continue;
+   1513: 
+=> 1514:         objects_[n] -> control ();
+   1515: 
+   1516:     }
+
+# 3 0x000000000042A8FA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1555):
+
+   1553: 
+   1554:     moveObjects ();
+=> 1555:     controlObjects ();
+   1556:     drawObjects ();
+   1557:     checkCollision ();
+
+# 4 0x0000000000427CD9 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (469):
+
+    467:     {
+    468: 
+=>  469:         manager -> manageObjects ();
+    470: 
+    471:         time += 4;
+
+# 5 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 20:20:52, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 20:20:59
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042AE2D в функции checkCollision() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 1634. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x18C0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042AE2D in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkCollision() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1634):
+
+   1632:                 char text[100] = "";
+   1633: 
+=> 1634:                 sprintf (text, "Hit registered between objects:\nX = %d, Y = %d\nX = %d, Y = %d\n", objects_[n] -> x_, objects_[n] -> y_, objects_[i] -> x_, objects_[i] -> y_);
+   1635: 
+   1636:                 info (text);
+
+# 1 0x000000000042ACEA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1604):
+
+   1602:     controlObjects ();
+   1603:     drawObjects ();
+=> 1604:     checkCollision ();
+   1605: 
+   1606: }
+
+# 2 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (588):
+
+    586:         txSetColor (color_);
+    587:         txSetFillColor (color_);
+=>  588:         txCircle (x_, y_, r_);
+    589: 
+    590:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:08:23, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 21:08:29
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042AE2D в функции checkCollision() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 1634. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x18C0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042AE2D in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkCollision() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1634):
+
+   1632:                 char text[100] = "";
+   1633: 
+=> 1634:                 sprintf (text, "Hit registered between objects:\nX = %d, Y = %d\nX = %d, Y = %d\n", objects_[n] -> x_, objects_[n] -> y_, objects_[i] -> x_, objects_[i] -> y_);
+   1635: 
+   1636:                 info (text);
+
+# 1 0x000000000042ACEA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1604):
+
+   1602:     controlObjects ();
+   1603:     drawObjects ();
+=> 1604:     checkCollision ();
+   1605: 
+   1606: }
+
+# 2 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:08:23, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 21:08:29
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042AEAE в функции checkCollision() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 1634. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x2F24 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042AEAE in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkCollision() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1634):
+
+   1632:                 char text[200] = "";
+   1633: 
+=> 1634:                 sprintf (text, "Hit registered between objects:\nX = %d, Y = %d\nX = %d, Y = %d\n", objects_[n] -> x_, objects_[n] -> y_, objects_[i] -> x_, objects_[i] -> y_);
+   1635: 
+   1636:                 info (text);
+
+# 1 0x000000000042ACEA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1604):
+
+   1602:     controlObjects ();
+   1603:     drawObjects ();
+=> 1604:     checkCollision ();
+   1605: 
+   1606: }
+
+# 2 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (588):
+
+    586:         txSetColor (color_);
+    587:         txSetFillColor (color_);
+=>  588:         txCircle (x_, y_, r_);
+    589: 
+    590:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:11:28, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 21:11:35
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042AEAE в функции checkCollision() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 1634. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x2F24 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042AEAE in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkCollision() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1634):
+
+   1632:                 char text[200] = "";
+   1633: 
+=> 1634:                 sprintf (text, "Hit registered between objects:\nX = %d, Y = %d\nX = %d, Y = %d\n", objects_[n] -> x_, objects_[n] -> y_, objects_[i] -> x_, objects_[i] -> y_);
+   1635: 
+   1636:                 info (text);
+
+# 1 0x000000000042ACEA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1604):
+
+   1602:     controlObjects ();
+   1603:     drawObjects ();
+=> 1604:     checkCollision ();
+   1605: 
+   1606: }
+
+# 2 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:11:28, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 21:11:36
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042AEAE в функции checkCollision() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 1634. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x2490 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042AEAE in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkCollision() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1634):
+
+   1632:                 const char * text = "";
+   1633: 
+=> 1634:                 sprintf (text, "Hit registered between objects:\nX = %d, Y = %d\nX = %d, Y = %d\n", objects_[n] -> x_, objects_[n] -> y_, objects_[i] -> x_, objects_[i] -> y_);
+   1635: 
+   1636:                 info (text);
+
+# 1 0x000000000042ACEA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1604):
+
+   1602:     controlObjects ();
+   1603:     drawObjects ();
+=> 1604:     checkCollision ();
+   1605: 
+   1606: }
+
+# 2 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (588):
+
+    586:         txSetColor (color_);
+    587:         txSetFillColor (color_);
+=>  588:         txCircle (x_, y_, r_);
+    589: 
+    590:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:11:28, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 21:22:26
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042AEAE в функции checkCollision() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 1634. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x2490 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042AEAE in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: checkCollision() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1634):
+
+   1632:                 const char * text = "";
+   1633: 
+=> 1634:                 sprintf (text, "Hit registered between objects:\nX = %d, Y = %d\nX = %d, Y = %d\n", objects_[n] -> x_, objects_[n] -> y_, objects_[i] -> x_, objects_[i] -> y_);
+   1635: 
+   1636:                 info (text);
+
+# 1 0x000000000042ACEA in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1604):
+
+   1602:     controlObjects ();
+   1603:     drawObjects ();
+=> 1604:     checkCollision ();
+   1605: 
+   1606: }
+
+# 2 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:11:28, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 21:22:25
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x0000000000428B22 в функции check() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 719. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x2B40 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000428B22 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: check() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (719):
+
+    717:     double c = sqrt (a * a + b * b);
+    718: 
+=>  719:     gun_vx = a / c;
+    720:     gun_vy = b / c;
+    721: 
+
+# 1 0x0000000000428F97 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: control() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (941):
+
+    939:     }
+    940: 
+=>  941:     check ();
+    942: 
+    943: }
+
+# 2 0x000000000042AC46 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: controlObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1561):
+
+   1559:         if (!objects_[n]) continue;
+   1560: 
+=> 1561:         objects_[n] -> control ();
+   1562: 
+   1563:     }
+
+# 3 0x000000000042ACD8 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1602):
+
+   1600: 
+   1601:     moveObjects ();
+=> 1602:     controlObjects ();
+   1603:     drawObjects ();
+   1604:     checkCollision ();
+
+# 4 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 5 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void Tank::check() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (712):
+
+    710: {
+    711: 
+=>  712:     POINT mPos = txMousePos ();
+    713: 
+    714:     double a = mPos.x - x_;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:22:58, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 23:18:57
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x0000000000428B22 в функции check() в файле C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp на строке 719. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x2B40 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000428B22 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: check() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (719):
+
+    717:     double c = sqrt (a * a + b * b);
+    718: 
+=>  719:     gun_vx = a / c;
+    720:     gun_vy = b / c;
+    721: 
+
+# 1 0x0000000000428F97 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: control() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (941):
+
+    939:     }
+    940: 
+=>  941:     check ();
+    942: 
+    943: }
+
+# 2 0x000000000042AC46 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: controlObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1561):
+
+   1559:         if (!objects_[n]) continue;
+   1560: 
+=> 1561:         objects_[n] -> control ();
+   1562: 
+   1563:     }
+
+# 3 0x000000000042ACD8 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1602):
+
+   1600: 
+   1601:     moveObjects ();
+=> 1602:     controlObjects ();
+   1603:     drawObjects ();
+   1604:     checkCollision ();
+
+# 4 0x0000000000427CDC in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (467):
+
+    465:     {
+    466: 
+=>  467:         manager -> manageObjects ();
+    468: 
+    469:         if (GetAsyncKeyState (VK_DELETE))
+
+# 5 0x0000000000427C89 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (451):
+
+    449:     manager.addObject (tank);
+    450: 
+=>  451:     int result = run (&manager);
+    452: 
+    453:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  1 2020 21:22:58, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 01 2020 23:18:58
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 7337, функция: HWND__* {anonymous}::TX::txCreateWindow(double, double, bool),
+
+Сообщение: Окно рисования уже создано!
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRe0, Thread: 0x230C (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+# 1 0x000000000040329C in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: txCreateWindow() at C:/Users/Фёдор/Downloads/TX/TXLib.h (7337)
+
+# 2 0x0000000000427D94 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (491):
+
+    489:     ObjectManager manager = {CaptureScreen (GetSystemMetrics (SM_CXSCREEN) / 2 - wWidth / 2, GetSystemMetrics (SM_CYSCREEN) / 2 - wHeight / 2, wWidth, wHeight)};
+    490: 
+=>  491:     txCreateWindow (wWidth, wHeight);
+    492: 
+    493:     txBegin ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in HWND__* {anonymous}::TX::txCreateWindow(double, double, bool) at C:\Users\Фёдор\Downloads\TX\TXLib.h (7337):
+
+   7335:         {
+   7336: $       SetLastErrorEx (ERROR_INVALID_DATA, 0);
+=> 7337: $       _TX_ON_DEBUG (TX_ERROR ("\a" "Окно рисования уже создано!"));
+   7338: $       return wnd;
+   7339:         }
+
+# 1 in int main() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (491):
+
+    489:     ObjectManager manager = {CaptureScreen (GetSystemMetrics (SM_CXSCREEN) / 2 - wWidth / 2, GetSystemMetrics (SM_CYSCREEN) / 2 - wHeight / 2, wWidth, wHeight)};
+    490: 
+=>  491:     txCreateWindow (wWidth, wHeight);
+    492: 
+    493:     txBegin ();
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  2 2020 02:22:17, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 02 2020 02:22:24
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 7337, функция: HWND__* {anonymous}::TX::txCreateWindow(double, double, bool),
+
+Сообщение: Окно рисования уже создано!
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRe0, Thread: 0x30FC (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+# 1 0x000000000040329C in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: txCreateWindow() at C:/Users/Фёдор/Downloads/TX/TXLib.h (7337)
+
+# 2 0x0000000000427D77 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (489):
+
+    487:     ObjectManager manager = {CaptureScreen (GetSystemMetrics (SM_CXSCREEN) / 2 - wWidth / 2, GetSystemMetrics (SM_CYSCREEN) / 2 - wHeight / 2, wWidth, wHeight)};
+    488: 
+=>  489:     txCreateWindow (wWidth, wHeight);
+    490: 
+    491:     txBegin ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in HWND__* {anonymous}::TX::txCreateWindow(double, double, bool) at C:\Users\Фёдор\Downloads\TX\TXLib.h (7337):
+
+   7335:         {
+   7336: $       SetLastErrorEx (ERROR_INVALID_DATA, 0);
+=> 7337: $       _TX_ON_DEBUG (TX_ERROR ("\a" "Окно рисования уже создано!"));
+   7338: $       return wnd;
+   7339:         }
+
+# 1 in int main() at C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp (489):
+
+    487:     ObjectManager manager = {CaptureScreen (GetSystemMetrics (SM_CXSCREEN) / 2 - wWidth / 2, GetSystemMetrics (SM_CYSCREEN) / 2 - wHeight / 2, wWidth, wHeight)};
+    488: 
+=>  489:     txCreateWindow (wWidth, wHeight);
+    490: 
+    491:     txBegin ();
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  2 2020 02:22:52, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 02 2020 02:22:59
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp, строка: 1203, функция: virtual void Enemy::control(),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "tank".
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x2AD8 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+
+# 1 0x00000000004299F6 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: control() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1203):
+
+   1201:         Tank * tank = getObject <Tank> (manager_);
+   1202: 
+=> 1203:         assert (tank);
+   1204: 
+   1205:         double a = x_ - (tank -> x_);
+
+# 2 0x000000000042B1A8 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: controlObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1699):
+
+   1697:         if (!objects_[n]) continue;
+   1698: 
+=> 1699:         objects_[n] -> control ();
+   1700: 
+   1701:     }
+
+# 3 0x000000000042B23A in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1740):
+
+   1738: 
+   1739:     moveObjects ();
+=> 1740:     controlObjects ();
+   1741:     drawObjects ();
+   1742:     checkCollision ();
+
+# 4 0x0000000000427E4E in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (513):
+
+    511:     {
+    512: 
+=>  513:         manager -> manageObjects ();
+    514: 
+    515:         if (GetAsyncKeyState (VK_DELETE))
+
+# 5 0x0000000000427DFB in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (497):
+
+    495:     manager.addObject (tank);
+    496: 
+=>  497:     int result = run (&manager);
+    498: 
+    499:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  2 2020 20:51:28, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 02 2020 20:51:35
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe, файл: C:\Users\Фёдор\Documents\GitHub\Tank\Tank.cpp, строка: 1203, функция: virtual void Enemy::control(),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "tank".
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300], Instance: 0x00000000005758C0 (64-bit), Flags: CMdRE0, Thread: 0x14A4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000040E877 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9188)
+
+# 1 0x00000000004299F6 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: control() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1203):
+
+   1201:         Tank * tank = getObject <Tank> (manager_);
+   1202: 
+=> 1203:         assert (tank);
+   1204: 
+   1205:         double a = x_ - (tank -> x_);
+
+# 2 0x000000000042B1A8 in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: controlObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1699):
+
+   1697:         if (!objects_[n]) continue;
+   1698: 
+=> 1699:         objects_[n] -> control ();
+   1700: 
+   1701:     }
+
+# 3 0x000000000042B23A in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: manageObjects() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (1740):
+
+   1738: 
+   1739:     moveObjects ();
+=> 1740:     controlObjects ();
+   1741:     drawObjects ();
+   1742:     checkCollision ();
+
+# 4 0x0000000000427E4E in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: run() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (513):
+
+    511:     {
+    512: 
+=>  513:         manager -> manageObjects ();
+    514: 
+    515:         if (GetAsyncKeyState (VK_DELETE))
+
+# 5 0x0000000000427DFB in C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe: main() at C:/Users/Фёдор/Documents/GitHub/Tank/Tank.cpp (497):
+
+    495:     manager.addObject (tank);
+    496: 
+=>  497:     int result = run (&manager);
+    498: 
+    499:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2019-12-21 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan  2 2020 20:51:28, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 02 2020 20:51:49
+
+Run file:	C:\Users\Фёдор\Documents\GitHub\Tank\Tank.exe
+Directory:	C:\Users\Фёдор\Documents\GitHub\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1886. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1A54 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1886):
+
+   1884:                 objects_[n] -> hit (objects_[i]);
+   1885: 
+=> 1886:                 objects_[i] -> hit (objects_[n]);
+   1887: 
+   1888:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:09:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:09:46
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1886. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1A54 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1886):
+
+   1884:                 objects_[n] -> hit (objects_[i]);
+   1885: 
+=> 1886:                 objects_[i] -> hit (objects_[n]);
+   1887: 
+   1888:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:09:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:09:46
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1886. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1D84 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1886):
+
+   1884:                 objects_[n] -> hit (objects_[i]);
+   1885: 
+=> 1886:                 objects_[i] -> hit (objects_[n]);
+   1887: 
+   1888:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:09:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:10:20
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1886. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1D84 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1886):
+
+   1884:                 objects_[n] -> hit (objects_[i]);
+   1885: 
+=> 1886:                 objects_[i] -> hit (objects_[n]);
+   1887: 
+   1888:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:09:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:10:20
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1886. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1FBC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1886):
+
+   1884:                 objects_[n] -> hit (objects_[i]);
+   1885: 
+=> 1886:                 objects_[i] -> hit (objects_[n]);
+   1887: 
+   1888:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:09:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:11:02
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1886. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1FBC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1886):
+
+   1884:                 objects_[n] -> hit (objects_[i]);
+   1885: 
+=> 1886:                 objects_[i] -> hit (objects_[n]);
+   1887: 
+   1888:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:09:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:11:02
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1885. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x3750 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1885):
+
+   1883: 
+   1884:                 objects_[n] -> hit (objects_[i]);
+=> 1885:                 objects_[i] -> hit (objects_[n]);
+   1886: 
+   1887:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:14:18, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:14:24
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CFB3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1885. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x3750 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CFB3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1885):
+
+   1883: 
+   1884:                 objects_[n] -> hit (objects_[i]);
+=> 1885:                 objects_[i] -> hit (objects_[n]);
+   1886: 
+   1887:             }
+
+# 1 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:14:18, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:14:24
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D055 в функции checkCollision() в файле Y:/Tank.cpp на строке 1888. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2580 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D055 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1888):
+
+   1886: 
+   1887:                 objects_[n] -> hit (objects_[i]);
+=> 1888:                 objects_[i] -> hit (objects_[n]);
+   1889: 
+   1890:             }
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:15:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:15:45
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D055 в функции checkCollision() в файле Y:/Tank.cpp на строке 1888. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2580 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D055 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1888):
+
+   1886: 
+   1887:                 objects_[n] -> hit (objects_[i]);
+=> 1888:                 objects_[i] -> hit (objects_[n]);
+   1889: 
+   1890:             }
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:15:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:15:45
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1224 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:             }
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:19, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:16:25
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1224 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:             }
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:19, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:16:25
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2F0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:16:51
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2F0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:16:51
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x94C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:19:33
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x94C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:19:33
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1AA0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:19:43
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1AA0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:19:43
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x3988 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:23:20
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D0B3 в функции checkCollision() в файле Y:/Tank.cpp на строке 1892. Попытка прочесть данные по адресу NULL. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x3988 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D0B3 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1892):
+
+   1890:                 $(n);
+   1891: 
+=> 1892:                 objects_[i] -> hit (objects_[n]);
+   1893: 
+   1894:                 $(i);
+
+# 1 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 2 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 3 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:23:20
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC74 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x100C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC74 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF9B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:23:28
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC74 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x100C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC74 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF9B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CF0E in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x0000000000429A2A in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x00000000004299D7 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:16:45, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:23:29
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC36 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2E6C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC36 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF5B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:25:43, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:25:49
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC36 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2E6C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC36 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF5B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:25:43, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:25:49
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC36 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1890 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC36 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF5B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:26:26, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:26:32
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC36 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1890 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC36 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF5B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:26:26, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:26:32
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC36 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2C6C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC36 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF5B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::draw() at Y:\Tank.cpp (650):
+
+    648:         txSetColor (color_);
+    649:         txSetFillColor (color_);
+=>  650:         txCircle (x_, y_, r_);
+    651: 
+    652:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:26:26, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:26:40
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042CC36 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1736. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2C6C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042CC36 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1736):
+
+   1734: {
+   1735: 
+=> 1736:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1737: 
+   1738:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042CF5B in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1880):
+
+   1878:             if (!objects_[i]) continue;
+   1879: 
+=> 1880:             if (collisionDetection (objects_[n], objects_[i]))
+   1881: 
+   1882:             {
+
+# 2 0x000000000042CED0 in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1858):
+
+   1856:     controlObjects ();
+   1857:     drawObjects ();
+=> 1858:     checkCollision ();
+   1859: 
+   1860: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 16:26:26, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 16:26:40
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D114 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1782. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x24E8 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D114 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1782):
+
+   1780: {
+   1781: 
+=> 1782:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1783: 
+   1784:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042D431 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1926):
+
+   1924:             if (!objects_[i]) continue;
+   1925: 
+=> 1926:             if (collisionDetection (objects_[n], objects_[i]))
+   1927: 
+   1928:             {
+
+# 2 0x000000000042D3AE in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1904):
+
+   1902:     controlObjects ();
+   1903:     drawObjects ();
+=> 1904:     checkCollision ();
+   1905: 
+   1906: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void Food::draw() at Y:\Tank.cpp (1482):
+
+   1480: {
+   1481: 
+=> 1482:     txTransparentBlt (txDC (), x_ - txGetExtentX (image_) / 2, y_ - txGetExtentY (image_) / 2, 0, 0, image_, 0, 0, TX_WHITE);
+   1483: 
+   1484: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 19:31:53, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 19:31:58
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D114 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1782. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x24E8 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D114 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1782):
+
+   1780: {
+   1781: 
+=> 1782:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1783: 
+   1784:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042D431 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1926):
+
+   1924:             if (!objects_[i]) continue;
+   1925: 
+=> 1926:             if (collisionDetection (objects_[n], objects_[i]))
+   1927: 
+   1928:             {
+
+# 2 0x000000000042D3AE in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1904):
+
+   1902:     controlObjects ();
+   1903:     drawObjects ();
+=> 1904:     checkCollision ();
+   1905: 
+   1906: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 19:31:53, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 19:31:59
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D114 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1782. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x32D4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D114 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1782):
+
+   1780: {
+   1781: 
+=> 1782:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1783: 
+   1784:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042D431 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1926):
+
+   1924:             if (!objects_[i]) continue;
+   1925: 
+=> 1926:             if (collisionDetection (objects_[n], objects_[i]))
+   1927: 
+   1928:             {
+
+# 2 0x000000000042D3AE in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1904):
+
+   1902:     controlObjects ();
+   1903:     drawObjects ();
+=> 1904:     checkCollision ();
+   1905: 
+   1906: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void Medkit::draw() at Y:\Tank.cpp (1540):
+
+   1538: {
+   1539: 
+=> 1540:     txTransparentBlt (txDC (), x_ - txGetExtentX (image_) / 2, y_ - txGetExtentY (image_) / 2, 0, 0, image_, 0, 0, RGB (255, 0, 255));
+   1541: 
+   1542: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 19:31:53, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 19:34:16
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: Y:\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042D114 в функции collisionDetection() в файле Y:/Tank.cpp на строке 1782. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x32D4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x000000000042D114 in Y:\Tank.exe: collisionDetection() at Y:/Tank.cpp (1782):
+
+   1780: {
+   1781: 
+=> 1782:     double sqrD = sqrDistance (obj1 -> x_, obj1 -> y_, obj2 -> x_, obj2 -> y_);
+   1783: 
+   1784:     if (sqrD <= sqr(obj1 -> r_ + obj2 -> r_))
+
+# 1 0x000000000042D431 in Y:\Tank.exe: checkCollision() at Y:/Tank.cpp (1926):
+
+   1924:             if (!objects_[i]) continue;
+   1925: 
+=> 1926:             if (collisionDetection (objects_[n], objects_[i]))
+   1927: 
+   1928:             {
+
+# 2 0x000000000042D3AE in Y:\Tank.exe: manageObjects() at Y:/Tank.cpp (1904):
+
+   1902:     controlObjects ();
+   1903:     drawObjects ();
+=> 1904:     checkCollision ();
+   1905: 
+   1906: }
+
+# 3 0x00000000004299EC in Y:\Tank.exe: run() at Y:/Tank.cpp (529):
+
+    527:     {
+    528: 
+=>  529:         manager -> manageObjects ();
+    530: 
+    531:         if (GetAsyncKeyState (VK_DELETE))
+
+# 4 0x0000000000429999 in Y:\Tank.exe: main() at Y:/Tank.cpp (513):
+
+    511:     manager.addObject (tank);
+    512: 
+=>  513:     int result = run (&manager);
+    514: 
+    515:     return 0;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-10 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 14 2020 19:31:53, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 14 2020 19:34:16
+
+Run file:	Y:\Tank.exe
+Directory:	Y:\
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Tank.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 11636, функция: POINT {anonymous}::TX::txGetExtent(HDC),
+
+Сообщение: Параметр "dc" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-16 00:00:00 +0300], Instance: 0x000000000057A8C8 (64-bit), Flags: CMdRE0, Thread: 0x10F4 (Main), GetLastError(): 13 (Недопустимые данные). 
+From: C:\Users\Фёдор\Downloads\TX\TXLib.h (11004) const char* {anonymous}::TX::_txCaptureStackBackTraceTX(int, bool).
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in Animation::Animation(const char*, int) at W:\Tank\Tank.cpp (154):
+
+    152: Animation::Animation (const char * path, int frame_n) :
+    153: 
+=>  154:     spritesheet_ (txLoadImage (path)),
+    155:     width_       (0),
+    156:     height_      (0),
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-16 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 19 2020 20:39:16, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 19 2020 20:39:25
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------

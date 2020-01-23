@@ -17,7 +17,7 @@ const int DAMAGE_MAX = 15;
 
 const int ENEMY_SHOOTING_FREQ = 200;
 
-const int FOOD_SPAWNING_FREQ = 20;
+const int FOOD_SPAWNING_FREQ = 4;
 
 const bool DEBUG_MODE = false;
 
@@ -83,6 +83,8 @@ struct GameObject
 
     virtual void hit (GameObject * object);
 
+    virtual void remove ();
+
 };
 
 GameObject::GameObject () :
@@ -127,6 +129,43 @@ GameObject::GameObject (double x, double y, double vx, double vy, double r, COLO
 
 //-----------------------------------------------------------------------------
 
+struct Animation
+
+{
+
+    HDC spritesheet_;
+
+    double width_;
+
+    double height_;
+
+    int frame_n_;
+
+    int frame_;
+
+    Animation (const char * path, int frame_n_);
+
+    void draw (double x, double y);
+
+};
+
+Animation::Animation (const char * path, int frame_n) :
+
+    spritesheet_ (txLoadImage (path)),
+    width_       (0),
+    height_      (0),
+    frame_n_     (frame_n),
+    frame_       (0)
+
+{
+
+    width_  = txGetExtentX (spritesheet_) / frame_n_;
+    height_ = txGetExtentY (spritesheet_);
+
+}
+
+//-----------------------------------------------------------------------------
+
 struct Tank : GameObject
 
 {
@@ -141,6 +180,8 @@ struct Tank : GameObject
 
     int reloading_;
 
+    //HDC image_;
+
     Tank (double x, double y, double speed, COLORREF color, int gun_length_);
 
     virtual void draw () override;
@@ -150,6 +191,8 @@ struct Tank : GameObject
     virtual void hit (GameObject * object) override;
 
     void check ();
+
+    void addHealth (double health);
 
 };
 
@@ -239,13 +282,17 @@ struct Food : GameObject
 
     virtual void draw () override;
 
+    virtual void hit (GameObject * object) override;
+
+    virtual void remove () override;
+
 };
 
 Food::Food (double x, double y) :
 
-    GameObject (x, y, 0, 0, 7, 0, true),
+    GameObject (x, y, 0, 0, 15, 0, true),
 
-    image_ (txLoadImage ("Resources\\food.bmp"))
+    image_ (txLoadImage ("Resources\\Images\\Food.bmp"))
 
 {}
 
@@ -268,6 +315,8 @@ struct Bullet : GameObject
     Bullet (double x, double y, double vx, double vy, COLORREF color, int damage, double speed, double deflection, bool visible, ObjectManager * manager);
 
     virtual void move () override;
+
+    virtual void hit (GameObject * object) override;
 
 };
 
@@ -311,6 +360,8 @@ struct EnemyBullet : GameObject
 
     virtual void move () override;
 
+    virtual void hit (GameObject * object) override;
+
 };
 
 EnemyBullet::EnemyBullet () :
@@ -342,6 +393,56 @@ EnemyBullet::EnemyBullet (double x, double y, double vx, double vy, ObjectManage
 
 //-----------------------------------------------------------------------------
 
+struct Medkit : GameObject
+
+{
+
+    HDC image_;
+
+    Medkit (double x, double y);
+
+    virtual void draw () override;
+
+    virtual void hit (GameObject * object) override;
+
+    virtual void remove () override;
+
+};
+
+Medkit::Medkit (double x, double y) :
+
+    GameObject (x, y, 0, 0, 15, 0, true),
+
+    image_ (txLoadImage ("Resources\\Images\\Medkit.bmp"))
+
+{}
+
+//-----------------------------------------------------------------------------
+
+struct Wall : GameObject
+
+{
+
+    HDC image_;
+
+    Wall ();
+
+    virtual void draw () override;
+
+    virtual void remove () override;
+
+};
+
+Wall::Wall () :
+
+    GameObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 50, 0, true),
+
+    image_ (txLoadImage ("Resources\\Images\\Wall_1.bmp"))
+
+{}
+
+//-----------------------------------------------------------------------------
+
 struct ObjectManager
 
 {
@@ -353,6 +454,8 @@ struct ObjectManager
     int score_;
 
     ObjectManager ();
+
+    ObjectManager (HDC backgroundImage);
 
     void drawObjects ();
 
@@ -370,13 +473,15 @@ struct ObjectManager
 
     int removeObject (GameObject * object);
 
+    void clearObjects ();
+
 };
 
 ObjectManager::ObjectManager () :
 
-    objects_ ({}),
-    score_   (0),
-    bkcolor_ (RGB (45, 45, 45))
+    objects_         ({}),
+    score_           (0),
+    bkcolor_         (RGB (45, 45, 45))
 
 {}
 
@@ -408,6 +513,10 @@ template <typename T>
 
 T * checkType (GameObject * object);
 
+HDC CaptureScreen (int x, int y, int width, int height);
+
+void drawFragment (int x, int y, HDC * image, int n, double width, double height, double alpha);
+
 //-----------------------------------------------------------------------------
 
 int main ()
@@ -428,11 +537,11 @@ int main ()
 
     txCreateWindow (wWidth, wHeight);
 
+    ObjectManager manager;
+
     txBegin ();
 
     txDisableAutoPause ();
-
-    ObjectManager manager;
 
     for (int n = 0; n < ENEMY_N; n++) manager.addObject (new Enemy);
 
@@ -441,6 +550,23 @@ int main ()
     manager.addObject (tank);
 
     int result = run (&manager);
+
+    /*Animation test = {"Resources/Images/Tank_Spritesheet.bmp", 72};
+
+    while (!GetAsyncKeyState (VK_ESCAPE))
+
+    {
+
+        txSetFillColor (RGB (45, 45, 45));
+        txClear ();
+
+        test.draw (100, 100);
+
+        txSleep (10);
+
+    }
+
+    txDeleteDC (test.spritesheet_);*/
 
     return 0;
 
@@ -452,24 +578,116 @@ int run (ObjectManager * manager)
 
 {
 
-    int time = 0;
-
     while (!GetAsyncKeyState (VK_ESCAPE))
 
     {
 
-
         manager -> manageObjects ();
 
-        time += 4;
+        if (GetAsyncKeyState (VK_DELETE))
 
-        if (time >= 400) time = 0;
+        {
 
-        title (time);
+            const int delay = 50;
+
+            int time = 0;
+
+            const char * text = "[Delete]";
+
+            txSetColor (RGB (255, 225, 0));
+            txSelectFont ("Arial", 100);
+
+            txTextOut (wWidth / 2 - txGetTextExtentX (text) / 2, wHeight / 2 - txGetTextExtentY (text) / 2, text);
+
+            while (true)
+
+            {
+
+                if (txMouseButtons () == 1)
+
+                {
+
+                    POINT pos = txMousePos ();
+
+                    GameObject click = {pos.x, pos.y, 0, 0, 1, 0, false, NULL};
+
+                    for (int n = 0; n < OBJECTS_MAX; n++)
+
+                    {
+
+                        if (!manager -> objects_[n]) continue;
+
+                        if (collisionDetection (manager -> objects_[n], &click))
+
+                        {
+
+                            if (checkType <Tank> (manager -> objects_[n]))
+
+                            {
+
+                                MessageBox (txWindow (), "You may not remove tank.", "Error", MB_ICONWARNING | MB_OK);
+
+                                continue;
+
+                            }
+
+                            manager -> objects_[n] -> remove ();
+
+                        }
+
+
+                    }
+
+                }
+
+                if (GetAsyncKeyState (VK_ESCAPE) || GetAsyncKeyState (13))
+
+                {
+
+                    txSleep (100);
+
+                    break;
+
+                }
+
+                manager -> drawObjects ();
+
+                if (time < delay)
+
+                {
+
+                    txSetColor (RGB (255, 225, 0));
+                    txSelectFont ("Arial", 100);
+
+                    txTextOut (wWidth / 2 - txGetTextExtentX (text) / 2, wHeight / 2 - txGetTextExtentY (text) / 2, text);
+
+                }
+
+                time ++;
+
+                if (time > delay * 2) time = 0;
+
+                txSleep (1);
+
+            }
+
+        }
+
+        if (GetAsyncKeyState (VK_TAB))
+
+        {
+
+            manager -> addObject (new Enemy);
+
+            txSleep (100);
+
+        }
 
         txSleep (1);
 
     }
+
+    manager -> clearObjects ();
 
 }
 
@@ -546,6 +764,30 @@ void GameObject::hit (GameObject * object)
 void GameObject::control ()
 
 {
+
+}
+
+//-----------------------------------------------------------------------------
+
+void GameObject::remove ()
+
+{
+
+    manager_ -> removeObject (this);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Animation::draw (double x, double y)
+
+{
+
+    txAlphaBlend (txDC (), x, y, width_, height_, spritesheet_, width_ * frame_, 0, 1);
+
+    frame_ ++;
+
+    if (frame_ >= frame_n_) frame_ = 0;
 
 }
 
@@ -768,7 +1010,7 @@ void Tank::control ()
 
     {
 
-        reloading_ += 25;
+        reloading_ += 50;
 
     }
 
@@ -844,9 +1086,9 @@ void Tank::hit (GameObject * object)
 
         EnemyBullet * bullet = checkType <EnemyBullet> (object);
 
-        health_ -= 25;
+        addHealth (-25);
 
-        manager_ -> removeObject (bullet);
+        bullet -> remove ();
 
     }
 
@@ -856,11 +1098,63 @@ void Tank::hit (GameObject * object)
 
         Food * food = checkType <Food> (object);
 
-        health_ += 10;
+        addHealth (rnd (10, 20));
 
-        txDeleteDC (food -> image_);
+        txPlaySound ("Resources\\Sound\\Food_Take.wav");
 
-        manager_ -> removeObject (food);
+        food -> remove ();
+
+    }
+
+    else if (checkType <Medkit> (object))
+
+    {
+
+        Medkit * medkit = checkType <Medkit> (object);
+
+        addHealth (100);
+
+        txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+        medkit -> remove ();
+
+    }
+
+    else if (checkType <Bullet> (object))
+
+    {
+
+        Bullet * bullet = checkType <Bullet> (object);
+
+        addHealth(-rnd (2, 6));
+
+        bullet -> remove ();
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Tank::addHealth (double health)
+
+{
+
+    health_ += floor (health);
+
+    if (health_ > 100)
+
+    {
+
+        health_ = 100;
+
+    }
+
+    else if (health_ < 0)
+
+    {
+
+        health_ = 0;
 
     }
 
@@ -1002,7 +1296,7 @@ void Enemy::control ()
         double vx = a / c;
         double vy = b / c;
 
-        EnemyBullet * bullet = new EnemyBullet {x_, y_, vx, -vy, manager_};
+        EnemyBullet * bullet = new EnemyBullet {x_ + vx * 24, y_ + vy * 24, vx, -vy, manager_};
 
         manager_ -> addObject (bullet);
 
@@ -1016,7 +1310,11 @@ void Enemy::control ()
 
         {
 
-            manager_ -> addObject (new Food {x_, y_});
+            if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1) manager_ -> addObject (new Medkit {x_, y_});
+
+            else manager_ -> addObject (new Food {x_, y_});
+
+            txPlaySound ("Resources\\Sound\\Food_Spawn.wav");
 
         }
 
@@ -1053,7 +1351,22 @@ void Enemy::hit (GameObject * object)
 
         health_ -= bullet -> damage_;
 
-        manager_ -> removeObject (bullet);
+        x_ += bullet -> vx_ * 7;
+        y_ += bullet -> vy_ * 7;
+
+        bullet -> remove ();
+
+    }
+
+    else if (checkType <EnemyBullet> (object))
+
+    {
+
+        EnemyBullet * bullet = checkType <EnemyBullet> (object);
+
+        health_ -= 25;
+
+        bullet -> remove ();
 
     }
 
@@ -1104,11 +1417,74 @@ void Bullet::move ()
 
             {
 
-                manager_ -> removeObject (this);
+                remove ();
 
             }
 
         }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Bullet::hit (GameObject * object)
+
+{
+
+    if (checkType <Tank> (object))
+
+    {
+
+        Tank * tank = checkType <Tank> (object);
+
+        tank -> addHealth(-rnd (2, 6));
+
+        remove ();
+
+    }
+
+    else if (checkType <Enemy> (object))
+
+    {
+
+        Enemy * enemy = checkType <Enemy> (object);
+
+        enemy -> health_ -= damage_;
+
+        enemy -> x_ += vx_ * 7;
+        enemy -> y_ += vy_ * 7;
+
+        remove ();
+
+    }
+
+    else if (checkType <Food> (object))
+
+    {
+
+        Food * food = checkType <Food> (object);
+
+        food -> x_ += vx_ * 7;
+        food -> y_ += vy_ * 7;
+
+        vx_ = -vx_;
+        vy_ = -vy_;
+
+    }
+
+    else if (checkType <Medkit> (object))
+
+    {
+
+        Medkit * medkit = checkType <Medkit> (object);
+
+        medkit -> x_ += vx_ * 7;
+        medkit -> y_ += vy_ * 7;
+
+        vx_ = -vx_;
+        vy_ = -vy_;
 
     }
 
@@ -1127,7 +1503,39 @@ void EnemyBullet::move ()
 
     {
 
-        manager_ -> removeObject (this);
+        remove ();
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void EnemyBullet::hit (GameObject * object)
+
+{
+
+    if (checkType <Tank> (object))
+
+    {
+
+        Tank * tank = checkType <Tank> (object);
+
+        tank -> addHealth (-25);
+
+        remove ();
+
+    }
+
+    else if (checkType <Enemy> (object))
+
+    {
+
+        Enemy * enemy = checkType <Enemy> (object);
+
+        enemy -> health_ -= 25;
+
+        remove ();
 
     }
 
@@ -1140,6 +1548,134 @@ void Food::draw ()
 {
 
     txTransparentBlt (txDC (), x_ - txGetExtentX (image_) / 2, y_ - txGetExtentY (image_) / 2, 0, 0, image_, 0, 0, TX_WHITE);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Food::hit (GameObject * object)
+
+{
+
+    if (checkType <Bullet> (object))
+
+    {
+
+        Bullet * bullet = checkType <Bullet> (object);
+
+        x_ += bullet -> vx_ * 7;
+        y_ += bullet -> vy_ * 7;
+
+        bullet -> vx_ = -bullet -> vx_;
+        bullet -> vy_ = -bullet -> vy_;
+
+    }
+
+    else if (checkType <Tank> (object))
+
+    {
+
+        Tank * tank = checkType <Tank> (object);
+
+        tank -> addHealth (rnd (10, 20));
+
+        txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+        remove ();
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Food::remove ()
+
+{
+
+    txDeleteDC (image_);
+
+    manager_ -> removeObject (this);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Medkit::draw ()
+
+{
+
+    txTransparentBlt (txDC (), x_ - txGetExtentX (image_) / 2, y_ - txGetExtentY (image_) / 2, 0, 0, image_, 0, 0, RGB (255, 0, 255));
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Medkit::hit (GameObject * object)
+
+{
+
+    if (checkType <Bullet> (object))
+
+    {
+
+        Bullet * bullet = checkType <Bullet> (object);
+
+        x_ += bullet -> vx_ * 7;
+        y_ += bullet -> vy_ * 7;
+
+        bullet -> vx_ = -bullet -> vx_;
+        bullet -> vy_ = -bullet -> vy_;
+
+    }
+
+    else if (checkType <Tank> (object))
+
+    {
+
+        Tank * tank = checkType <Tank> (object);
+
+        tank -> addHealth (100);
+
+        txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+        remove ();
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Medkit::remove ()
+
+{
+
+    txDeleteDC (image_);
+
+    manager_ -> removeObject (this);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Wall::draw ()
+
+{
+
+    txTransparentBlt (txDC (), x_, y_, 0, 0, image_);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Wall::remove ()
+
+{
+
+    txDeleteDC (image_);
+
+    manager_ -> removeObject (this);
 
 }
 
@@ -1341,8 +1877,12 @@ void ObjectManager::drawObjects ()
 
 {
 
-    txSetFillColor (bkcolor_);
-    txClear ();
+    {
+
+        txSetFillColor (bkcolor_);
+        txClear ();
+
+    }
 
     for (int n = 0; n < OBJECTS_MAX; n++)
 
@@ -1451,7 +1991,13 @@ void ObjectManager::checkCollision ()
 
             if (!objects_[i]) continue;
 
-            if (collisionDetection (objects_[n], objects_[i])) objects_[n] -> hit (objects_[i]);
+            if (collisionDetection (objects_[n], objects_[i]))
+
+            {
+
+                objects_[n] -> hit (objects_[i]);
+
+            }
 
         }
 
@@ -1507,6 +2053,28 @@ int ObjectManager::removeObject (GameObject * object)
 
 //-----------------------------------------------------------------------------
 
+void ObjectManager::clearObjects ()
+
+{
+
+    for (int n = 0; n < OBJECTS_MAX; n++)
+
+    {
+
+        if (objects_[n])
+
+        {
+
+            objects_[n] -> remove ();
+
+        }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
 template <typename T>
 
 T * getObject (ObjectManager * manager)
@@ -1544,3 +2112,35 @@ T * checkType (GameObject * object)
     return nullptr;
 
 }
+
+//-----------------------------------------------------------------------------
+
+HDC CaptureScreen (int x, int y, int width, int height)
+
+{
+
+    int x1 = x + width, y1 = y + height;
+
+    HDC ScreenDC = GetDC (NULL);
+
+    HDC dc = txCreateCompatibleDC (width, height);
+
+    txBitBlt (dc, 0, 0, width, height, ScreenDC, x, y);
+
+    DeleteDC (ScreenDC);
+
+    return dc;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void drawFragment (int x, int y, HDC * image, int n, double width, double height, double alpha)
+
+{
+
+    txAlphaBlend (txDC (), x, y, width, height, *image, width * n, 0, alpha);
+
+}
+
+//-----------------------------------------------------------------------------
