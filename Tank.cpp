@@ -556,6 +556,8 @@ void drawFragment (int x, int y, HDC * image, int n, double width, double height
 
 double angle (double x0, double y0, double x1, double y1);
 
+void drawTransparentCircle (double x, double y, double r, COLORREF color, double alpha);
+
 //-----------------------------------------------------------------------------
 
 int main ()
@@ -920,6 +922,33 @@ void Tank::draw ()
     animation_.setFrame (frame);
 
     animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
+
+    int x = x_ - 20;
+    int y = y_ + 25;
+    int x1 = x + 40;
+    int y1 = y + 15;
+
+    txSetColor (TX_BLACK);
+    txSetFillColor (TX_BLACK);
+    txRectangle (x, y, x1, y1);
+
+    int width = 40.0 / 100.0 * health_;
+
+    int c = 255.0 / 100.0 * health_;
+
+    COLORREF color = RGB (255 - c, c, 0);
+
+    txSetColor (color);
+    txSetFillColor (color);
+    txRectangle (x + 1, y + 1, x + width - 1, y1 - 1);
+
+    char text[100] = "";
+
+    sprintf (text, "%d", health_);
+
+    txSetColor (RGB (c, 255 - c, 0));
+    txSelectFont ("Arial", 15);
+    txDrawText (x, y, x1, y1, text);
 
 }
 
@@ -2295,5 +2324,27 @@ double angle (double x0, double y0, double x1, double y1)
     if (dx > 0 && dy > 0) A += 360;
 
     return A;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void drawTransparentCircle (double x, double y, double r, COLORREF color, double alpha)
+
+{
+
+    HDC dc = txCreateDIBSection (wWidth, wHeight);
+
+    txSetFillColor (TX_TRANSPARENT, dc);
+    txClear (dc);
+
+    txSetColor (color, 0, dc);
+    txSetFillColor (color, dc);
+
+    txEllipse (x - r, y - r, x + r, y + r, dc);
+
+    txAlphaBlend (txDC (), 0, 0, 0, 0, dc, 0, 0, alpha);
+
+    txDeleteDC (dc);
 
 }

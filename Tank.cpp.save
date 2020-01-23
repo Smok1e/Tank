@@ -556,6 +556,8 @@ void drawFragment (int x, int y, HDC * image, int n, double width, double height
 
 double angle (double x0, double y0, double x1, double y1);
 
+void drawTransparentCircle (double r, COLORREF color, double alpha);
+
 //-----------------------------------------------------------------------------
 
 int main ()
@@ -722,6 +724,14 @@ int run (ObjectManager * manager)
                     txSelectFont ("Arial", 100);
 
                     txTextOut (wWidth / 2 - txGetTextExtentX (text) / 2, wHeight / 2 - txGetTextExtentY (text) / 2, text);
+                    
+                        for (int n = 0; n < OBJECTS_MAX; n++)
+                
+                {
+                
+                    drawTransparentCircle (manager -> objects_[n].x_, manager -> objects_[n].y_, objects_[n].r_, RGB (255, 0, 0), 0.5);
+                
+                }
 
                 }
 
@@ -913,11 +923,9 @@ void Tank::draw ()
 
 {
 
-    double A = angle (x_, y_, txMouseX (), txMouseY ());
+    double A = 360 - angle (x_, y_, txMouseX (), txMouseY ());
 
-    A = 360 / M_PI * 2  A;
-
-    int frame = 360 / animation_.frame_n_ * A;
+    int frame = animation_.frame_n_ / 360.0 * A;
 
     animation_.setFrame (frame);
 
@@ -2290,10 +2298,29 @@ double angle (double x0, double y0, double x1, double y1)
 
     double A = atan (-dy / dx);
 
-    if (dx < 0) A += M_PI;
+    A = A / M_PI * 180;
 
-    if (dx > 0 && dy > 0) A += M_PI * 2;
+    if (dx < 0) A += 180;
+
+    if (dx > 0 && dy > 0) A += 360;
 
     return A;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void drawTransparentCircle (double x, double y, double r, COLORREF color, double alpha)
+
+{
+
+    HDC dc = txCreateDIBSection (wWidth, wHeight);
+    
+    txSetColor (color, dc);
+    txSetFillColor (color, dc);
+                 
+    txCircle (x, y, r, dc);
+    
+    txAlphaBlend (txDC (), 0, 0, 0, 0, dc, 0, 0, alpha);
 
 }
