@@ -6,7 +6,7 @@
 const int wWidth = 800;
 const int wHeight = 800;
 
-const int OBJECTS_MAX = 300;
+const int OBJECTS_MAX = 1000;
 
 const int ENEMY_N = 5;
 
@@ -17,7 +17,7 @@ const int DAMAGE_MAX = 15;
 
 const int ENEMY_SHOOTING_FREQ = 200;
 
-const int FOOD_SPAWNING_FREQ = 2;
+const int FOOD_SPAWNING_FREQ = 4;
 
 const bool DEBUG_MODE = false;
 
@@ -598,7 +598,7 @@ int main ()
 
             {
 
-                switch (gameOver (manager.score_))
+                switch (gameOver (&manager))
 
                 {
 
@@ -728,6 +728,16 @@ int run (ObjectManager * manager)
         {
 
             manager -> addObject (new Enemy);
+
+            txSleep (100);
+
+        }
+
+        if (GetAsyncKeyState ('K'))
+
+        {
+
+            manager -> addObject (new Coin {floor (rnd (0, wWidth)), floor (rnd (0, wHeight))});
 
             txSleep (100);
 
@@ -1775,7 +1785,7 @@ int gameOver (ObjectManager * manager)
     double height = txGetExtentY (image);
 
     bool videolan = true;
-    
+
     int score = manager -> score_;
     int level = floor (score / 10) + 1;
 
@@ -1792,7 +1802,7 @@ int gameOver (ObjectManager * manager)
 
         txSleep (100);
 
-        HWND video = (HWND) txPlayVideo ("\a" "Resources\\Video\\Died.mp4", 0, 0.05, txWindow ());
+        HWND video = (HWND) txPlayVideo ("\a" "Resources\\Video\\Died.mp4", 0, 0.1, txWindow ());
 
         while (!GetAsyncKeyState (VK_ESCAPE))
 
@@ -1856,11 +1866,12 @@ int gameOver (ObjectManager * manager)
 
         txSelectFont ("Arial", 30);
         txTextOut (wWidth / 2 - txGetTextExtentX (scoreText) / 2, wHeight / 2 - txGetTextExtentY (scoreText) / 2 - 70, scoreText);
-        
+
         sprintf (scoreText, "Level: %d", level);
 
+        txSetColor (RGB (120, 120, 120));
         txSelectFont ("Arial", 25);
-        txTextOut (wWidth / 2 - txGetTextExtentX (scoreText) / 2, wHeight / 2 - txGetTextExtentY (scoreText) / 2 - 70, scoreText);
+        txTextOut (wWidth / 2 - txGetTextExtentX (scoreText) / 2, wHeight / 2 - txGetTextExtentY (scoreText) / 2 - 40, scoreText);
 
         int result = manageButtons (buttons);
 
