@@ -309,32 +309,6 @@ Enemy::Enemy (double x, double y, double vx, double vy, COLORREF color) :
 
 //-----------------------------------------------------------------------------
 
-struct Food : AbstractObject
-
-{
-
-    HDC image_;
-
-    Food (double x, double y);
-
-    virtual void draw () override;
-
-    virtual void hit (AbstractObject * object) override;
-
-    virtual void remove () override;
-
-};
-
-Food::Food (double x, double y) :
-
-    AbstractObject (x, y, 0, 0, 15, 0, true),
-
-    image_ (txLoadImage ("Resources\\Images\\Food.bmp"))
-
-{}
-
-//-----------------------------------------------------------------------------
-
 struct Bullet : AbstractObject
 
 {
@@ -430,11 +404,9 @@ EnemyBullet::EnemyBullet (double x, double y, double vx, double vy, ObjectManage
 
 //-----------------------------------------------------------------------------
 
-struct Medkit : AbstractObject
+struct Medkit : GameObject
 
 {
-
-    HDC image_;
 
     Medkit (double x, double y);
 
@@ -442,15 +414,31 @@ struct Medkit : AbstractObject
 
     virtual void hit (AbstractObject * object) override;
 
-    virtual void remove () override;
-
 };
 
 Medkit::Medkit (double x, double y) :
 
-    AbstractObject (x, y, 0, 0, 15, 0, true),
+    GameObject (txLoadImage ("Resources\\Images\\MedKit.bmp"), 1, x, y, 20)
 
-    image_ (txLoadImage ("Resources\\Images\\Medkit.bmp"))
+{}
+
+//-----------------------------------------------------------------------------
+
+struct Food : GameObject
+
+{
+
+    Food (double x, double y);
+
+    virtual void draw () override;
+
+    virtual void hit (AbstractObject * object) override;
+
+};
+
+Food::Food (double x, double y) :
+
+    GameObject (txLoadImage ("Resources\\Images\\Food.bmp"), 1, x, y, 20)
 
 {}
 
@@ -525,8 +513,6 @@ ObjectManager::ObjectManager () :
 //-----------------------------------------------------------------------------
 
 COLORREF addColor (COLORREF color, int r, int g, int b);
-
-void drawScore (int score);
 
 int gameOver (int score);
 
@@ -907,6 +893,8 @@ void GameObject::remove ()
 
     txDeleteDC (animation_.spritesheet_);
 
+    manager_ -> removeObject (this);
+
 }
 
 //-----------------------------------------------------------------------------
@@ -926,7 +914,7 @@ void Tank::draw ()
     int x = x_ - 20;
     int y = y_ + 25;
     int x1 = x + 40;
-    int y1 = y + 15;
+    int y1 = y + 13;
 
     txSetColor (TX_BLACK);
     txSetFillColor (TX_BLACK);
@@ -947,8 +935,23 @@ void Tank::draw ()
     sprintf (text, "%d", health_);
 
     txSetColor (RGB (c, 255 - c, 0));
-    txSelectFont ("Arial", 15);
+    txSelectFont ("Arial", y1 - y);
     txDrawText (x, y, x1, y1, text);
+
+    y  = y1;
+    y1 = y + 5;
+
+    color = RGB (0, 0, 255);
+
+    txSetColor (TX_BLACK);
+    txSetFillColor (TX_BLACK);
+    txRectangle (x, y, x1, y1);
+
+    width = 40.0 / 300.0 * reloading_;
+
+    txSetColor (color);
+    txSetFillColor (color);
+    txRectangle (x + 1, y + 1, x + width - 1, y1 - 1);
 
 }
 
@@ -976,119 +979,7 @@ void Tank::control ()
 
 {
 
-    /*
-
-    if (GetAsyncKeyState ('W'))
-
-    {
-
-        if (vy_ > -5)
-
-        {
-
-            vy_ -= 0.1;
-
-        }
-
-    }
-
-    if (GetAsyncKeyState ('A'))
-
-    {
-
-        if (vx_ > -5)
-
-        {
-
-            vx_ -= 0.1;
-
-        }
-
-    }
-
-    if (GetAsyncKeyState ('S'))
-
-    {
-
-        if (vy_ < 5)
-
-        {
-
-            vy_ += 0.1;
-
-        }
-
-    }
-
-    if (GetAsyncKeyState ('D'))
-
-    {
-
-        if (vx_ < 5)
-
-        {
-
-            vx_ += 0.1;
-
-        }
-
-    }
-
-    if (!GetAsyncKeyState ('W') && !GetAsyncKeyState ('A') && !GetAsyncKeyState ('S') && !GetAsyncKeyState ('D'))
-
-    {
-
-        if (vy_ < 0)
-
-        {
-
-            vy_ += 0.1;
-
-        }
-
-        else if (vy_ > 0)
-
-        {
-
-            vy_ -= 0.1;
-
-        }
-
-        if (vy_ > 0 && vy_ < 0.1 || vy_ < 0 && vy_ > -0.1)
-
-        {
-
-            vy_ = 0;
-
-        }
-
-        if (vx_ < 0)
-
-        {
-
-            vx_ += 0.1;
-
-        }
-
-        else if (vx_ > 0)
-
-        {
-
-            vx_ -= 0.1;
-
-        }
-
-        if (vx_ > 0 && vx_ < 0.1 || vx_ < 0 && vx_ > -0.1)
-
-        {
-
-            vx_ = 0;
-
-        }
-
-    }
-
-    */
+    int level = floor (manager_ -> score_ / 10);
 
     if (txMouseButtons () == 1 || GetAsyncKeyState (VK_SPACE))
 
@@ -1101,7 +992,7 @@ void Tank::control ()
             int amount1 = manager_ -> objectsAmount ();
 
             Bullet * bullet = new Bullet {x_ + gun_vx * gun_length, y_ + gun_vy * gun_length, gun_vx + rnd (-0.1, 0.1),
-                                          gun_vy + rnd (-0.1, 0.1), TX_WHITE, rnd (DAMAGE_MIN, DAMAGE_MAX), rnd (3, 4), rnd (-5, 5), true, manager_};
+                                          gun_vy + rnd (-0.1, 0.1), TX_WHITE, rnd (DAMAGE_MIN, DAMAGE_MAX), rnd (3, 4) + level / 2.0, rnd (-5, 5), true, manager_};
 
             int result = manager_ -> addObject (bullet);
 
@@ -1127,7 +1018,7 @@ void Tank::control ()
 
     {
 
-        reloading_ += 50;
+        reloading_ += 10 * (level + 1);
 
     }
 
@@ -1680,7 +1571,8 @@ void Food::draw ()
 
 {
 
-    txTransparentBlt (txDC (), x_ - txGetExtentX (image_) / 2, y_ - txGetExtentY (image_) / 2, 0, 0, image_, 0, 0, TX_WHITE);
+    animation_.setFrame (0);
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
 
 }
 
@@ -1722,23 +1614,12 @@ void Food::hit (AbstractObject * object)
 
 //-----------------------------------------------------------------------------
 
-void Food::remove ()
-
-{
-
-    txDeleteDC (image_);
-
-    manager_ -> removeObject (this);
-
-}
-
-//-----------------------------------------------------------------------------
-
 void Medkit::draw ()
 
 {
 
-    txTransparentBlt (txDC (), x_ - txGetExtentX (image_) / 2, y_ - txGetExtentY (image_) / 2, 0, 0, image_, 0, 0, RGB (255, 0, 255));
+    animation_.setFrame (0);
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
 
 }
 
@@ -1780,18 +1661,6 @@ void Medkit::hit (AbstractObject * object)
 
 //-----------------------------------------------------------------------------
 
-void Medkit::remove ()
-
-{
-
-    txDeleteDC (image_);
-
-    manager_ -> removeObject (this);
-
-}
-
-//-----------------------------------------------------------------------------
-
 void Wall::draw ()
 
 {
@@ -1824,23 +1693,6 @@ COLORREF addColor (COLORREF color, int r, int g, int b)
 
 //-----------------------------------------------------------------------------
 
-void drawScore (int score)
-
-{
-
-    txSetColor (TX_WHITE);
-    txSelectFont ("Arial", 30);
-
-    char text[100] = "";
-
-    sprintf (text, "Score: %d", score);
-
-    txTextOut (5, 5, text);
-
-}
-
-//-----------------------------------------------------------------------------
-
 int gameOver (int score)
 
 {
@@ -1854,19 +1706,65 @@ int gameOver (int score)
     };
 
     HDC image = txLoadImage ("Resources\\Images\\Die.bmp");
+
     double width = txGetExtentX (image);
     double height = txGetExtentY (image);
 
-    for (double alpha = 0; alpha < 1; alpha += 0.01)
+    bool videolan = true;
+
+    if (txPlayVideo ("") <= 0) videolan = false;
+
+    if (videolan)
 
     {
+
+        int time = GetTickCount();
 
         txSetFillColor (TX_BLACK);
         txClear ();
 
-        txAlphaBlend (txDC (), wWidth / 2 - width / 2, wHeight / 2 - height / 2, 0, 0, image, 0, 0, alpha);
+        txSleep (100);
 
-        txSleep (5);
+        HWND video = (HWND) txPlayVideo ("\a" "Resources\\Video\\Died.mp4", 0, 0.05, txWindow ());
+
+        while (!GetAsyncKeyState (VK_ESCAPE))
+
+        {
+
+            if (GetTickCount() - time > 10000)
+
+            {
+
+                break;
+
+            }
+
+            txSleep (10);
+
+        }
+
+        txSleep (100);
+
+        txDestroyWindow (video);
+
+    }
+
+    else
+
+    {
+
+        for (double alpha = 0; alpha < 1; alpha += 0.01)
+
+        {
+
+            txSetFillColor (TX_BLACK);
+            txClear ();
+
+            txAlphaBlend (txDC (), wWidth / 2 - width / 2, wHeight / 2 - height / 2, 0, 0, image, 0, 0, alpha);
+
+            txSleep (5);
+
+        }
 
     }
 
@@ -1874,10 +1772,10 @@ int gameOver (int score)
 
     {
 
-        txSetFillColor (TX_BLACK);
+        txSetFillColor (RGB (45, 45, 45));
         txClear ();
 
-        txAlphaBlend (txDC (), wWidth / 2 - width / 2, wHeight / 2 - height / 2, 0, 0, image);
+        if (!videolan) txAlphaBlend (txDC (), wWidth / 2 - width / 2, wHeight / 2 - height / 2, 0, 0, image, 0, 0, 1);
 
         const char * text = "Game over";
 
@@ -2052,7 +1950,23 @@ void ObjectManager::drawObjects ()
 
     }
 
-    drawScore (score_);
+    txSetColor (TX_WHITE);
+    txSelectFont ("Arial", 30);
+
+    char text[100] = "";
+
+    sprintf (text, "Score: %d", score_);
+
+    txTextOut (5, 5, text);
+
+    txSetColor (RGB (120, 120, 120));
+    txSelectFont ("Arial", 25);
+
+    int level = floor (score_ / 10) + 1;
+
+    sprintf (text, "Level: %d", level);
+
+    txTextOut (5, 37, text);
 
 }
 

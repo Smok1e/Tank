@@ -8147,3 +8147,642 @@ Run file:	W:\Tank\Tank.exe
 Directory:	W:\Tank
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FC04. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x30FC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void drawScore(int) at W:\Tank\Tank.cpp (1838):
+
+   1836:     sprintf (text, "Score: %d", score);
+   1837: 
+=> 1838:     txTextOut (5, 5, text);
+   1839: 
+   1840: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 20:46:41, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 20:50:50
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FC04. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x30FC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 20:46:41, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 20:50:50
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FC04. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x1968 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void drawScore(int) at W:\Tank\Tank.cpp (1838):
+
+   1836:     sprintf (text, "Score: %d", score);
+   1837: 
+=> 1838:     txTextOut (5, 5, text);
+   1839: 
+   1840: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 20:46:41, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 21:05:11
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FC04. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x1968 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 20:46:41, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 21:05:12
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FC04. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x2D80 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void drawScore(int) at W:\Tank\Tank.cpp (1838):
+
+   1836:     sprintf (text, "Score: %d", score);
+   1837: 
+=> 1838:     txTextOut (5, 5, text);
+   1839: 
+   1840: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 20:46:41, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 21:08:52
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FC04. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x2D80 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 20:46:41, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 21:08:52
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe, файл: W:\Tank\Tank.cpp, строка: 864, функция: void Animation::setFrame(int),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "frame < frame_n_".
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x1ECC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 22:59:19, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 22:59:25
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe, файл: W:\Tank\Tank.cpp, строка: 864, функция: void Animation::setFrame(int),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "frame < frame_n_".
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x24CC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 22:59:19, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 22:59:41
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FBCE. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x94C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void drawScore(int) at W:\Tank\Tank.cpp (1806):
+
+   1804:     sprintf (text, "Score: %d", score);
+   1805: 
+=> 1806:     txTextOut (5, 5, text);
+   1807: 
+   1808: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 23:10:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 23:10:45
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FBCE. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x94C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 23:10:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 23:10:44
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FBCE. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x2BD0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void drawScore(int) at W:\Tank\Tank.cpp (1806):
+
+   1804:     sprintf (text, "Score: %d", score);
+   1805: 
+=> 1806:     txTextOut (5, 5, text);
+   1807: 
+   1808: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 23:10:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 23:11:24
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FBCE. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x2BD0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 23:10:38, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 23:11:24
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FBCE. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x2B68 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void GameObject::remove() at W:\Tank\Tank.cpp (896):
+
+    894: {
+    895: 
+=>  896:     txDeleteDC (animation_.spritesheet_);
+    897: 
+    898:     manager_ -> removeObject (this);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 23:12:19, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 23:18:17
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Tank.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x000000000042FBCE. Попытка прочесть данные по адресу 0x0000000000000018. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300], Instance: 0x000000000057B8D0 (64-bit), Flags: CMdRE0, Thread: 0x2B68 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2020-01-22 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Jan 23 2020 23:12:19, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Jan 23 2020 23:18:16
+
+Run file:	W:\Tank\Tank.exe
+Directory:	W:\Tank
+
+--------------------------------------------------
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
+п»ї-- logger module started --
+dummy: using the dummy interface module...
+avcodec: Using D3D11VA (NVIDIA GeForce GTX 1070 Ti, vendor 10de(NVIDIA), device 1b82, revision a1) for hardware decoding
+idummy: command `quit'
+main: end of playlist, exiting
+direct3d11 error: SetThumbNailClip failed: 0x800706f4
+-- logger module stopped --
