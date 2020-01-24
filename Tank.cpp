@@ -6,7 +6,7 @@
 const int wWidth = 800;
 const int wHeight = 800;
 
-const int OBJECTS_MAX = 300;
+const int OBJECTS_MAX = 1000;
 
 const int ENEMY_N = 5;
 
@@ -418,7 +418,7 @@ struct Medkit : GameObject
 
 Medkit::Medkit (double x, double y) :
 
-    GameObject (txLoadImage ("Resources\\Images\\MedKit.bmp"), 1, x, y, 20)
+    GameObject (txLoadImage ("Resources\\Images\\MedKit.bmp"), 1, x, y, 15)
 
 {}
 
@@ -438,31 +438,31 @@ struct Food : GameObject
 
 Food::Food (double x, double y) :
 
-    GameObject (txLoadImage ("Resources\\Images\\Food.bmp"), 1, x, y, 20)
+    GameObject (txLoadImage ("Resources\\Images\\Food.bmp"), 1, x, y, 15)
 
 {}
 
 //-----------------------------------------------------------------------------
 
-struct Wall : AbstractObject
+struct Coin : GameObject
 
 {
 
-    HDC image_;
+    int counter_;
 
-    Wall ();
+    Coin (double x, double y);
 
-    virtual void draw () override;
+    virtual void draw ();
 
-    virtual void remove () override;
+    virtual void hit (AbstractObject * object);
 
 };
 
-Wall::Wall () :
+Coin::Coin (double x, double y) :
 
-    AbstractObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 50, 0, true),
+    GameObject (txLoadImage ("Resources\\Images\\Coin.bmp"), 6, x, y, 15),
 
-    image_ (txLoadImage ("Resources\\Images\\Wall_1.bmp"))
+    counter_ (0)
 
 {}
 
@@ -514,7 +514,7 @@ ObjectManager::ObjectManager () :
 
 COLORREF addColor (COLORREF color, int r, int g, int b);
 
-int gameOver (int score);
+int gameOver (ObjectManager * manager);
 
 double sqrDistance (double x, double y, double x1, double y1);
 
@@ -598,7 +598,7 @@ int main ()
 
             {
 
-                switch (gameOver (manager.score_))
+                switch (gameOver (&manager))
 
                 {
 
@@ -728,6 +728,16 @@ int run (ObjectManager * manager)
         {
 
             manager -> addObject (new Enemy);
+
+            txSleep (100);
+
+        }
+
+        if (GetAsyncKeyState ('K'))
+
+        {
+
+            manager -> addObject (new Coin {floor (rnd (0, wWidth)), floor (rnd (0, wHeight))});
 
             txSleep (100);
 
@@ -1128,6 +1138,20 @@ void Tank::hit (AbstractObject * object)
 
     }
 
+    else if (checkType <Coin> (object))
+
+    {
+
+        Coin * coin = checkType <Coin> (object);
+
+        manager_ -> score_ += 10;
+
+        txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+        coin -> remove ();
+
+    }
+
     else if (checkType <Bullet> (object))
 
     {
@@ -1318,7 +1342,21 @@ void Enemy::control ()
 
         {
 
-            if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1) manager_ -> addObject (new Medkit {x_, y_});
+            if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1)
+
+            {
+
+                if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1)
+
+                {
+
+                    manager_ -> addObject (new Coin {x_, y_});
+
+                }
+
+                else manager_ -> addObject (new Medkit {x_, y_});
+
+            }
 
             else manager_ -> addObject (new Food {x_, y_});
 
@@ -1661,23 +1699,59 @@ void Medkit::hit (AbstractObject * object)
 
 //-----------------------------------------------------------------------------
 
-void Wall::draw ()
+void Coin::draw ()
 
 {
 
-    txTransparentBlt (txDC (), x_, y_, 0, 0, image_);
+    animation_.draw (x_ - animation_.width_, y_ - animation_.height_);
+
+    counter_ ++;
+
+    if (counter_ > 10)
+
+    {
+
+        animation_.advanceFrame ();
+
+        counter_ = 0;
+
+    }
 
 }
 
 //-----------------------------------------------------------------------------
 
-void Wall::remove ()
+void Coin::hit (AbstractObject * object)
 
 {
 
-    txDeleteDC (image_);
+    if (checkType <Bullet> (object))
 
-    manager_ -> removeObject (this);
+    {
+
+        Bullet * bullet = checkType <Bullet> (object);
+
+        x_ += bullet -> vx_ * 7;
+        y_ += bullet -> vy_ * 7;
+
+        bullet -> vx_ = -bullet -> vx_;
+        bullet -> vy_ = -bullet -> vy_;
+
+    }
+
+    else if (checkType <Tank> (object))
+
+    {
+
+        Tank * tank = checkType <Tank> (object);
+
+        manager_ -> score_ += 10;
+
+        txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+        remove ();
+
+    }
 
 }
 
@@ -1693,7 +1767,7 @@ COLORREF addColor (COLORREF color, int r, int g, int b)
 
 //-----------------------------------------------------------------------------
 
-int gameOver (int score)
+int gameOver (ObjectManager * manager)
 
 {
 
@@ -1712,6 +1786,9 @@ int gameOver (int score)
 
     bool videolan = true;
 
+    int score = manager -> score_;
+    int level = floor (score / 10) + 1;
+
     if (txPlayVideo ("") <= 0) videolan = false;
 
     if (videolan)
@@ -1725,13 +1802,13 @@ int gameOver (int score)
 
         txSleep (100);
 
-        HWND video = (HWND) txPlayVideo ("\a" "Resources\\Video\\Died.mp4", 0, 0.05, txWindow ());
+        HWND video = (HWND) txPlayVideo ("\a" "Resources\\Video\\Died.mp4", 0, 0.1, txWindow ());
 
         while (!GetAsyncKeyState (VK_ESCAPE))
 
         {
 
-            if (GetTickCount() - time > 10000)
+            if (GetTickCount() - time > 8000)
 
             {
 
@@ -1788,7 +1865,13 @@ int gameOver (int score)
         sprintf (scoreText, "Score: %d", score);
 
         txSelectFont ("Arial", 30);
-        txTextOut (wWidth / 2 - txGetTextExtentX (scoreText)/ 2, wHeight / 2 - txGetTextExtentY (scoreText) / 2 - 70, scoreText);
+        txTextOut (wWidth / 2 - txGetTextExtentX (scoreText) / 2, wHeight / 2 - txGetTextExtentY (scoreText) / 2 - 70, scoreText);
+
+        sprintf (scoreText, "Level: %d", level);
+
+        txSetColor (RGB (120, 120, 120));
+        txSelectFont ("Arial", 25);
+        txTextOut (wWidth / 2 - txGetTextExtentX (scoreText) / 2, wHeight / 2 - txGetTextExtentY (scoreText) / 2 - 40, scoreText);
 
         int result = manageButtons (buttons);
 
