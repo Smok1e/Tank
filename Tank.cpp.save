@@ -160,6 +160,8 @@ struct Animation
 
     void draw (double x, double y);
 
+    void draw (double x, double y, double alpha);
+
     void setFrame (int frame);
 
     void advanceFrame ();
@@ -280,8 +282,6 @@ struct Enemy : AbstractObject
     virtual void hit (AbstractObject * object) override;
 
     void Reset ();
-
-    void setPosition (int x, int y);
 
 };
 
@@ -475,20 +475,20 @@ struct LevelUpText : GameObject
 {
 
     double alpha_;
-    
+
     LevelUpText ();
-    
+
     virtual void draw ();
-    
+
     virtual void move ();
 
 };
 
-LevelUpText::LevelUpText ()
+LevelUpText::LevelUpText () :
 
-    GameObject ("Resources\\Images\\LevelUpText.bmp", 1, 0, 0, 0);
-    
-    alpha_ (1);
+    GameObject (txLoadImage ("Resources\\Images\\LevelUpText.bmp"), 1, wWidth / 2, wHeight / 2, 0),
+
+    alpha_ (1)
 
 {}
 
@@ -676,6 +676,8 @@ int run (ObjectManager * manager)
 
             const int delay = 50;
 
+            bool highlight;
+
             int time = 0;
 
             const char * text = "[Delete]";
@@ -736,7 +738,43 @@ int run (ObjectManager * manager)
 
                 }
 
+                if (GetAsyncKeyState (VK_TAB))
+
+                {
+
+                    if (highlight) highlight = false;
+                    else highlight = true;
+
+                    txSleep (100);
+
+                }
+
                 manager -> drawObjects ();
+
+                if (highlight)
+
+                {
+
+                    for (int n = 0; n < OBJECTS_MAX; n++)
+
+                    {
+
+                        if (!manager -> objects_[n]) continue;
+
+                        AbstractObject * object = manager -> objects_[n];
+
+                        double x = object -> x_, y = object -> y_, r = object -> r_;
+
+                        txSetColor (TX_WHITE, 2);
+                        txSetFillColor (TX_TRANSPARENT);
+
+                        txCircle (x, y, r);
+                        txLine (x - r, y, x + r, y);
+                        txLine (x, y - r, x, y + r);
+
+                    }
+
+                }
 
                 if (time < delay)
 
@@ -893,8 +931,8 @@ void AbstractObject::setPosition (double x, double y)
 
 {
 
-    if (x - r_ >= 0 && x + r_ < wWidth && y - r_ >= 0 && y_ + r_ < wHeight)
-
+    if (x - r_ >= 0 && x + r_ < wWidth && y - r_ >= 0 && y + r_ < wHeight)
+                                             d
     {
 
         x_ = x;
@@ -911,6 +949,16 @@ void Animation::draw (double x, double y)
 {
 
     txAlphaBlend (txDC (), x, y, width_, height_, spritesheet_, width_ * frame_, 0, 1);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Animation::draw (double x, double y, double alpha)
+
+{
+
+    txAlphaBlend (txDC (), x, y, width_, height_, spritesheet_, width_ * frame_, 0, alpha);
 
 }
 
@@ -1291,22 +1339,6 @@ void Enemy::move ()
     }
 
 }
-//-----------------------------------------------------------------------------
-
-void Enemy::setPosition (int x, int y)
-
-{
-
-    if (x <= wWidth - 20 && x > 300 + 20 && y <= wHeight - 40 && y > 20)
-
-    {
-
-        x_ = x;
-        y_ = y;
-
-    }
-
-}
 
 //-----------------------------------------------------------------------------
 
@@ -1341,6 +1373,8 @@ void Enemy::control ()
     {
 
         manager_ -> score_ ++;
+
+        if (manager_ -> score_ % 10 == 0) manager_ -> addObject (new LevelUpText);
 
         if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1)
 
@@ -1459,68 +1493,20 @@ void Bullet::hit (AbstractObject * object)
 
 {
 
-    if (checkType <Tank> (object))
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { TankBulletHit (tank, this); return; }
 
-    {
+    Enemy * enemy = checkType <Enemy> (object);
+    if (enemy) { EnemyBulletHit (enemy, this); return; }
 
-        Tank * tank = checkType <Tank> (object);
+    Food * food = checkType <Food> (object);
+    if (food) { FoodBulletHit (food, this); return; }
 
-        tank -> addHealth(-rnd (2, 6));
+    Medkit * medkit = checkType <Medkit> (object);
+    if (medkit) {MedkitBulletHit (medkit, this); return; }
 
-        remove ();
-
-    }
-
-    else if (checkType <Enemy> (object))
-
-    {
-
-        Enemy * enemy = checkType <Enemy> (object);
-
-        enemy -> health_ -= damage_;
-
-        enemy -> x_ += vx_ * 7;
-        enemy -> y_ += vy_ * 7;
-
-        if (enemy -> health_ <= 0)
-
-        {
-
-            manager_ -> score_ ++;
-
-        }
-
-        remove ();
-
-    }
-
-    else if (checkType <Food> (object))
-
-    {
-
-        Food * food = checkType <Food> (object);
-
-        food -> x_ += vx_ * 7;
-        food -> y_ += vy_ * 7;
-
-        vx_ = -vx_;
-        vy_ = -vy_;
-
-    }
-
-    else if (checkType <Medkit> (object))
-
-    {
-
-        Medkit * medkit = checkType <Medkit> (object);
-
-        medkit -> x_ += vx_ * 7;
-        medkit -> y_ += vy_ * 7;
-
-        vx_ = -vx_;
-        vy_ = -vy_;
-
-    }
+    Coin * coin = checkType <Coin> (object);
+    if (coin) { CoinBulletHit (coin, this); return; }
 
 }
 
@@ -1610,7 +1596,7 @@ void Coin::draw ()
 
 {
 
-    animation_.draw (x_ - animation_.width_, y_ - animation_.height_);
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
 
     counter_ ++;
 
@@ -1637,6 +1623,29 @@ void Coin::hit (AbstractObject * object)
 
     Tank * tank = checkType <Tank> (object);
     if (tank) { TankCoinHit (tank, this); return; }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void LevelUpText::draw ()
+
+{
+
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2, alpha_);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void LevelUpText::move ()
+
+{
+
+    alpha_ -= 0.01;
+    y_ -= 0.5;
+
+    if (alpha_ <= 0) remove ();
 
 }
 
@@ -2161,6 +2170,8 @@ void TankCoinHit (Tank * tank, Coin * coin)
     tank -> addHealth (rnd (20, 30));
 
     tank -> manager_ -> score_ += 10;
+
+    if (tank -> manager_ -> score_ % 10 == 0) tank -> manager_ -> addObject (new LevelUpText);
 
     coin -> remove ();
 

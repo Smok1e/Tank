@@ -19,8 +19,6 @@ const int ENEMY_SHOOTING_FREQ = 200;
 
 const int FOOD_SPAWNING_FREQ = 4;
 
-const bool DEBUG_MODE = false;
-
 const double EPSILON = 0.1;
 
 //-----------------------------------------------------------------------------
@@ -282,8 +280,6 @@ struct Enemy : AbstractObject
     virtual void hit (AbstractObject * object) override;
 
     void Reset ();
-
-    void setPosition (int x, int y);
 
 };
 
@@ -588,18 +584,6 @@ int main ()
 
 {
 
-    if (DEBUG_MODE)
-
-    {
-
-        _txConsoleMode = SW_SHOW;
-
-        SetConsoleTitle ("Debug");
-
-        printf ("Debug console included.\n");
-
-    }
-
     txCreateWindow (wWidth, wHeight);
 
     while (true)
@@ -678,6 +662,8 @@ int run (ObjectManager * manager)
 
             const int delay = 50;
 
+            bool highlight;
+
             int time = 0;
 
             const char * text = "[Delete]";
@@ -738,7 +724,43 @@ int run (ObjectManager * manager)
 
                 }
 
+                if (GetAsyncKeyState (VK_TAB))
+
+                {
+
+                    if (highlight) highlight = false;
+                    else highlight = true;
+
+                    txSleep (100);
+
+                }
+
                 manager -> drawObjects ();
+
+                if (highlight)
+
+                {
+
+                    for (int n = 0; n < OBJECTS_MAX; n++)
+
+                    {
+
+                        if (!manager -> objects_[n]) continue;
+
+                        AbstractObject * object = manager -> objects_[n];
+
+                        double x = object -> x_, y = object -> y_, r = object -> r_;
+
+                        txSetColor (TX_WHITE, 2);
+                        txSetFillColor (TX_TRANSPARENT);
+
+                        txCircle (x, y, r);
+                        txLine (x - r, y, x + r, y);
+                        txLine (x, y - r, x, y + r);
+
+                    }
+
+                }
 
                 if (time < delay)
 
@@ -895,7 +917,7 @@ void AbstractObject::setPosition (double x, double y)
 
 {
 
-    if (x - r_ >= 0 && x + r_ < wWidth && y - r_ >= 0 && y_ + r_ < wHeight)
+    if (x - r_ >= 0 && x + r_ < wWidth && y - r_ >= 0 && y + r_ < wHeight)
 
     {
 
@@ -1303,22 +1325,6 @@ void Enemy::move ()
     }
 
 }
-//-----------------------------------------------------------------------------
-
-void Enemy::setPosition (int x, int y)
-
-{
-
-    if (x <= wWidth - 20 && x > 300 + 20 && y <= wHeight - 40 && y > 20)
-
-    {
-
-        x_ = x;
-        y_ = y;
-
-    }
-
-}
 
 //-----------------------------------------------------------------------------
 
@@ -1485,6 +1491,9 @@ void Bullet::hit (AbstractObject * object)
     Medkit * medkit = checkType <Medkit> (object);
     if (medkit) {MedkitBulletHit (medkit, this); return; }
 
+    Coin * coin = checkType <Coin> (object);
+    if (coin) { CoinBulletHit (coin, this); return; }
+
 }
 
 //-----------------------------------------------------------------------------
@@ -1573,7 +1582,7 @@ void Coin::draw ()
 
 {
 
-    animation_.draw (x_ - animation_.width_, y_ - animation_.height_);
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
 
     counter_ ++;
 
@@ -2148,7 +2157,7 @@ void TankCoinHit (Tank * tank, Coin * coin)
 
     tank -> manager_ -> score_ += 10;
 
-    if (tank -> manager_ -> score_ % 10 == 0) tank -> manager_ -> addObject (new LevelUpText);
+    tank -> manager_ -> addObject (new LevelUpText);
 
     coin -> remove ();
 
