@@ -96,6 +96,8 @@ struct AbstractObject
 
     virtual void remove ();
 
+    virtual void setPosition (double x, double y);
+
 };
 
 AbstractObject::AbstractObject () :
@@ -157,6 +159,8 @@ struct Animation
     Animation (HDC spritesheet, int frame_n_);
 
     void draw (double x, double y);
+
+    void draw (double x, double y, double alpha);
 
     void setFrame (int frame);
 
@@ -468,6 +472,30 @@ Coin::Coin (double x, double y) :
 
 //-----------------------------------------------------------------------------
 
+struct LevelUpText : GameObject
+
+{
+
+    double alpha_;
+
+    LevelUpText ();
+
+    virtual void draw ();
+
+    virtual void move ();
+
+};
+
+LevelUpText::LevelUpText () :
+
+    GameObject (txLoadImage ("Resources\\Images\\LevelUpText.bmp"), 1, wWidth / 2, wHeight / 2, 0),
+
+    alpha_ (1)
+
+{}
+
+//-----------------------------------------------------------------------------
+
 struct ObjectManager
 
 {
@@ -479,8 +507,6 @@ struct ObjectManager
     int score_;
 
     ObjectManager ();
-
-    ObjectManager (HDC backgroundImage);
 
     void drawObjects ();
 
@@ -512,15 +538,9 @@ ObjectManager::ObjectManager () :
 
 //-----------------------------------------------------------------------------
 
-COLORREF addColor (COLORREF color, int r, int g, int b);
-
 int gameOver (ObjectManager * manager);
 
 double sqrDistance (double x, double y, double x1, double y1);
-
-void info (const char * text);
-
-void title (int time);
 
 bool collisionDetection (const AbstractObject * obj1, const AbstractObject * obj2);
 
@@ -536,13 +556,31 @@ template <typename T>
 
 T * checkType (AbstractObject * object);
 
-HDC CaptureScreen (int x, int y, int width, int height);
-
-void drawFragment (int x, int y, HDC * image, int n, double width, double height, double alpha);
-
 double angle (double x0, double y0, double x1, double y1);
 
-void drawTransparentCircle (double x, double y, double r, COLORREF color, double alpha);
+//-----------------------------------------------------------------------------
+
+void TankBulletHit (Tank * tank, Bullet * bullet);
+
+void TankEnemyBulletHit (Tank * tank, EnemyBullet * enemybullet);
+
+void TankFoodHit (Tank * tank, Food * food);
+
+void TankMedkitHit (Tank * tank, Medkit * medkit);
+
+void TankCoinHit (Tank * tank, Coin * coin);
+
+//-----------------------------------------------------------------------------
+
+void EnemyBulletHit (Enemy * enemy, Bullet * bullet);
+
+//-----------------------------------------------------------------------------
+
+void FoodBulletHit (Food * food, Bullet * bullet);
+
+void MedkitBulletHit (Medkit * medkit, Bullet * bullet);
+
+void CoinBulletHit (Coin * coin, Bullet * bullet);
 
 //-----------------------------------------------------------------------------
 
@@ -853,11 +891,38 @@ void AbstractObject::remove ()
 
 //-----------------------------------------------------------------------------
 
+void AbstractObject::setPosition (double x, double y)
+
+{
+
+    if (x - r_ >= 0 && x + r_ < wWidth && y - r_ >= 0 && y_ + r_ < wHeight)
+
+    {
+
+        x_ = x;
+        y_ = y;
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
 void Animation::draw (double x, double y)
 
 {
 
     txAlphaBlend (txDC (), x, y, width_, height_, spritesheet_, width_ * frame_, 0, 1);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Animation::draw (double x, double y, double alpha)
+
+{
+
+    txAlphaBlend (txDC (), x, y, width_, height_, spritesheet_, width_ * frame_, 0, alpha);
 
 }
 
@@ -1098,71 +1163,20 @@ void Tank::hit (AbstractObject * object)
 
 {
 
-    if (checkType <EnemyBullet> (object))
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { TankBulletHit (this, bullet); return; }
 
-    {
+    EnemyBullet * enemybullet = checkType <EnemyBullet> (object);
+    if (enemybullet) { TankEnemyBulletHit (this, enemybullet); return; }
 
-        EnemyBullet * bullet = checkType <EnemyBullet> (object);
+    Food * food = checkType <Food> (object);
+    if (food) { TankFoodHit (this, food); return; }
 
-        addHealth (-25);
+    Medkit * medkit = checkType <Medkit> (object);
+    if (medkit) { TankMedkitHit (this, medkit); return; }
 
-        bullet -> remove ();
-
-    }
-
-    else if (checkType <Food> (object))
-
-    {
-
-        Food * food = checkType <Food> (object);
-
-        addHealth (rnd (10, 20));
-
-        txPlaySound ("Resources\\Sound\\Food_Take.wav");
-
-        food -> remove ();
-
-    }
-
-    else if (checkType <Medkit> (object))
-
-    {
-
-        Medkit * medkit = checkType <Medkit> (object);
-
-        addHealth (100);
-
-        txPlaySound ("Resources\\Sound\\Food_Take.wav");
-
-        medkit -> remove ();
-
-    }
-
-    else if (checkType <Coin> (object))
-
-    {
-
-        Coin * coin = checkType <Coin> (object);
-
-        manager_ -> score_ += 10;
-
-        txPlaySound ("Resources\\Sound\\Food_Take.wav");
-
-        coin -> remove ();
-
-    }
-
-    else if (checkType <Bullet> (object))
-
-    {
-
-        Bullet * bullet = checkType <Bullet> (object);
-
-        addHealth(-rnd (2, 6));
-
-        bullet -> remove ();
-
-    }
+    Coin * coin = checkType <Coin> (object);
+    if (coin) { TankCoinHit (this, coin); return; }
 
 }
 
@@ -1338,6 +1352,10 @@ void Enemy::control ()
 
     {
 
+        manager_ -> score_ ++;
+
+        if (manager_ -> score_ % 10 == 0) manager_ -> addObject (new LevelUpText);
+
         if (floor (rnd (1, FOOD_SPAWNING_FREQ)) == 1)
 
         {
@@ -1389,40 +1407,8 @@ void Enemy::hit (AbstractObject * object)
 
 {
 
-    if (checkType <Bullet> (object))
-
-    {
-
-        Bullet * bullet = checkType <Bullet> (object);
-
-        health_ -= bullet -> damage_;
-
-        x_ += bullet -> vx_ * 7;
-        y_ += bullet -> vy_ * 7;
-
-        if (health_ <= 0)
-
-        {
-
-            manager_ -> score_ ++;
-
-        }
-
-        bullet -> remove ();
-
-    }
-
-    /*else if (checkType <EnemyBullet> (object))
-
-    {
-
-        EnemyBullet * bullet = checkType <EnemyBullet> (object);
-
-        health_ -= 25;
-
-        bullet -> remove ();
-
-    }*/
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { EnemyBulletHit (this, bullet); }
 
 }
 
@@ -1487,68 +1473,17 @@ void Bullet::hit (AbstractObject * object)
 
 {
 
-    if (checkType <Tank> (object))
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { TankBulletHit (tank, this); return; }
 
-    {
+    Enemy * enemy = checkType <Enemy> (object);
+    if (enemy) { EnemyBulletHit (enemy, this); return; }
 
-        Tank * tank = checkType <Tank> (object);
+    Food * food = checkType <Food> (object);
+    if (food) { FoodBulletHit (food, this); return; }
 
-        tank -> addHealth(-rnd (2, 6));
-
-        remove ();
-
-    }
-
-    else if (checkType <Enemy> (object))
-
-    {
-
-        Enemy * enemy = checkType <Enemy> (object);
-
-        enemy -> health_ -= damage_;
-
-        enemy -> x_ += vx_ * 7;
-        enemy -> y_ += vy_ * 7;
-
-        if (enemy -> health_ <= 0)
-
-        {
-
-            manager_ -> score_ ++;
-
-        }
-
-        remove ();
-
-    }
-
-    else if (checkType <Food> (object))
-
-    {
-
-        Food * food = checkType <Food> (object);
-
-        food -> x_ += vx_ * 7;
-        food -> y_ += vy_ * 7;
-
-        vx_ = -vx_;
-        vy_ = -vy_;
-
-    }
-
-    else if (checkType <Medkit> (object))
-
-    {
-
-        Medkit * medkit = checkType <Medkit> (object);
-
-        medkit -> x_ += vx_ * 7;
-        medkit -> y_ += vy_ * 7;
-
-        vx_ = -vx_;
-        vy_ = -vy_;
-
-    }
+    Medkit * medkit = checkType <Medkit> (object);
+    if (medkit) {MedkitBulletHit (medkit, this); return; }
 
 }
 
@@ -1577,29 +1512,8 @@ void EnemyBullet::hit (AbstractObject * object)
 
 {
 
-    if (checkType <Tank> (object))
-
-    {
-
-        Tank * tank = checkType <Tank> (object);
-
-        tank -> addHealth (-25);
-
-        remove ();
-
-    }
-
-    /*else if (checkType <Enemy> (object))
-
-    {
-
-        Enemy * enemy = checkType <Enemy> (object);
-
-        enemy -> health_ -= 25;
-
-        remove ();
-
-    }*/
+    Tank * tank = checkType <Tank> (object);
+    if (tank) TankEnemyBulletHit (tank, this);
 
 }
 
@@ -1620,33 +1534,11 @@ void Food::hit (AbstractObject * object)
 
 {
 
-    if (checkType <Bullet> (object))
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { FoodBulletHit (this, bullet); return; }
 
-    {
-
-        Bullet * bullet = checkType <Bullet> (object);
-
-        x_ += bullet -> vx_ * 7;
-        y_ += bullet -> vy_ * 7;
-
-        bullet -> vx_ = -bullet -> vx_;
-        bullet -> vy_ = -bullet -> vy_;
-
-    }
-
-    else if (checkType <Tank> (object))
-
-    {
-
-        Tank * tank = checkType <Tank> (object);
-
-        tank -> addHealth (rnd (10, 20));
-
-        txPlaySound ("Resources\\Sound\\Food_Take.wav");
-
-        remove ();
-
-    }
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { TankFoodHit (tank, this); return; }
 
 }
 
@@ -1667,33 +1559,11 @@ void Medkit::hit (AbstractObject * object)
 
 {
 
-    if (checkType <Bullet> (object))
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { MedkitBulletHit (this, bullet); return; }
 
-    {
-
-        Bullet * bullet = checkType <Bullet> (object);
-
-        x_ += bullet -> vx_ * 7;
-        y_ += bullet -> vy_ * 7;
-
-        bullet -> vx_ = -bullet -> vx_;
-        bullet -> vy_ = -bullet -> vy_;
-
-    }
-
-    else if (checkType <Tank> (object))
-
-    {
-
-        Tank * tank = checkType <Tank> (object);
-
-        tank -> addHealth (100);
-
-        txPlaySound ("Resources\\Sound\\Food_Take.wav");
-
-        remove ();
-
-    }
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { TankMedkitHit (tank, this); return; }
 
 }
 
@@ -1725,43 +1595,34 @@ void Coin::hit (AbstractObject * object)
 
 {
 
-    if (checkType <Bullet> (object))
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { CoinBulletHit (this, bullet); return; }
 
-    {
-
-        Bullet * bullet = checkType <Bullet> (object);
-
-        x_ += bullet -> vx_ * 7;
-        y_ += bullet -> vy_ * 7;
-
-        bullet -> vx_ = -bullet -> vx_;
-        bullet -> vy_ = -bullet -> vy_;
-
-    }
-
-    else if (checkType <Tank> (object))
-
-    {
-
-        Tank * tank = checkType <Tank> (object);
-
-        manager_ -> score_ += 10;
-
-        txPlaySound ("Resources\\Sound\\Food_Take.wav");
-
-        remove ();
-
-    }
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { TankCoinHit (tank, this); return; }
 
 }
 
 //-----------------------------------------------------------------------------
 
-COLORREF addColor (COLORREF color, int r, int g, int b)
+void LevelUpText::draw ()
 
 {
 
-    return RGB (txExtractColor (color, TX_RED) + r, txExtractColor (color, TX_GREEN) + g, txExtractColor (color, TX_BLUE) + b);
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2, alpha_);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void LevelUpText::move ()
+
+{
+
+    alpha_ -= 0.01;
+    y_ -= 0.5;
+
+    if (alpha_ <= 0) remove ();
 
 }
 
@@ -1917,70 +1778,6 @@ double rnd (double from, double to)
 {
 
     return from + 1.0 * rand () / RAND_MAX * (to - from);
-
-}
-
-//-----------------------------------------------------------------------------
-
-void info (const char * text)
-
-{
-
-    if (DEBUG_MODE)
-
-    {
-
-        printf (text);
-
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void title (int time)
-
-{
-
-    char text[100] = "";
-
-    char symbol = ' ';
-
-    if (time < 100 && time >= 0)
-
-    {
-
-        symbol = '|';
-
-    }
-
-    if (time < 200 && time >= 100)
-
-    {
-
-        symbol = '/';
-
-    }
-
-    if (time < 300 && time >= 200)
-
-    {
-
-        symbol = '-';
-
-    }
-
-    if (time < 400 && time >= 300)
-
-    {
-
-        symbol = '\\';
-
-    }
-
-    sprintf (text, "%ctank%c", symbol, symbol);
-
-    SetWindowText (txWindow (), text);
 
 }
 
@@ -2147,6 +1944,7 @@ void ObjectManager::checkCollision ()
         {
 
             if (!objects_[i]) continue;
+            if (!objects_[n]) break;
 
             if (collisionDetection (objects_[n], objects_[i]))
 
@@ -2195,6 +1993,8 @@ int ObjectManager::removeObject (AbstractObject * object)
         if (objects_[n] == object)
 
         {
+
+            delete (objects_[n]);
 
             objects_[n] = nullptr;
 
@@ -2272,36 +2072,6 @@ T * checkType (AbstractObject * object)
 
 //-----------------------------------------------------------------------------
 
-HDC CaptureScreen (int x, int y, int width, int height)
-
-{
-
-    int x1 = x + width, y1 = y + height;
-
-    HDC ScreenDC = GetDC (NULL);
-
-    HDC dc = txCreateCompatibleDC (width, height);
-
-    txBitBlt (dc, 0, 0, width, height, ScreenDC, x, y);
-
-    DeleteDC (ScreenDC);
-
-    return dc;
-
-}
-
-//-----------------------------------------------------------------------------
-
-void drawFragment (int x, int y, HDC * image, int n, double width, double height, double alpha)
-
-{
-
-    txAlphaBlend (txDC (), x, y, width, height, *image, width * n, 0, alpha);
-
-}
-
-//-----------------------------------------------------------------------------
-
 double angle (double x0, double y0, double x1, double y1)
 
 {
@@ -2324,24 +2094,115 @@ double angle (double x0, double y0, double x1, double y1)
 
 }
 
-//-----------------------------------------------------------------------------
+//{----------------------------------------------------------------------------
 
-void drawTransparentCircle (double x, double y, double r, COLORREF color, double alpha)
+void TankBulletHit (Tank * tank, Bullet * bullet)
 
 {
 
-    HDC dc = txCreateDIBSection (wWidth, wHeight);
+    tank -> addHealth (-(rnd (2, 6)));
 
-    txSetFillColor (TX_TRANSPARENT, dc);
-    txClear (dc);
-
-    txSetColor (color, 0, dc);
-    txSetFillColor (color, dc);
-
-    txEllipse (x - r, y - r, x + r, y + r, dc);
-
-    txAlphaBlend (txDC (), 0, 0, 0, 0, dc, 0, 0, alpha);
-
-    txDeleteDC (dc);
+    bullet -> remove ();
 
 }
+
+void TankEnemyBulletHit (Tank * tank, EnemyBullet * enemybullet)
+
+{
+
+    tank -> addHealth (-25);
+
+    enemybullet -> remove ();
+
+}
+
+void TankFoodHit (Tank * tank, Food * food)
+
+{
+
+    tank -> addHealth (rnd (10, 16));
+
+    food -> remove ();
+
+    txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+}
+
+void TankMedkitHit (Tank * tank, Medkit * medkit)
+
+{
+
+    tank -> addHealth (100);
+
+    medkit -> remove ();
+
+    txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+}
+
+void TankCoinHit (Tank * tank, Coin * coin)
+
+{
+
+    tank -> addHealth (rnd (20, 30));
+
+    tank -> manager_ -> score_ += 10;
+
+    if (tank -> manager_ -> score_ % 10 == 0) tank -> manager_ -> addObject (new LevelUpText);
+
+    coin -> remove ();
+
+    txPlaySound ("Resources\\Sound\\Food_Take.wav");
+
+}
+
+//-----------------------------------------------------------------------------
+
+void EnemyBulletHit (Enemy * enemy, Bullet * bullet)
+
+{
+
+    enemy -> health_ -= bullet -> damage_;
+
+    enemy -> setPosition (enemy -> x_ += bullet -> vx_ * 7, enemy -> y_ += bullet -> vy_ * 7);
+
+    bullet -> remove ();
+
+}
+
+//-----------------------------------------------------------------------------
+
+void FoodBulletHit (Food * food, Bullet * bullet)
+
+{
+
+    food -> setPosition (food -> x_ + bullet -> vx_ * 7, food -> y_ + bullet -> vy_);
+
+    bullet -> vx_ = -bullet -> vx_;
+    bullet -> vy_ = -bullet -> vy_;
+
+}
+
+void MedkitBulletHit (Medkit * medkit, Bullet * bullet)
+
+{
+
+    medkit -> setPosition (medkit -> x_ + bullet -> vx_ * 7, medkit -> y_ + bullet -> vy_);
+
+    bullet -> vx_ = -bullet -> vx_;
+    bullet -> vy_ = -bullet -> vy_;
+
+}
+
+void CoinBulletHit (Coin * coin, Bullet * bullet)
+
+{
+
+    coin -> setPosition (coin -> x_ + bullet -> vx_ * 7, coin -> y_ + bullet -> vy_);
+
+    bullet -> vx_ = -bullet -> vx_;
+    bullet -> vy_ = -bullet -> vy_;
+
+}
+
+//}----------------------------------------------------------------------------
