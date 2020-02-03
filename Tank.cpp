@@ -510,7 +510,7 @@ double angle (double x0, double y0, double x1, double y1);
 
 void Hit (AbstractObject * obj1, AbstractObject * obj2);
 
-//-----------------------------------------------------------------------------
+//{----------------------------------------------------------------------------
 
 void hit_TankBullet      (AbstractObject * obj1, AbstractObject * obj2);
 void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2);
@@ -525,7 +525,7 @@ void hit_BulletObject    (AbstractObject * obj1, AbstractObject * obj2);
 void hit_Error           (AbstractObject * obj1, AbstractObject * obj2);
 void hit_None            (AbstractObject * obj1, AbstractObject * obj2);
 
-//-----------------------------------------------------------------------------
+//}----------------------------------------------------------------------------
 
 typedef void hit_t (AbstractObject * obj1, AbstractObject * obj2);
 
@@ -1999,8 +1999,6 @@ void hit_TankBullet (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
-    printf ("%s\n", __func__);
-
     Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (-(rnd (2, 6)));
@@ -2013,8 +2011,6 @@ void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
-    printf ("%s\n", __func__);
-
     Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (-25);
@@ -2026,8 +2022,6 @@ void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 void hit_TankFood (AbstractObject * obj1, AbstractObject * obj2)
 
 {
-
-    printf ("%s\n", __func__);
 
     Tank * tank = checkType <Tank> (obj1);
 
@@ -2043,8 +2037,6 @@ void hit_TankMedkit (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
-    printf ("%s\n", __func__);
-
     Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (100);
@@ -2058,8 +2050,6 @@ void hit_TankMedkit (AbstractObject * obj1, AbstractObject * obj2)
 void hit_TankCoin (AbstractObject * obj1, AbstractObject * obj2)
 
 {
-
-    printf ("%s\n", __func__);
 
     Tank * tank = checkType <Tank> (obj1);
 
@@ -2081,8 +2071,6 @@ void hit_EnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
-    printf ("%s\n", __func__);
-
     Enemy  * enemy  = checkType <Enemy>  (obj1);
     Bullet * bullet = checkType <Bullet> (obj2);
 
@@ -2099,8 +2087,6 @@ void hit_EnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 void hit_BulletObject (AbstractObject * obj1, AbstractObject * obj2)
 
 {
-
-    printf ("%s\n", __func__);
 
     obj1 -> setPosition (obj1 -> x_ + obj2 -> vx_ * 7, obj1 -> y_ + obj2 -> vy_);
 
