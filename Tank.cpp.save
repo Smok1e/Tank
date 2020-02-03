@@ -17,9 +17,7 @@ const int DAMAGE_MAX = 15;
 
 const int ENEMY_SHOOTING_FREQ = 200;
 
-const int FOOD_SPAWNING_FREQ = 4;
-
-const bool DEBUG_MODE = false;
+const int FOOD_SPAWNING_FREQ = 3;
 
 const double EPSILON = 0.1;
 
@@ -48,7 +46,17 @@ enum ObjectType
 {
 
     TypeNone,
-    TypeTank
+
+    TypeTank,
+    TypeEnemy,
+    TypeBullet,
+    TypeEnemyBullet,
+    TypeFood,
+    TypeMedkit,
+    TypeCoin,
+    TypeLevelupText,
+
+    TypeAmount
 
 };
 
@@ -80,11 +88,7 @@ struct AbstractObject
 
     ObjectManager * manager_;
 
-    AbstractObject ();
-
-    AbstractObject (ObjectManager * manager);
-
-    AbstractObject (double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager, int type = TypeNone);
+    AbstractObject (int type, double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager);
 
     virtual void draw ();
 
@@ -98,36 +102,13 @@ struct AbstractObject
 
     virtual void setPosition (double x, double y);
 
+    int getType ();
+
 };
 
-AbstractObject::AbstractObject () :
+AbstractObject::AbstractObject (int type, double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager = NULL) :
 
-    x_       (0),
-    y_       (0),
-    vx_      (0),
-    vy_      (0),
-    r_       (0),
-    color_   (0),
-    type_    (TypeNone),
-    visible_ (false)
-
-{}
-
-AbstractObject::AbstractObject (ObjectManager * manager) :
-
-    x_       (0),
-    y_       (0),
-    vx_      (0),
-    vy_      (0),
-    r_       (0),
-    color_   (-1),
-    type_    (TypeNone),
-    manager_ (manager)
-
-{}
-
-AbstractObject::AbstractObject (double x, double y, double vx, double vy, double r, COLORREF color, bool visible, ObjectManager * manager = NULL, int type) :
-
+    type_    (type),
     x_       (x),
     y_       (y),
     vx_      (vx),
@@ -135,7 +116,6 @@ AbstractObject::AbstractObject (double x, double y, double vx, double vy, double
     r_       (r),
     color_   (color),
     visible_ (visible),
-    type_    (type),
     manager_ (manager)
 
 {}
@@ -191,7 +171,7 @@ struct GameObject : AbstractObject
 
     Animation animation_;
 
-    GameObject (HDC spritesheet, int frame_n, double x, double y, double r);
+    GameObject (int type, HDC spritesheet, int frame_n, double x, double y, double r);
 
     virtual void draw () override;
 
@@ -199,9 +179,9 @@ struct GameObject : AbstractObject
 
 };
 
-GameObject::GameObject (HDC spritesheet, int frame_n, double x, double y, double r) :
+GameObject::GameObject (int type, HDC spritesheet, int frame_n, double x, double y, double r) :
 
-    AbstractObject (x, y, 0, 0, r, 0, true),
+    AbstractObject (type, x, y, 0, 0, r, 0, true),
 
     animation_ (spritesheet, frame_n)
 
@@ -229,8 +209,6 @@ struct Tank : GameObject
 
     virtual void control () override;
 
-    virtual void hit (AbstractObject * object) override;
-
     void check ();
 
     void addHealth (double health);
@@ -239,7 +217,7 @@ struct Tank : GameObject
 
 Tank::Tank (double x, double y, double speed, COLORREF color, int gun_length_) :
 
-    GameObject (txLoadImage ("Resources\\Images\\Tank.bmp"), 72, x, y, 30),
+    GameObject (TypeTank, txLoadImage ("Resources\\Images\\Tank.bmp"), 72, x, y, 30),
 
     gun_length (gun_length_),
     health_    (100),
@@ -287,7 +265,7 @@ struct Enemy : AbstractObject
 
 Enemy::Enemy () :
 
-    AbstractObject (rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 20, TX_RED, true),
+    AbstractObject (TypeEnemy, rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 20, TX_RED, true),
 
     health_       (100),
     moving_       (false),
@@ -299,7 +277,7 @@ Enemy::Enemy () :
 
 Enemy::Enemy (double x, double y, double vx, double vy, COLORREF color) :
 
-    AbstractObject (x, y, vx, vy, 20, color, true),
+    AbstractObject (TypeEnemy, x, y, vx, vy, 20, color, true),
 
     health_       (100),
     moving_       (false),
@@ -321,31 +299,15 @@ struct Bullet : AbstractObject
 
     double deflection_;
 
-    Bullet ();
-
-    Bullet (ObjectManager * manager);
-
     Bullet (double x, double y, double vx, double vy, COLORREF color, int damage, double speed, double deflection, bool visible, ObjectManager * manager);
 
     virtual void move () override;
 
-    virtual void hit (AbstractObject * object) override;
-
 };
-
-Bullet::Bullet (ObjectManager * manager) :
-
-    AbstractObject (0, 0, 0, 0, 3, TX_BLACK, false, manager),
-
-    damage_     (0),
-    speed_      (0),
-    deflection_ (0)
-
-{}
 
 Bullet::Bullet (double x, double y, double vx, double vy, COLORREF color, int damage, double speed, double deflection, bool visible, ObjectManager * manager) :
 
-    AbstractObject (x, y, vx, vy, 3, color, visible, manager),
+    AbstractObject (TypeBullet, x, y, vx, vy, 3, color, visible, manager),
 
     damage_     (damage),
     speed_      (speed),
@@ -373,13 +335,11 @@ struct EnemyBullet : AbstractObject
 
     virtual void move () override;
 
-    virtual void hit (AbstractObject * object) override;
-
 };
 
 EnemyBullet::EnemyBullet () :
 
-    AbstractObject (0, 0, 0, 0, 0, 0, false),
+    AbstractObject (TypeEnemyBullet, 0, 0, 0, 0, 0, 0, false),
 
     damage_     (0),
     speed_      (0)
@@ -388,7 +348,7 @@ EnemyBullet::EnemyBullet () :
 
 EnemyBullet::EnemyBullet (ObjectManager * manager) :
 
-    AbstractObject (0, 0, 0, 0, 3, TX_BLACK, false, manager),
+    AbstractObject (TypeEnemyBullet, 0, 0, 0, 0, 3, TX_BLACK, false, manager),
 
     damage_     (0),
     speed_      (0)
@@ -397,7 +357,7 @@ EnemyBullet::EnemyBullet (ObjectManager * manager) :
 
 EnemyBullet::EnemyBullet (double x, double y, double vx, double vy, ObjectManager * manager) :
 
-    AbstractObject (x, y, vx, vy, 3, RGB (0, 179, 255), true, manager),
+    AbstractObject (TypeEnemyBullet, x, y, vx, vy, 3, RGB (0, 179, 255), true, manager),
 
     damage_  (25),
     speed_   (rnd (3, 4))
@@ -414,13 +374,11 @@ struct Medkit : GameObject
 
     virtual void draw () override;
 
-    virtual void hit (AbstractObject * object) override;
-
 };
 
 Medkit::Medkit (double x, double y) :
 
-    GameObject (txLoadImage ("Resources\\Images\\MedKit.bmp"), 1, x, y, 15)
+    GameObject (TypeMedkit, txLoadImage ("Resources\\Images\\MedKit.bmp"), 1, x, y, 15)
 
 {}
 
@@ -434,13 +392,11 @@ struct Food : GameObject
 
     virtual void draw () override;
 
-    virtual void hit (AbstractObject * object) override;
-
 };
 
 Food::Food (double x, double y) :
 
-    GameObject (txLoadImage ("Resources\\Images\\Food.bmp"), 1, x, y, 15)
+    GameObject (TypeFood, txLoadImage ("Resources\\Images\\Food.bmp"), 1, x, y, 15)
 
 {}
 
@@ -456,13 +412,11 @@ struct Coin : GameObject
 
     virtual void draw ();
 
-    virtual void hit (AbstractObject * object);
-
 };
 
 Coin::Coin (double x, double y) :
 
-    GameObject (txLoadImage ("Resources\\Images\\Coin.bmp"), 6, x, y, 15),
+    GameObject (TypeCoin, txLoadImage ("Resources\\Images\\Coin.bmp"), 6, x, y, 15),
 
     counter_ (0)
 
@@ -486,7 +440,7 @@ struct LevelUpText : GameObject
 
 LevelUpText::LevelUpText () :
 
-    GameObject (txLoadImage ("Resources\\Images\\LevelUpText.bmp"), 1, wWidth / 2, wHeight / 2, 0),
+    GameObject (TypeLevelupText, txLoadImage ("Resources\\Images\\LevelUpText.bmp"), 1, wWidth / 2, wHeight / 2, 0),
 
     alpha_ (1)
 
@@ -556,47 +510,50 @@ T * checkType (AbstractObject * object);
 
 double angle (double x0, double y0, double x1, double y1);
 
-//-----------------------------------------------------------------------------
-
-void TankBulletHit (Tank * tank, Bullet * bullet);
-
-void TankEnemyBulletHit (Tank * tank, EnemyBullet * enemybullet);
-
-void TankFoodHit (Tank * tank, Food * food);
-
-void TankMedkitHit (Tank * tank, Medkit * medkit);
-
-void TankCoinHit (Tank * tank, Coin * coin);
+void Hit (AbstractObject * obj1, AbstractObject * obj2);
 
 //-----------------------------------------------------------------------------
 
-void EnemyBulletHit (Enemy * enemy, Bullet * bullet);
+void hit_TankBullet      (AbstractObject * obj1, AbstractObject * obj2);
+void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2);
+void hit_TankFood        (AbstractObject * obj1, AbstractObject * obj2);
+void hit_TankMedkit      (AbstractObject * obj1, AbstractObject * obj2);
+void hit_TankCoin        (AbstractObject * obj1, AbstractObject * obj2);
+
+void hit_EnemyBullet     (AbstractObject * obj1, AbstractObject * obj2);
+
+void hit_BulletObject    (AbstractObject * obj1, AbstractObject * obj2);
+
+void hit_Error           (AbstractObject * obj1, AbstractObject * obj2);
+void hit_None            (AbstractObject * obj1, AbstractObject * obj2);
 
 //-----------------------------------------------------------------------------
 
-void FoodBulletHit (Food * food, Bullet * bullet);
+typedef void hit_t (AbstractObject * obj1, AbstractObject * obj2);
 
-void MedkitBulletHit (Medkit * medkit, Bullet * bullet);
+const hit_t * hitTable[TypeAmount][TypeAmount] =
 
-void CoinBulletHit (Coin * coin, Bullet * bullet);
+    {
+    //   0          1                    3                 4                    5                 6                 7                 8
+    //   TypeNone   Tank                 Bullet            EnemyBulet           Food              Medkit            Coin              LevelUpText
+
+        {hit_Error, hit_Error,           hit_Error,        hit_Error,           hit_Error,        hit_Error,        hit_Error,        hit_Error}, // 0 TypeNone
+        {hit_Error, hit_Error,           hit_TankBullet,   hit_TankEnemyBullet, hit_TankFood,     hit_TankMedkit,   hit_TankCoin,     hit_None }, // 1 Tank
+        {hit_Error, hit_None,            hit_EnemyBullet,  hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 2 Enemy
+        {hit_Error, hit_TankBullet,      hit_None,         hit_None,            hit_BulletObject, hit_BulletObject, hit_BulletObject, hit_None }, // 3 Bullet
+        {hit_Error, hit_TankEnemyBullet, hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 4 EnemyBullet
+        {hit_Error, hit_TankFood,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 5 Food
+        {hit_Error, hit_TankMedkit,      hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 6 Medkit
+        {hit_Error, hit_TankCoin,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 7 Coin
+        {hit_Error, hit_None,            hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None }  // 8 LevelUpText
+
+    };
 
 //-----------------------------------------------------------------------------
 
 int main ()
 
 {
-
-    if (DEBUG_MODE)
-
-    {
-
-        _txConsoleMode = SW_SHOW;
-
-        SetConsoleTitle ("Debug");
-
-        printf ("Debug console included.\n");
-
-    }
 
     txCreateWindow (wWidth, wHeight);
 
@@ -905,6 +862,8 @@ void AbstractObject::hit (AbstractObject * object)
 
 {
 
+    ::Hit (this, object);
+
 }
 
 //-----------------------------------------------------------------------------
@@ -931,14 +890,27 @@ void AbstractObject::setPosition (double x, double y)
 
 {
 
+
     if (x - r_ >= 0 && x + r_ < wWidth && y - r_ >= 0 && y + r_ < wHeight)
-                                             d
+
     {
 
         x_ = x;
         y_ = y;
 
     }
+
+}
+
+//-----------------------------------------------------------------------------
+
+int AbstractObject::getType ()
+
+{
+
+    assert (TypeNone < type_ && type_ < TypeAmount);
+
+    return type_;
 
 }
 
@@ -1195,29 +1167,6 @@ void Tank::control ()
 
 //-----------------------------------------------------------------------------
 
-void Tank::hit (AbstractObject * object)
-
-{
-
-    Bullet * bullet = checkType <Bullet> (object);
-    if (bullet) { TankBulletHit (this, bullet); return; }
-
-    EnemyBullet * enemybullet = checkType <EnemyBullet> (object);
-    if (enemybullet) { TankEnemyBulletHit (this, enemybullet); return; }
-
-    Food * food = checkType <Food> (object);
-    if (food) { TankFoodHit (this, food); return; }
-
-    Medkit * medkit = checkType <Medkit> (object);
-    if (medkit) { TankMedkitHit (this, medkit); return; }
-
-    Coin * coin = checkType <Coin> (object);
-    if (coin) { TankCoinHit (this, coin); return; }
-
-}
-
-//-----------------------------------------------------------------------------
-
 void Tank::addHealth (double health)
 
 {
@@ -1427,9 +1376,6 @@ void Enemy::hit (AbstractObject * object)
 
 {
 
-    Bullet * bullet = checkType <Bullet> (object);
-    if (bullet) { EnemyBulletHit (this, bullet); }
-
 }
 
 //-----------------------------------------------------------------------------
@@ -1449,7 +1395,7 @@ void Bullet::move ()
 
         {
 
-            if (floor (rnd (1, 20)) == 1)
+            if (floor (rnd (1, 17)) == 1)
 
             {
 
@@ -1471,6 +1417,8 @@ void Bullet::move ()
 
                  color_ = RGB (255, 0, 0);
 
+                 damage_ = damage_ * 3;
+
             }
 
             else
@@ -1484,29 +1432,6 @@ void Bullet::move ()
         }
 
     }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void Bullet::hit (AbstractObject * object)
-
-{
-
-    Tank * tank = checkType <Tank> (object);
-    if (tank) { TankBulletHit (tank, this); return; }
-
-    Enemy * enemy = checkType <Enemy> (object);
-    if (enemy) { EnemyBulletHit (enemy, this); return; }
-
-    Food * food = checkType <Food> (object);
-    if (food) { FoodBulletHit (food, this); return; }
-
-    Medkit * medkit = checkType <Medkit> (object);
-    if (medkit) {MedkitBulletHit (medkit, this); return; }
-
-    Coin * coin = checkType <Coin> (object);
-    if (coin) { CoinBulletHit (coin, this); return; }
 
 }
 
@@ -1531,17 +1456,6 @@ void EnemyBullet::move ()
 
 //-----------------------------------------------------------------------------
 
-void EnemyBullet::hit (AbstractObject * object)
-
-{
-
-    Tank * tank = checkType <Tank> (object);
-    if (tank) TankEnemyBulletHit (tank, this);
-
-}
-
-//-----------------------------------------------------------------------------
-
 void Food::draw ()
 
 {
@@ -1553,40 +1467,12 @@ void Food::draw ()
 
 //-----------------------------------------------------------------------------
 
-void Food::hit (AbstractObject * object)
-
-{
-
-    Bullet * bullet = checkType <Bullet> (object);
-    if (bullet) { FoodBulletHit (this, bullet); return; }
-
-    Tank * tank = checkType <Tank> (object);
-    if (tank) { TankFoodHit (tank, this); return; }
-
-}
-
-//-----------------------------------------------------------------------------
-
 void Medkit::draw ()
 
 {
 
     animation_.setFrame (0);
     animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
-
-}
-
-//-----------------------------------------------------------------------------
-
-void Medkit::hit (AbstractObject * object)
-
-{
-
-    Bullet * bullet = checkType <Bullet> (object);
-    if (bullet) { MedkitBulletHit (this, bullet); return; }
-
-    Tank * tank = checkType <Tank> (object);
-    if (tank) { TankMedkitHit (tank, this); return; }
 
 }
 
@@ -1609,20 +1495,6 @@ void Coin::draw ()
         counter_ = 0;
 
     }
-
-}
-
-//-----------------------------------------------------------------------------
-
-void Coin::hit (AbstractObject * object)
-
-{
-
-    Bullet * bullet = checkType <Bullet> (object);
-    if (bullet) { CoinBulletHit (this, bullet); return; }
-
-    Tank * tank = checkType <Tank> (object);
-    if (tank) { TankCoinHit (tank, this); return; }
 
 }
 
@@ -2117,63 +1989,97 @@ double angle (double x0, double y0, double x1, double y1)
 
 }
 
-//{----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
-void TankBulletHit (Tank * tank, Bullet * bullet)
+void Hit (AbstractObject * obj1, AbstractObject * obj2)
 
 {
+
+    int objectType1 = obj1 -> getType (), objectType2 = obj2 -> getType ();
+
+    if (objectType1 > objectType2) std::swap (obj1, obj2);
+
+    hitTable [objectType1][objectType2] (obj1, obj2);
+
+}
+
+//{----------------------------------------------------------------------------
+
+void hit_TankBullet (AbstractObject * obj1, AbstractObject * obj2)
+
+{
+
+    printf ("%s\n", __func__);
+
+    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (-(rnd (2, 6)));
 
-    bullet -> remove ();
+    obj2 -> remove ();
 
 }
 
-void TankEnemyBulletHit (Tank * tank, EnemyBullet * enemybullet)
+void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 
 {
+
+    printf ("%s\n", __func__);
+
+    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (-25);
 
-    enemybullet -> remove ();
+    obj2 -> remove ();
 
 }
 
-void TankFoodHit (Tank * tank, Food * food)
+void hit_TankFood (AbstractObject * obj1, AbstractObject * obj2)
 
 {
+
+    printf ("%s\n", __func__);
+
+    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (rnd (10, 16));
 
-    food -> remove ();
+    obj2 -> remove ();
 
     txPlaySound ("Resources\\Sound\\Food_Take.wav");
 
 }
 
-void TankMedkitHit (Tank * tank, Medkit * medkit)
+void hit_TankMedkit (AbstractObject * obj1, AbstractObject * obj2)
 
 {
+
+    printf ("%s\n", __func__);
+
+    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (100);
 
-    medkit -> remove ();
+    obj2 -> remove ();
 
     txPlaySound ("Resources\\Sound\\Food_Take.wav");
 
 }
 
-void TankCoinHit (Tank * tank, Coin * coin)
+void hit_TankCoin (AbstractObject * obj1, AbstractObject * obj2)
 
 {
+
+    printf ("%s\n", __func__);
+
+    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (rnd (20, 30));
 
     tank -> manager_ -> score_ += 10;
 
-    if (tank -> manager_ -> score_ % 10 == 0) tank -> manager_ -> addObject (new LevelUpText);
+    tank -> manager_ -> addObject (new LevelUpText);
 
-    coin -> remove ();
+    obj2 -> remove ();
 
     txPlaySound ("Resources\\Sound\\Food_Take.wav");
 
@@ -2181,13 +2087,18 @@ void TankCoinHit (Tank * tank, Coin * coin)
 
 //-----------------------------------------------------------------------------
 
-void EnemyBulletHit (Enemy * enemy, Bullet * bullet)
+void hit_EnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
+    printf ("%s\n", __func__);
+
+    Enemy  * enemy  = checkType <Enemy>  (obj1);
+    Bullet * bullet = checkType <Bullet> (obj2);
+
     enemy -> health_ -= bullet -> damage_;
 
-    enemy -> setPosition (enemy -> x_ += bullet -> vx_ * 7, enemy -> y_ += bullet -> vy_ * 7);
+    enemy -> setPosition (enemy -> x_ + bullet -> vx_ * 7, enemy -> y_ + bullet -> vy_ * 7);
 
     bullet -> remove ();
 
@@ -2195,36 +2106,34 @@ void EnemyBulletHit (Enemy * enemy, Bullet * bullet)
 
 //-----------------------------------------------------------------------------
 
-void FoodBulletHit (Food * food, Bullet * bullet)
+void hit_BulletObject (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
-    food -> setPosition (food -> x_ + bullet -> vx_ * 7, food -> y_ + bullet -> vy_);
+    printf ("%s\n", __func__);
 
-    bullet -> vx_ = -bullet -> vx_;
-    bullet -> vy_ = -bullet -> vy_;
+    obj1 -> setPosition (obj1 -> x_ + obj2 -> vx_ * 7, obj1 -> y_ + obj2 -> vy_);
+
+    obj2 -> vx_ = -obj2 -> vx_;
+    obj2 -> vy_ = -obj2 -> vy_;
 
 }
 
-void MedkitBulletHit (Medkit * medkit, Bullet * bullet)
+//-----------------------------------------------------------------------------
+
+void hit_Error (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
-    medkit -> setPosition (medkit -> x_ + bullet -> vx_ * 7, medkit -> y_ + bullet -> vy_);
-
-    bullet -> vx_ = -bullet -> vx_;
-    bullet -> vy_ = -bullet -> vy_;
+    assert (false);
 
 }
 
-void CoinBulletHit (Coin * coin, Bullet * bullet)
+//-----------------------------------------------------------------------------
+
+void hit_None (AbstractObject * obj1, AbstractObject * obj2)
 
 {
-
-    coin -> setPosition (coin -> x_ + bullet -> vx_ * 7, coin -> y_ + bullet -> vy_);
-
-    bullet -> vx_ = -bullet -> vx_;
-    bullet -> vy_ = -bullet -> vy_;
 
 }
 

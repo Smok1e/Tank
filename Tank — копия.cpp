@@ -17,7 +17,7 @@ const int DAMAGE_MAX = 15;
 
 const int ENEMY_SHOOTING_FREQ = 200;
 
-const int FOOD_SPAWNING_FREQ = 4;
+const int FOOD_SPAWNING_FREQ = 3;
 
 const double EPSILON = 0.1;
 
@@ -209,6 +209,8 @@ struct Tank : GameObject
 
     virtual void control () override;
 
+    virtual void hit (AbstractObject * object) override;
+
     void check ();
 
     void addHealth (double health);
@@ -257,6 +259,8 @@ struct Enemy : AbstractObject
 
     virtual void control () override;
 
+    virtual void hit (AbstractObject * object) override;
+
     void Reset ();
 
 };
@@ -301,6 +305,8 @@ struct Bullet : AbstractObject
 
     virtual void move () override;
 
+    virtual void hit (AbstractObject * object) override;
+
 };
 
 Bullet::Bullet (double x, double y, double vx, double vy, COLORREF color, int damage, double speed, double deflection, bool visible, ObjectManager * manager) :
@@ -332,6 +338,8 @@ struct EnemyBullet : AbstractObject
     EnemyBullet (double x, double y, double vx, double vy, ObjectManager * manager);
 
     virtual void move () override;
+
+    virtual void hit (AbstractObject * object) override;
 
 };
 
@@ -372,6 +380,8 @@ struct Medkit : GameObject
 
     virtual void draw () override;
 
+    virtual void hit (AbstractObject * object) override;
+
 };
 
 Medkit::Medkit (double x, double y) :
@@ -389,6 +399,8 @@ struct Food : GameObject
     Food (double x, double y);
 
     virtual void draw () override;
+
+    virtual void hit (AbstractObject * object) override;
 
 };
 
@@ -409,6 +421,8 @@ struct Coin : GameObject
     Coin (double x, double y);
 
     virtual void draw ();
+
+    virtual void hit (AbstractObject * object);
 
 };
 
@@ -508,44 +522,29 @@ T * checkType (AbstractObject * object);
 
 double angle (double x0, double y0, double x1, double y1);
 
-void Hit (AbstractObject * obj1, AbstractObject * obj2);
+//-----------------------------------------------------------------------------
+
+void collisionResponse (Tank * tank, Bullet * bullet);
+
+void collisionResponse (Tank * tank, EnemyBullet * enemybullet);
+
+void collisionResponse (Tank * tank, Food * food);
+
+void collisionResponse (Tank * tank, Medkit * medkit);
+
+void collisionResponse (Tank * tank, Coin * coin);
 
 //-----------------------------------------------------------------------------
 
-void hit_TankBullet      (AbstractObject * obj1, AbstractObject * obj2);
-void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2);
-void hit_TankFood        (AbstractObject * obj1, AbstractObject * obj2);
-void hit_TankMedkit      (AbstractObject * obj1, AbstractObject * obj2);
-void hit_TankCoin        (AbstractObject * obj1, AbstractObject * obj2);
-
-void hit_EnemyBullet     (AbstractObject * obj1, AbstractObject * obj2);
-
-void hit_BulletObject    (AbstractObject * obj1, AbstractObject * obj2);
-
-void hit_Error           (AbstractObject * obj1, AbstractObject * obj2);
-void hit_None            (AbstractObject * obj1, AbstractObject * obj2);
+void collisionResponse (Enemy * enemy, Bullet * bullet);
 
 //-----------------------------------------------------------------------------
 
-typedef void hit_t (AbstractObject * obj1, AbstractObject * obj2);
+void collisionResponse (Food * food, Bullet * bullet);
 
-const hit_t * hitTable[TypeAmount][TypeAmount] =
+void collisionResponse (Medkit * medkit, Bullet * bullet);
 
-    {
-    //   0          1                    2                3                 4                    5                 6                 7                 8
-    //   TypeNone   Tank                 Enemy            Bullet            EnemyBulet           Food              Medkit            Coin              LevelUpText
-
-        {hit_Error, hit_Error,           hit_Error,       hit_Error,        hit_Error,           hit_Error,        hit_Error,        hit_Error,        hit_Error}, // 0 TypeNone
-        {hit_Error, hit_Error,           hit_None,        hit_TankBullet,   hit_TankEnemyBullet, hit_TankFood,     hit_TankMedkit,   hit_TankCoin,     hit_None }, // 1 Tank
-        {hit_Error, hit_None,            hit_None,        hit_EnemyBullet,  hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 2 Enemy
-        {hit_Error, hit_TankBullet,      hit_EnemyBullet, hit_None,         hit_None,            hit_BulletObject, hit_BulletObject, hit_BulletObject, hit_None }, // 3 Bullet
-        {hit_Error, hit_TankEnemyBullet, hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 4 EnemyBullet
-        {hit_Error, hit_TankFood,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 5 Food
-        {hit_Error, hit_TankMedkit,      hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 6 Medkit
-        {hit_Error, hit_TankCoin,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 7 Coin
-        {hit_Error, hit_None,            hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None }  // 8 LevelUpText
-
-    };
+void collisionResponse (Coin * coin, Bullet * bullet);
 
 //-----------------------------------------------------------------------------
 
@@ -860,8 +859,6 @@ void AbstractObject::hit (AbstractObject * object)
 
 {
 
-    ::Hit (this, object);
-
 }
 
 //-----------------------------------------------------------------------------
@@ -1165,6 +1162,30 @@ void Tank::control ()
 
 //-----------------------------------------------------------------------------
 
+void Tank::hit (AbstractObject * object)
+
+{
+
+    switch (object -> getType ())
+
+    {
+
+        case TypeBullet:      { collisionResponse (this, checkType <Bullet>      (object)); return; }
+
+        case TypeEnemyBullet: { collisionResponse (this, checkType <EnemyBullet> (object)); return; }
+
+        case TypeFood:        { collisionResponse (this, checkType <Food>        (object)); return; }
+
+        case TypeMedkit:      { collisionResponse (this, checkType <Medkit>      (object)); return; }
+
+        case TypeCoin:        { collisionResponse (this, checkType <Coin>        (object)); return; }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
 void Tank::addHealth (double health)
 
 {
@@ -1370,6 +1391,17 @@ void Enemy::Reset ()
 
 //-----------------------------------------------------------------------------
 
+void Enemy::hit (AbstractObject * object)
+
+{
+
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { collisionResponse (this, bullet); }
+
+}
+
+//-----------------------------------------------------------------------------
+
 void Bullet::move ()
 
 {
@@ -1427,6 +1459,30 @@ void Bullet::move ()
 
 //-----------------------------------------------------------------------------
 
+void Bullet::hit (AbstractObject * object)
+
+{
+
+    switch (object -> getType ())
+
+    {
+
+        case TypeTank:   { collisionResponse (checkType <Tank>   (object), this); return; }
+
+        case TypeEnemy:  { collisionResponse (checkType <Enemy>  (object), this); return; }
+
+        case TypeFood:   { collisionResponse (checkType <Food>   (object), this); return; }
+
+        case TypeMedkit: { collisionResponse (checkType <Medkit> (object), this); return; }
+
+        case TypeCoin:   { collisionResponse (checkType <Coin>   (object), this); return; }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
 void EnemyBullet::move ()
 
 {
@@ -1446,6 +1502,17 @@ void EnemyBullet::move ()
 
 //-----------------------------------------------------------------------------
 
+void EnemyBullet::hit (AbstractObject * object)
+
+{
+
+    Tank * tank = checkType <Tank> (object);
+    if (tank) collisionResponse (tank, this);
+
+}
+
+//-----------------------------------------------------------------------------
+
 void Food::draw ()
 
 {
@@ -1457,12 +1524,40 @@ void Food::draw ()
 
 //-----------------------------------------------------------------------------
 
+void Food::hit (AbstractObject * object)
+
+{
+
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { collisionResponse (this, bullet); return; }
+
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { collisionResponse (tank, this); return; }
+
+}
+
+//-----------------------------------------------------------------------------
+
 void Medkit::draw ()
 
 {
 
     animation_.setFrame (0);
     animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Medkit::hit (AbstractObject * object)
+
+{
+
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { collisionResponse (this, bullet); return; }
+
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { collisionResponse (tank, this); return; }
 
 }
 
@@ -1485,6 +1580,20 @@ void Coin::draw ()
         counter_ = 0;
 
     }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Coin::hit (AbstractObject * object)
+
+{
+
+    Bullet * bullet = checkType <Bullet> (object);
+    if (bullet) { collisionResponse (this, bullet); return; }
+
+    Tank * tank = checkType <Tank> (object);
+    if (tank) { collisionResponse (tank, this); return; }
 
 }
 
@@ -1979,89 +2088,55 @@ double angle (double x0, double y0, double x1, double y1)
 
 }
 
-//-----------------------------------------------------------------------------
-
-void Hit (AbstractObject * obj1, AbstractObject * obj2)
-
-{
-
-    int objectType1 = obj1 -> getType (), objectType2 = obj2 -> getType ();
-
-    if (objectType1 > objectType2) std::swap (obj1, obj2);
-
-    hitTable [objectType1][objectType2] (obj1, obj2);
-
-}
-
 //{----------------------------------------------------------------------------
 
-void hit_TankBullet (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Tank * tank, Bullet * bullet)
 
 {
-
-    printf ("%s\n", __func__);
-
-    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (-(rnd (2, 6)));
 
-    obj2 -> remove ();
+    bullet -> remove ();
 
 }
 
-void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Tank * tank, EnemyBullet * enemybullet)
 
 {
-
-    printf ("%s\n", __func__);
-
-    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (-25);
 
-    obj2 -> remove ();
+    enemybullet -> remove ();
 
 }
 
-void hit_TankFood (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Tank * tank, Food * food)
 
 {
-
-    printf ("%s\n", __func__);
-
-    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (rnd (10, 16));
 
-    obj2 -> remove ();
+    food -> remove ();
 
     txPlaySound ("Resources\\Sound\\Food_Take.wav");
 
 }
 
-void hit_TankMedkit (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Tank * tank, Medkit * medkit)
 
 {
-
-    printf ("%s\n", __func__);
-
-    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (100);
 
-    obj2 -> remove ();
+    medkit -> remove ();
 
     txPlaySound ("Resources\\Sound\\Food_Take.wav");
 
 }
 
-void hit_TankCoin (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Tank * tank, Coin * coin)
 
 {
-
-    printf ("%s\n", __func__);
-
-    Tank * tank = checkType <Tank> (obj1);
 
     tank -> addHealth (rnd (20, 30));
 
@@ -2069,7 +2144,7 @@ void hit_TankCoin (AbstractObject * obj1, AbstractObject * obj2)
 
     tank -> manager_ -> addObject (new LevelUpText);
 
-    obj2 -> remove ();
+    coin -> remove ();
 
     txPlaySound ("Resources\\Sound\\Food_Take.wav");
 
@@ -2077,14 +2152,9 @@ void hit_TankCoin (AbstractObject * obj1, AbstractObject * obj2)
 
 //-----------------------------------------------------------------------------
 
-void hit_EnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Enemy * enemy, Bullet * bullet)
 
 {
-
-    printf ("%s\n", __func__);
-
-    Enemy  * enemy  = checkType <Enemy>  (obj1);
-    Bullet * bullet = checkType <Bullet> (obj2);
 
     enemy -> health_ -= bullet -> damage_;
 
@@ -2096,34 +2166,36 @@ void hit_EnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 
 //-----------------------------------------------------------------------------
 
-void hit_BulletObject (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Food * food, Bullet * bullet)
 
 {
 
-    printf ("%s\n", __func__);
+    food -> setPosition (food -> x_ + bullet -> vx_ * 7, food -> y_ + bullet -> vy_);
 
-    obj1 -> setPosition (obj1 -> x_ + obj2 -> vx_ * 7, obj1 -> y_ + obj2 -> vy_);
-
-    obj2 -> vx_ = -obj2 -> vx_;
-    obj2 -> vy_ = -obj2 -> vy_;
+    bullet -> vx_ = -bullet -> vx_;
+    bullet -> vy_ = -bullet -> vy_;
 
 }
 
-//-----------------------------------------------------------------------------
-
-void hit_Error (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Medkit * medkit, Bullet * bullet)
 
 {
 
-    assert (false);
+    medkit -> setPosition (medkit -> x_ + bullet -> vx_ * 7, medkit -> y_ + bullet -> vy_);
+
+    bullet -> vx_ = -bullet -> vx_;
+    bullet -> vy_ = -bullet -> vy_;
 
 }
 
-//-----------------------------------------------------------------------------
-
-void hit_None (AbstractObject * obj1, AbstractObject * obj2)
+void collisionResponse (Coin * coin, Bullet * bullet)
 
 {
+
+    coin -> setPosition (coin -> x_ + bullet -> vx_ * 7, coin -> y_ + bullet -> vy_);
+
+    bullet -> vx_ = -bullet -> vx_;
+    bullet -> vy_ = -bullet -> vy_;
 
 }
 
