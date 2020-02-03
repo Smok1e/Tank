@@ -2088,10 +2088,10 @@ void hit_BulletObject (AbstractObject * obj1, AbstractObject * obj2)
 
 {
 
-    obj1 -> setPosition (obj1 -> x_ + obj2 -> vx_ * 7, obj1 -> y_ + obj2 -> vy_);
+    obj2 -> setPosition (obj2 -> x_ + obj1 -> vx_ * 7, obj2 -> y_ + obj1 -> vy_);
 
-    obj2 -> vx_ = -obj2 -> vx_;
-    obj2 -> vy_ = -obj2 -> vy_;
+    obj1 -> vx_ = -obj1 -> vx_;
+    obj1 -> vy_ = -obj1 -> vy_;
 
 }
 
