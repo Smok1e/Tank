@@ -1,0 +1,1390 @@
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 11749, функция: HPEN__* {anonymous}::TX::txSetColor(COLORREF, double, HDC),
+
+Сообщение: Окно рисования не создано или не в порядке.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-05 09:35:12 +0400], Instance: 0x00000000005748D0 (64-bit), Flags: Cmdre0, Thread: 0x2728 (Main), GetLastError(): 13 (Недопустимые данные). 
+From: C:\Users\Фёдор\Downloads\TX\TXLib.h (11159) const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list).
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FE9 in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x000000000041CBA7 in W:\Tank\Level Editor\LevelEditor.exe: txSetColor() at C:/Users/Фёдор/Downloads/TX/TXLib.h (11749)
+
+# 2 0x000000000042B3D6 in W:\Tank\Level Editor\LevelEditor.exe: draw() at W:/Tank/Level Editor/WNDLib.h (103):
+
+    101:     {
+    102: 
+=>  103:         txSetColor     (color_);
+    104:         txSetFillColor (color_);
+    105:         txRectangle    (x_, y_, x_ + width_, y_ + height_);
+
+# 3 0x000000000042B8D6 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (14):
+
+     12:     {
+     13: 
+=>   14:         button.draw ();
+     15:         button.check ();
+     16: 
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11107):
+
+  11105:         {
+  11106: $       stkTrace = ((options & traceSE) && *_txTraceSE)? _txTraceSE : _txCaptureStackBackTrace   (2, true);
+=>11107: $       txTrace  =                                                    _txCaptureStackBackTraceTX (0, true);
+  11108:         }
+  11109: 
+
+# 1 in HPEN__* {anonymous}::TX::txSetColor(COLORREF, double, HDC) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11749):
+
+  11747: HPEN txSetColor (COLORREF color, double thickness /*= 1*/, HDC dc /*= txDC()*/)
+  11748:     {
+=>11749: $1  if (_TX_DEFAULT_HDC_FAILED (dc)) return NULL;
+  11750: 
+  11751: $   HPEN pen = Win32::CreatePen ((color == TX_TRANSPARENT? PS_NULL : PS_SOLID), ROUND (thickness), color);
+
+# 2 in virtual void Button::draw() at W:\Tank\Level Editor\WNDLib.h (103):
+
+    101:     {
+    102: 
+=>  103:         txSetColor     (color_);
+    104:         txSetFillColor (color_);
+    105:         txRectangle    (x_, y_, x_ + width_, y_ + height_);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-05 09:35:12 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 10 2020 00:27:36, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 10 2020 00:27:40
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe, файл: W:\Tank\Level Editor\WNDLib.h, строка: 335, функция: int WindowManager::addWindow(Window*),
+
+Сообщение: The array of windows is full.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-05 09:35:12 +0400], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x2308 (Main). 
+From: C:\Users\Фёдор\Downloads\TX\TXLib.h (11159) const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list).
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FE9 in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+
+# 1 0x000000000042BD7B in W:\Tank\Level Editor\LevelEditor.exe: addWindow() at W:/Tank/Level Editor/WNDLib.h (335):
+
+    333:     }
+    334: 
+=>  335:     TX_ERROR ("The array of windows is full.");
+    336: 
+    337: }
+
+# 2 0x000000000042CE1E in W:\Tank\Level Editor\LevelEditor.exe: press() at W:/Tank/Level Editor/LevelEditor.cpp (79):
+
+     77:     double y = floor (rnd (0, 800 - height));
+     78: 
+=>   79:     Manager -> addWindow (new Button {x, y, width, height, RGB (rnd (0, 255), rnd (0, 255), rnd (0, 255)), "Test", "Arial", TX_WHITE, TX_WHITE, press});
+     80: 
+     81: }
+
+# 3 0x000000000042B59C in W:\Tank\Level Editor\LevelEditor.exe: click() at W:/Tank/Level Editor/WNDLib.h (212):
+
+    210:                 {
+    211: 
+=>  212:                     press_ ();
+    213: 
+    214:                     isPressed_ = true;
+
+# 4 0x000000000042BE4F in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (370):
+
+    368: 
+    369:         windows_[n] -> update ();
+=>  370:         windows_[n] -> click ();
+    371: 
+    372:     }
+
+# 5 0x000000000042C26E in W:\Tank\Level Editor\LevelEditor.exe: manageWindows() at W:/Tank/Level Editor/WNDLib.h (430):
+
+    428: 
+    429:     drawWindows ();
+=>  430:     updateWindows ();
+    431: 
+    432: }
+
+# 6 0x000000000042CB92 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (46):
+
+     44:         txClear ();
+     45: 
+=>   46:         Manager -> manageWindows ();
+     47: 
+     48:         txClearConsole ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11107):
+
+  11105:         {
+  11106: $       stkTrace = ((options & traceSE) && *_txTraceSE)? _txTraceSE : _txCaptureStackBackTrace   (2, true);
+=>11107: $       txTrace  =                                                    _txCaptureStackBackTraceTX (0, true);
+  11108:         }
+  11109: 
+
+# 1 in void Window::click() at W:\Tank\Level Editor\WNDLib.h (204):
+
+    202:         {
+    203: 
+=>  204:             if (txMouseButtons () == 1)
+    205: 
+    206:             {
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-05 09:35:12 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 13 2020 18:29:06, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 13 2020 18:29:11
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe, файл: W:\Tank\Level Editor\ResourceManager.h, строка: 127, функция: HDC__* ResourceManager::getImage(int),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "images_[image]".
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-05 09:35:12 +0400], Instance: 0x00000000005778D0 (64-bit), Flags: CMdRE0, Thread: 0x1D44 (Main). 
+From: C:\Users\Фёдор\Downloads\TX\TXLib.h (11159) const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list).
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FE9 in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+
+# 1 0x000000000042C8F5 in W:\Tank\Level Editor\LevelEditor.exe: getImage() at W:/Tank/Level Editor/ResourceManager.h (127):
+
+    125: {
+    126: 
+=>  127:     assert (images_[image]);
+    128: 
+    129:     return images_[image];
+
+# 2 0x000000000042CCCF in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (51):
+
+     49:     //picture box
+     50: 
+=>   51:     Manager -> addWindow (new PictureBox {50, 240, ResManager.getImage (ImageDoritos), ResManager.getImage (ImageLightDoritos), press});
+     52: 
+     53:     //circle button
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11107):
+
+  11105:         {
+  11106: $       stkTrace = ((options & traceSE) && *_txTraceSE)? _txTraceSE : _txCaptureStackBackTrace   (2, true);
+=>11107: $       txTrace  =                                                    _txCaptureStackBackTraceTX (0, true);
+  11108:         }
+  11109: 
+
+# 1 in PictureBox::PictureBox(double, double, HDC, HDC, void (*)()) at W:\Tank\Level Editor\WNDLib.h (84):
+
+     82: 
+     83:     width_ = txGetExtentX  (image_);
+=>   84:     height_ = txGetExtentY (image_);
+     85: 
+     86: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-05 09:35:12 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 14 2020 04:58:06, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 14 2020 04:58:11
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe, файл: W:\Tank\Level Editor\WNDLib.h, строка: 557, функция: int WindowManager::addWindow(Window*),
+
+Сообщение: The array of windows is full.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005768D0 (64-bit), Flags: CMdRE0, Thread: 0x2024 (Main), GetLastError(): 6 (Неверный дескриптор). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+
+# 1 0x000000000042BAD3 in W:\Tank\Level Editor\LevelEditor.exe: addWindow() at W:/Tank/Level Editor/WNDLib.h (557):
+
+    555:     }
+    556: 
+=>  557:     TX_ERROR ("The array of windows is full.");
+    558: 
+    559: }
+
+# 2 0x000000000042CAD9 in W:\Tank\Level Editor\LevelEditor.exe: press() at W:/Tank/Level Editor/LevelEditor.cpp (102):
+
+    100:     //MessageBox (txWindow (), "Press OK to ok", "this is not ok", MB_ICONINFORMATION | MB_OKCANCEL);
+    101: 
+=>  102:     wnd -> manager_ -> addWindow (new Button {rnd (0, 800), rnd (0, 800), rnd (5, 100), rnd (5, 100), RGB (rnd(0,255),rnd(0,255),rnd(0,255)), "", "Arial", 0, TX_WHITE, TX_WHITE, press});
+    103: 
+    104: }
+
+# 3 0x000000000042B037 in W:\Tank\Level Editor\LevelEditor.exe: click() at W:/Tank/Level Editor/WNDLib.h (313):
+
+    311:                 {
+    312: 
+=>  313:                     press_ (this);
+    314: 
+    315:                     isPressed_ = true;
+
+# 4 0x000000000042BBBC in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (592):
+
+    590: 
+    591:         windows_[n] -> update ();
+=>  592:         windows_[n] -> click ();
+    593: 
+    594:     }
+
+# 5 0x000000000042BC30 in W:\Tank\Level Editor\LevelEditor.exe: manageWindows() at W:/Tank/Level Editor/WNDLib.h (627):
+
+    625: 
+    626:     drawWindows ();
+=>  627:     updateWindows ();
+    628: 
+    629: }
+
+# 6 0x000000000042C7E9 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (70):
+
+     68: 
+     69: 
+=>   70:         Manager -> manageWindows ();
+     71: 
+     72:         char text[100] = "";
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 17 2020 19:49:20, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 17 2020 19:49:26
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe, файл: W:\Tank\Level Editor\WNDLib.h, строка: 557, функция: int WindowManager::addWindow(Window*),
+
+Сообщение: The array of windows is full.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005768D0 (64-bit), Flags: CMdRE0, Thread: 0x116C (Main), GetLastError(): 6 (Неверный дескриптор). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+
+# 1 0x000000000042BAD3 in W:\Tank\Level Editor\LevelEditor.exe: addWindow() at W:/Tank/Level Editor/WNDLib.h (557):
+
+    555:     }
+    556: 
+=>  557:     TX_ERROR ("The array of windows is full.");
+    558: 
+    559: }
+
+# 2 0x000000000042CAD9 in W:\Tank\Level Editor\LevelEditor.exe: press() at W:/Tank/Level Editor/LevelEditor.cpp (102):
+
+    100:     //MessageBox (txWindow (), "Press OK to ok", "this is not ok", MB_ICONINFORMATION | MB_OKCANCEL);
+    101: 
+=>  102:     wnd -> manager_ -> addWindow (new Button {rnd (0, 800), rnd (0, 800), rnd (5, 100), rnd (5, 100), RGB (rnd(0,255),rnd(0,255),rnd(0,255)), "", "Arial", 0, TX_WHITE, TX_WHITE, press});
+    103: 
+    104: }
+
+# 3 0x000000000042B037 in W:\Tank\Level Editor\LevelEditor.exe: click() at W:/Tank/Level Editor/WNDLib.h (313):
+
+    311:                 {
+    312: 
+=>  313:                     press_ (this);
+    314: 
+    315:                     isPressed_ = true;
+
+# 4 0x000000000042BBBC in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (592):
+
+    590: 
+    591:         windows_[n] -> update ();
+=>  592:         windows_[n] -> click ();
+    593: 
+    594:     }
+
+# 5 0x000000000042BC30 in W:\Tank\Level Editor\LevelEditor.exe: manageWindows() at W:/Tank/Level Editor/WNDLib.h (627):
+
+    625: 
+    626:     drawWindows ();
+=>  627:     updateWindows ();
+    628: 
+    629: }
+
+# 6 0x000000000042C7E9 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (70):
+
+     68: 
+     69: 
+=>   70:         Manager -> manageWindows ();
+     71: 
+     72:         char text[100] = "";
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 17 2020 19:49:20, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 17 2020 19:49:56
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E5D501 в функции strlen(). Попытка прочесть данные по адресу 0x0000000000000008. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005768D0 (64-bit), Flags: CMdRE0, Thread: 0x3F20 (Main), errno: 2 (No such file or directory), _doserrno: 3 (No such process). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E5D501 in C:\Windows\System32\msvcrt.dll: strlen()
+# 1 0x0000000000447C25 in W:\Tank\Level Editor\LevelEditor.exe: __pformat_puts() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/stdio/mingw_pformat.c (558)
+# 2 0x0000000000449582 in W:\Tank\Level Editor\LevelEditor.exe: __mingw_pformat() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/stdio/mingw_pformat.c (2482)
+# 3 0x0000000000443D70 in W:\Tank\Level Editor\LevelEditor.exe: __mingw_vsprintf() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/stdio/mingw_vsprintf.c (52)
+
+# 4 0x0000000000455197 in W:\Tank\Level Editor\LevelEditor.exe: sprintf() at c:/users/фёдор/downloads/codeblocks/mingw/x86_64-w64-mingw32/include/stdio.h (380):
+
+    378:   int __retval;
+    379:   __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
+=>  380:   __retval = __mingw_vsprintf( __stream, __format, __local_argv );
+    381:   __builtin_va_end( __local_argv );
+    382:   return __retval;
+
+# 5 0x000000000042BDAF in W:\Tank\Level Editor\LevelEditor.exe at W:/Tank/Level Editor/ResourceManager.h (63):
+
+     61:         char path[PATH_MAX] = "";
+     62: 
+=>   63:         sprintf (path, "%s\\%s", resourcesPath, resources[i].path_);
+     64: 
+     65:         images_[i] = txLoadImage (path);
+
+# 6 0x000000000042C371 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (29):
+
+     27:     txBegin ();
+     28: 
+=>   29:     ResourceManager ResManager (Resources, "Resources\\Images");
+     30: 
+     31:     ContainerWindow * MainWindow = new ContainerWindow (0, 0, 800, 800, RGB (40, 40, 40));
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in ResourceManager::ResourceManager(Resource*, const char*) at W:\Tank\Level Editor\ResourceManager.h (93):
+
+     91:         txTextOut (wWidth / 2 - txGetTextExtentX (text) / 2, wHeight / 2 + 200 - txGetTextExtentY (text) / 2, text);
+     92: 
+=>   93:         txSleep (20);
+     94: 
+     95:     }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 17 2020 22:56:00, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 17 2020 22:56:05
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E5D501 в функции strlen(). Попытка прочесть данные по адресу 0x0000000000000008. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005768D0 (64-bit), Flags: CMdRE0, Thread: 0x3F20 (Main), errno: 2 (No such file or directory), _doserrno: 3 (No such process). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E5D501 in C:\Windows\System32\msvcrt.dll: strlen()
+# 1 0x0000000000447C25 in W:\Tank\Level Editor\LevelEditor.exe: __pformat_puts() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/stdio/mingw_pformat.c (558)
+# 2 0x0000000000449582 in W:\Tank\Level Editor\LevelEditor.exe: __mingw_pformat() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/stdio/mingw_pformat.c (2482)
+# 3 0x0000000000443D70 in W:\Tank\Level Editor\LevelEditor.exe: __mingw_vsprintf() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/stdio/mingw_vsprintf.c (52)
+
+# 4 0x0000000000455197 in W:\Tank\Level Editor\LevelEditor.exe: sprintf() at c:/users/фёдор/downloads/codeblocks/mingw/x86_64-w64-mingw32/include/stdio.h (380):
+
+    378:   int __retval;
+    379:   __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
+=>  380:   __retval = __mingw_vsprintf( __stream, __format, __local_argv );
+    381:   __builtin_va_end( __local_argv );
+    382:   return __retval;
+
+# 5 0x000000000042BDAF in W:\Tank\Level Editor\LevelEditor.exe at W:/Tank/Level Editor/ResourceManager.h (63):
+
+     61:         char path[PATH_MAX] = "";
+     62: 
+=>   63:         sprintf (path, "%s\\%s", resourcesPath, resources[i].path_);
+     64: 
+     65:         images_[i] = txLoadImage (path);
+
+# 6 0x000000000042C371 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (29):
+
+     27:     txBegin ();
+     28: 
+=>   29:     ResourceManager ResManager (Resources, "Resources\\Images");
+     30: 
+     31:     ContainerWindow * MainWindow = new ContainerWindow (0, 0, 800, 800, RGB (40, 40, 40));
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 17 2020 22:56:00, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 17 2020 22:56:05
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe, файл: W:\Tank\Level Editor\WNDLib.h, строка: 563, функция: int WindowManager::addWindow(Window*),
+
+Сообщение: The array of windows is full.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005768D0 (64-bit), Flags: CMdRE0, Thread: 0xE88 (Main), GetLastError(): 6 (Неверный дескриптор). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+
+# 1 0x000000000042BAE3 in W:\Tank\Level Editor\LevelEditor.exe: addWindow() at W:/Tank/Level Editor/WNDLib.h (563):
+
+    561:     }
+    562: 
+=>  563:     TX_ERROR ("The array of windows is full.");
+    564: 
+    565: }
+
+# 2 0x000000000042CA6F in W:\Tank\Level Editor\LevelEditor.exe: press() at W:/Tank/Level Editor/LevelEditor.cpp (87):
+
+     85:     //MessageBox (txWindow (), "Press OK to ok", "this is not ok", MB_ICONINFORMATION | MB_OKCANCEL);
+     86: 
+=>   87:     wnd -> parent_ -> addWindow (new Button {rnd (0, 800), rnd (0, 800), rnd (20, 50), rnd (20, 50), RGB (rnd (0, 255), rnd (0, 255), rnd (0, 255)), "", "", rnd (10, 30), TX_WHITE, TX_WHITE, press});
+     88: 
+     89: }
+
+# 3 0x000000000042B047 in W:\Tank\Level Editor\LevelEditor.exe: click() at W:/Tank/Level Editor/WNDLib.h (319):
+
+    317:                 {
+    318: 
+=>  319:                     press_ (this);
+    320: 
+    321:                     isPressed_ = true;
+
+# 4 0x000000000042BBCC in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (598):
+
+    596: 
+    597:         windows_[n] -> update ();
+=>  598:         windows_[n] -> click ();
+    599: 
+    600:     }
+
+# 5 0x000000000042BC40 in W:\Tank\Level Editor\LevelEditor.exe: manageWindows() at W:/Tank/Level Editor/WNDLib.h (633):
+
+    631: 
+    632:     drawWindows ();
+=>  633:     updateWindows ();
+    634: 
+    635: }
+
+# 6 0x000000000042B086 in W:\Tank\Level Editor\LevelEditor.exe: manage() at W:/Tank/Level Editor/WNDLib.h (349):
+
+    347: {
+    348: 
+=>  349:     manager_.manageWindows ();
+    350: 
+    351: }
+
+# 7 0x000000000042C800 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (61):
+
+     59:     {
+     60: 
+=>   61:         MainWindow -> manage ();
+     62: 
+     63:         txSleep (1);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 17 2020 23:09:08, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 17 2020 23:09:13
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: #1: Куча была повреждена. (0xC0000374) при выполнении кода по адресу 0x00007FFFD61F92A9 в функции RtlIsNonEmptyDirectoryReparsePointAllowed(). Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+Ой, всё (EXCEPTION_NONCONTINUABLE).
+
+#2: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005768D0 (64-bit), Flags: CMdrE0, Thread: 0x654 (Canvas), GetLastError(): 6 (Неверный дескриптор). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD61F92A9 in C:\Windows\SYSTEM32\ntdll.dll: RtlIsNonEmptyDirectoryReparsePointAllowed()
+# 1 0x00007FFFD61F9273 in C:\Windows\SYSTEM32\ntdll.dll: RtlIsNonEmptyDirectoryReparsePointAllowed()
+# 2 0x00007FFFD6201662 in C:\Windows\SYSTEM32\ntdll.dll: RtlpNtMakeTemporaryKey()
+# 3 0x00007FFFD620196A in C:\Windows\SYSTEM32\ntdll.dll: RtlpNtMakeTemporaryKey()
+# 4 0x00007FFFD620A929 in C:\Windows\SYSTEM32\ntdll.dll: RtlpNtMakeTemporaryKey()
+# 5 0x00007FFFD614088D in C:\Windows\SYSTEM32\ntdll.dll: RtlGetCurrentServiceSessionId()
+# 6 0x00007FFFD613FC11 in C:\Windows\SYSTEM32\ntdll.dll: RtlFreeHeap()
+# 7 0x00007FFFD5E19CFC in C:\Windows\System32\msvcrt.dll: free()
+# 8 0x000000006606A3E8 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymGetLineFromAddrW64()
+# 9 0x00000000660449A9 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymGetLineFromAddrW64()
+#10 0x00000000660573D1 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymGetLineFromAddrW64()
+#11 0x0000000066043773 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymCleanup()
+#12 0x0000000000419350 in W:\Tank\Level Editor\LevelEditor.exe: (anonymous namespace)::TX::_txSymGetFromAddr()
+#13 0x000000000040652E in W:\Tank\Level Editor\LevelEditor.exe: (anonymous namespace)::TX::_txCleanup()
+#14 0x000000000040A296 in W:\Tank\Level Editor\LevelEditor.exe: (anonymous namespace)::TX::_txCanvas_ThreadProc()
+#15 0x00007FFFD5E3B04A in C:\Windows\System32\msvcrt.dll: beginthreadex()
+#16 0x00007FFFD5E3B11C in C:\Windows\System32\msvcrt.dll: endthreadex()
+#17 0x00007FFFD6017BD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#18 0x00007FFFD616CED1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Фёдор\Downloads\TX\TXLib.h (10935):
+
+  10933: $   if (!addr && process)
+  10934:         {
+=>10935: $       _TX_CALL (LIB_::SymCleanup, (process));
+  10936: 
+  10937: $       process = NULL;
+
+# 1 in void {anonymous}::TX::_txCleanup() at C:\Users\Фёдор\Downloads\TX\TXLib.h (8029):
+
+   8027: $   _flushall();
+   8028: 
+=> 8029: $   _txSymGetFromAddr (NULL);
+   8030: 
+   8031:     _TX_ON_DEBUG (OutputDebugString ("\n");
+
+# 2 in unsigned int {anonymous}::TX::_txCanvas_ThreadProc(void*) at C:\Users\Фёдор\Downloads\TX\TXLib.h (8614):
+
+   8612: $   if (_txRunning && _txMain)         // Main window is destroyed but main() is still running.
+   8613:         {                              // No chances for good termination, so use exit().
+=> 8614: $       _txCleanup();
+   8615: $       ::exit ((int) msg.wParam);
+   8616:         }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 18 2020 09:14:18, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 18 2020 12:13:51
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: #1: Куча была повреждена. (0xC0000374) при выполнении кода по адресу 0x00007FFFD61F92A9 в функции RtlIsNonEmptyDirectoryReparsePointAllowed(). Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+Ой, всё (EXCEPTION_NONCONTINUABLE).
+
+С помощью функции _set_se_translator() вы можете сами обработать эту ошибку.
+
+#3: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005768D0 (64-bit), Flags: CMdrE0, Thread: 0x654 (Canvas), GetLastError(): 6 (Неверный дескриптор). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD61F92A9 in C:\Windows\SYSTEM32\ntdll.dll: RtlIsNonEmptyDirectoryReparsePointAllowed()
+# 1 0x00007FFFD61F9273 in C:\Windows\SYSTEM32\ntdll.dll: RtlIsNonEmptyDirectoryReparsePointAllowed()
+# 2 0x00007FFFD6201662 in C:\Windows\SYSTEM32\ntdll.dll: RtlpNtMakeTemporaryKey()
+# 3 0x00007FFFD620196A in C:\Windows\SYSTEM32\ntdll.dll: RtlpNtMakeTemporaryKey()
+# 4 0x00007FFFD620A929 in C:\Windows\SYSTEM32\ntdll.dll: RtlpNtMakeTemporaryKey()
+# 5 0x00007FFFD614088D in C:\Windows\SYSTEM32\ntdll.dll: RtlGetCurrentServiceSessionId()
+# 6 0x00007FFFD613FC11 in C:\Windows\SYSTEM32\ntdll.dll: RtlFreeHeap()
+# 7 0x00007FFFD5E19CFC in C:\Windows\System32\msvcrt.dll: free()
+# 8 0x000000006606A3E8 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymGetLineFromAddrW64()
+# 9 0x00000000660449A9 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymGetLineFromAddrW64()
+#10 0x00000000660573D1 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymGetLineFromAddrW64()
+#11 0x0000000066043773 in C:\Users\Фёдор\Downloads\TX\Windows\MgwHelp64.dll: SymCleanup()
+#12 0x0000000000419350 in W:\Tank\Level Editor\LevelEditor.exe: (anonymous namespace)::TX::_txSymGetFromAddr()
+#13 0x000000000040652E in W:\Tank\Level Editor\LevelEditor.exe: (anonymous namespace)::TX::_txCleanup()
+#14 0x000000000040A296 in W:\Tank\Level Editor\LevelEditor.exe: (anonymous namespace)::TX::_txCanvas_ThreadProc()
+#15 0x00007FFFD5E3B04A in C:\Windows\System32\msvcrt.dll: beginthreadex()
+#16 0x00007FFFD5E3B11C in C:\Windows\System32\msvcrt.dll: endthreadex()
+#17 0x00007FFFD6017BD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#18 0x00007FFFD616CED1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Фёдор\Downloads\TX\TXLib.h (10935):
+
+  10933: $   if (!addr && process)
+  10934:         {
+=>10935: $       _TX_CALL (LIB_::SymCleanup, (process));
+  10936: 
+  10937: $       process = NULL;
+
+# 1 in void {anonymous}::TX::_txCleanup() at C:\Users\Фёдор\Downloads\TX\TXLib.h (8029):
+
+   8027: $   _flushall();
+   8028: 
+=> 8029: $   _txSymGetFromAddr (NULL);
+   8030: 
+   8031:     _TX_ON_DEBUG (OutputDebugString ("\n");
+
+# 2 in unsigned int {anonymous}::TX::_txCanvas_ThreadProc(void*) at C:\Users\Фёдор\Downloads\TX\TXLib.h (8614):
+
+   8612: $   if (_txRunning && _txMain)         // Main window is destroyed but main() is still running.
+   8613:         {                              // No chances for good termination, so use exit().
+=> 8614: $       _txCleanup();
+   8615: $       ::exit ((int) msg.wParam);
+   8616:         }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 18 2020 09:14:18, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 18 2020 12:13:51
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E1BD80 в функции getche(). Попытка прочесть данные по адресу 0x00007FFFD5EDA010. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005788D0 (64-bit), Flags: CMdRE0, Thread: 0xBB0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+# 2 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+
+# 3 0x000000000042C15D in W:\Tank\Level Editor\LevelEditor.exe: update() at W:/Tank/Level Editor/WNDLib.h (692):
+
+    690: {
+    691: 
+=>  692:     if (kbhit ())
+    693: 
+    694:     {
+
+# 4 0x000000000042C3D0 in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (781):
+
+    779:         if (!windows_[n]) return;
+    780: 
+=>  781:         windows_[n] -> update ();
+    782:         windows_[n] -> click ();
+    783: 
+
+# 5 0x000000000042C46E in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (817):
+
+    815: 
+    816:     drawWindows ();
+=>  817:     updateWindows ();
+    818: 
+    819:     for (int n = 0; n < WINDOWS_MAX; n++)
+
+# 6 0x000000000042B321 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (463):
+
+    461:     click ();
+    462: 
+=>  463:     manager_.run ();
+    464: 
+    465: }
+
+# 7 0x000000000042CD6D in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (65):
+
+     63:     {
+     64: 
+=>   65:         MainWindow -> run ();
+     66: 
+     67:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void WriteBox::draw() at W:\Tank\Level Editor\WNDLib.h (659):
+
+    657:     txSetFillColor (textColor_);
+    658: 
+=>  659:     txDrawText (x_, y_, x_ + width_, y_ + height_, text);
+    660: 
+    661:     if (isActive_)
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 18 2020 15:08:01, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 18 2020 23:28:44
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E1BD80 в функции getche(). Попытка прочесть данные по адресу 0x00007FFFD5EDA010. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005788D0 (64-bit), Flags: CMdRE0, Thread: 0xBB0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+# 2 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+
+# 3 0x000000000042C15D in W:\Tank\Level Editor\LevelEditor.exe: update() at W:/Tank/Level Editor/WNDLib.h (692):
+
+    690: {
+    691: 
+=>  692:     if (kbhit ())
+    693: 
+    694:     {
+
+# 4 0x000000000042C3D0 in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (781):
+
+    779:         if (!windows_[n]) return;
+    780: 
+=>  781:         windows_[n] -> update ();
+    782:         windows_[n] -> click ();
+    783: 
+
+# 5 0x000000000042C46E in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (817):
+
+    815: 
+    816:     drawWindows ();
+=>  817:     updateWindows ();
+    818: 
+    819:     for (int n = 0; n < WINDOWS_MAX; n++)
+
+# 6 0x000000000042B321 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (463):
+
+    461:     click ();
+    462: 
+=>  463:     manager_.run ();
+    464: 
+    465: }
+
+# 7 0x000000000042CD6D in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (65):
+
+     63:     {
+     64: 
+=>   65:         MainWindow -> run ();
+     66: 
+     67:         txSleep (1);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 18 2020 15:08:01, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 18 2020 23:28:43
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#2: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E1BD80 в функции getche(). Попытка прочесть данные по адресу 0x00007FFFD5EDA010. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#3: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005788D0 (64-bit), Flags: CMdrE0, Thread: 0xBB0 (Main), errno: 2 (No such file or directory), _doserrno: 3 (No such process). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+# 2 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+# 3 0x0000000000406A94 in W:\Tank\Level Editor\LevelEditor.exe: _txPauseBeforeTermination() at C:/Users/Фёдор/Downloads/TX/TXLib.h (8082)
+# 4 0x0000000000405EB0 in W:\Tank\Level Editor\LevelEditor.exe: _txCleanup() at C:/Users/Фёдор/Downloads/TX/TXLib.h (7983)
+# 5 0x000000000041AC5C in W:\Tank\Level Editor\LevelEditor.exe: _txProcessError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (11254)
+# 6 0x0000000000410FCD in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 7 0x00000000004114D4 in W:\Tank\Level Editor\LevelEditor.exe: _txOnSignal() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9741)
+# 8 0x00000000004421E6 in W:\Tank\Level Editor\LevelEditor.exe: _gnu_exception_handler() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/crt/crt_handler.c (223)
+# 9 0x00007FFFD5E28048 in C:\Windows\System32\msvcrt.dll: _C_specific_handler()
+#10 0x00007FFFD61A121F in C:\Windows\SYSTEM32\ntdll.dll: _chkstk()
+#11 0x00007FFFD616A289 in C:\Windows\SYSTEM32\ntdll.dll: RtlRaiseException()
+#12 0x00007FFFD619FE8E in C:\Windows\SYSTEM32\ntdll.dll: KiUserExceptionDispatcher()
+#13 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+#14 0x00007FFFD5E1BF1E in C:\Windows\System32\msvcrt.dll: kbhit()
+#15 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+
+#16 0x000000000042C15D in W:\Tank\Level Editor\LevelEditor.exe: update() at W:/Tank/Level Editor/WNDLib.h (692):
+
+    690: {
+    691: 
+=>  692:     if (kbhit ())
+    693: 
+    694:     {
+
+#17 0x000000000042C3D0 in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (781):
+
+    779:         if (!windows_[n]) return;
+    780: 
+=>  781:         windows_[n] -> update ();
+    782:         windows_[n] -> click ();
+    783: 
+
+#18 0x000000000042C46E in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (817):
+
+    815: 
+    816:     drawWindows ();
+=>  817:     updateWindows ();
+    818: 
+    819:     for (int n = 0; n < WINDOWS_MAX; n++)
+
+#19 0x000000000042B321 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (463):
+
+    461:     click ();
+    462: 
+=>  463:     manager_.run ();
+    464: 
+    465: }
+
+#20 0x000000000042CD6D in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (65):
+
+     63:     {
+     64: 
+=>   65:         MainWindow -> run ();
+     66: 
+     67:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void {anonymous}::TX::_txPauseBeforeTermination(HWND) at C:\Users\Фёдор\Downloads\TX\TXLib.h (8082):
+
+   8080: void _txPauseBeforeTermination (HWND canvas)
+   8081:     {
+=> 8082: $3  while (_kbhit()) (void)_getch();
+   8083: 
+   8084: $   CONSOLE_SCREEN_BUFFER_INFO con = {{0}};
+
+# 1 in void {anonymous}::TX::_txCleanup() at C:\Users\Фёдор\Downloads\TX\TXLib.h (7983):
+
+   7981: $       if (console)
+   7982:             {
+=> 7983: $           _txPauseBeforeTermination (canvas);
+   7984: $           paused = true;
+   7985:             }
+
+# 2 in const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11188):
+
+  11186: 
+  11187:     if (stkTrace && strstr (stkTrace, ".exe: "))
+=>11188:         {$ fprintf (stderr,    "Стек вызовов:\n\n"
+  11189:                                "%s\n\n"
+  11190:                                "--------------------------------------------------\n",
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 18 2020 15:08:01, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 18 2020 23:28:43
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E1BD80 в функции getche(). Попытка прочесть данные по адресу 0x00007FFFD5EDA010. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005788D0 (64-bit), Flags: CMdRE0, Thread: 0x307C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+# 2 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+
+# 3 0x000000000042BFDF in W:\Tank\Level Editor\LevelEditor.exe: update() at W:/Tank/Level Editor/WNDLib.h (722):
+
+    720: {
+    721: 
+=>  722:     if (kbhit ())
+    723: 
+    724:     {
+
+# 4 0x000000000042C2A8 in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (821):
+
+    819:         if (!windows_[n] || !windows_[n] -> visible_) return;
+    820: 
+=>  821:         windows_[n] -> update ();
+    822:         windows_[n] -> click ();
+    823: 
+
+# 5 0x000000000042C3E8 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (877):
+
+    875: 
+    876:     drawWindows ();
+=>  877:     updateWindows ();
+    878: 
+    879:     for (int n = 0; n < WINDOWS_MAX; n++)
+
+# 6 0x000000000042B367 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (499):
+
+    497:     click ();
+    498: 
+=>  499:     manager_.run ();
+    500: 
+    501: }
+
+# 7 0x000000000042C44C in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (885):
+
+    883:         if (!windows_[n] || !windows_[n] -> visible_) continue;
+    884: 
+=>  885:         windows_[n] -> run ();
+    886: 
+    887:     }
+
+# 8 0x000000000042B367 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (499):
+
+    497:     click ();
+    498: 
+=>  499:     manager_.run ();
+    500: 
+    501: }
+
+# 9 0x000000000042D056 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (90):
+
+     88:     {
+     89: 
+=>   90:         MainWindow -> run ();
+     91: 
+     92:         test -> text_ = writeBox -> getText ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in virtual void WriteBox::draw() at W:\Tank\Level Editor\WNDLib.h (706):
+
+    704:                 txSetFillColor (strokeColor_);
+    705: 
+=>  706:                 txLine (line.x, line.y, line.x, line.y + fontSize_);
+    707: 
+    708:             }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 19 2020 21:05:30, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 12:39:20
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E1BD80 в функции getche(). Попытка прочесть данные по адресу 0x00007FFFD5EDA010. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005788D0 (64-bit), Flags: CMdRE0, Thread: 0x307C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+# 2 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+
+# 3 0x000000000042BFDF in W:\Tank\Level Editor\LevelEditor.exe: update() at W:/Tank/Level Editor/WNDLib.h (722):
+
+    720: {
+    721: 
+=>  722:     if (kbhit ())
+    723: 
+    724:     {
+
+# 4 0x000000000042C2A8 in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (821):
+
+    819:         if (!windows_[n] || !windows_[n] -> visible_) return;
+    820: 
+=>  821:         windows_[n] -> update ();
+    822:         windows_[n] -> click ();
+    823: 
+
+# 5 0x000000000042C3E8 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (877):
+
+    875: 
+    876:     drawWindows ();
+=>  877:     updateWindows ();
+    878: 
+    879:     for (int n = 0; n < WINDOWS_MAX; n++)
+
+# 6 0x000000000042B367 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (499):
+
+    497:     click ();
+    498: 
+=>  499:     manager_.run ();
+    500: 
+    501: }
+
+# 7 0x000000000042C44C in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (885):
+
+    883:         if (!windows_[n] || !windows_[n] -> visible_) continue;
+    884: 
+=>  885:         windows_[n] -> run ();
+    886: 
+    887:     }
+
+# 8 0x000000000042B367 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (499):
+
+    497:     click ();
+    498: 
+=>  499:     manager_.run ();
+    500: 
+    501: }
+
+# 9 0x000000000042D056 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (90):
+
+     88:     {
+     89: 
+=>   90:         MainWindow -> run ();
+     91: 
+     92:         test -> text_ = writeBox -> getText ();
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 19 2020 21:05:30, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 12:39:21
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\LevelEditor.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#2: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FFFD5E1BD80 в функции getche(). Попытка прочесть данные по адресу 0x00007FFFD5EDA010. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#3: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005788D0 (64-bit), Flags: CMdrE0, Thread: 0x307C (Main), errno: 2 (No such file or directory), _doserrno: 3 (No such process). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+# 2 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+# 3 0x0000000000406A94 in W:\Tank\Level Editor\LevelEditor.exe: _txPauseBeforeTermination() at C:/Users/Фёдор/Downloads/TX/TXLib.h (8082)
+# 4 0x0000000000405EB0 in W:\Tank\Level Editor\LevelEditor.exe: _txCleanup() at C:/Users/Фёдор/Downloads/TX/TXLib.h (7983)
+# 5 0x000000000041AC5C in W:\Tank\Level Editor\LevelEditor.exe: _txProcessError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (11254)
+# 6 0x0000000000410FCD in W:\Tank\Level Editor\LevelEditor.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 7 0x00000000004114D4 in W:\Tank\Level Editor\LevelEditor.exe: _txOnSignal() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9741)
+# 8 0x0000000000442556 in W:\Tank\Level Editor\LevelEditor.exe: _gnu_exception_handler() at C:/temp/gcc/build-mingw-w64/mingw-w64-crt/../../src/mingw-w64-crt/crt/crt_handler.c (223)
+# 9 0x00007FFFD5E28048 in C:\Windows\System32\msvcrt.dll: _C_specific_handler()
+#10 0x00007FFFD61A121F in C:\Windows\SYSTEM32\ntdll.dll: _chkstk()
+#11 0x00007FFFD616A289 in C:\Windows\SYSTEM32\ntdll.dll: RtlRaiseException()
+#12 0x00007FFFD619FE8E in C:\Windows\SYSTEM32\ntdll.dll: KiUserExceptionDispatcher()
+#13 0x00007FFFD5E1BD80 in C:\Windows\System32\msvcrt.dll: getche()
+#14 0x00007FFFD5E1BF1E in C:\Windows\System32\msvcrt.dll: kbhit()
+#15 0x00007FFFD5E1BDB6 in C:\Windows\System32\msvcrt.dll: kbhit()
+
+#16 0x000000000042BFDF in W:\Tank\Level Editor\LevelEditor.exe: update() at W:/Tank/Level Editor/WNDLib.h (722):
+
+    720: {
+    721: 
+=>  722:     if (kbhit ())
+    723: 
+    724:     {
+
+#17 0x000000000042C2A8 in W:\Tank\Level Editor\LevelEditor.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (821):
+
+    819:         if (!windows_[n] || !windows_[n] -> visible_) return;
+    820: 
+=>  821:         windows_[n] -> update ();
+    822:         windows_[n] -> click ();
+    823: 
+
+#18 0x000000000042C3E8 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (877):
+
+    875: 
+    876:     drawWindows ();
+=>  877:     updateWindows ();
+    878: 
+    879:     for (int n = 0; n < WINDOWS_MAX; n++)
+
+#19 0x000000000042B367 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (499):
+
+    497:     click ();
+    498: 
+=>  499:     manager_.run ();
+    500: 
+    501: }
+
+#20 0x000000000042C44C in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (885):
+
+    883:         if (!windows_[n] || !windows_[n] -> visible_) continue;
+    884: 
+=>  885:         windows_[n] -> run ();
+    886: 
+    887:     }
+
+#21 0x000000000042B367 in W:\Tank\Level Editor\LevelEditor.exe: run() at W:/Tank/Level Editor/WNDLib.h (499):
+
+    497:     click ();
+    498: 
+=>  499:     manager_.run ();
+    500: 
+    501: }
+
+#22 0x000000000042D056 in W:\Tank\Level Editor\LevelEditor.exe: main() at W:/Tank/Level Editor/LevelEditor.cpp (90):
+
+     88:     {
+     89: 
+=>   90:         MainWindow -> run ();
+     91: 
+     92:         test -> text_ = writeBox -> getText ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in void {anonymous}::TX::_txPauseBeforeTermination(HWND) at C:\Users\Фёдор\Downloads\TX\TXLib.h (8082):
+
+   8080: void _txPauseBeforeTermination (HWND canvas)
+   8081:     {
+=> 8082: $3  while (_kbhit()) (void)_getch();
+   8083: 
+   8084: $   CONSOLE_SCREEN_BUFFER_INFO con = {{0}};
+
+# 1 in void {anonymous}::TX::_txCleanup() at C:\Users\Фёдор\Downloads\TX\TXLib.h (7983):
+
+   7981: $       if (console)
+   7982:             {
+=> 7983: $           _txPauseBeforeTermination (canvas);
+   7984: $           paused = true;
+   7985:             }
+
+# 2 in const char* {anonymous}::TX::_txProcessError(const char*, int, const char*, unsigned int, const char*, va_list) at C:\Users\Фёдор\Downloads\TX\TXLib.h (11188):
+
+  11186: 
+  11187:     if (stkTrace && strstr (stkTrace, ".exe: "))
+=>11188:         {$ fprintf (stderr,    "Стек вызовов:\n\n"
+  11189:                                "%s\n\n"
+  11190:                                "--------------------------------------------------\n",
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 19 2020 21:05:30, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 12:39:21
+
+Run file:	W:\Tank\Level Editor\LevelEditor.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------

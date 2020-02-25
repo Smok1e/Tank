@@ -1,0 +1,533 @@
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\TestWnd.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 12276, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "destImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005798D0 (64-bit), Flags: CMdRE0, Thread: 0x8E0 (Main), GetLastError(): 13 (Недопустимые данные), errno: 22 (Invalid argument), _doserrno: 123 (Unknown error). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\TestWnd.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x000000000042212D in W:\Tank\Level Editor\TestWnd.exe: txTransparentBlt() at C:/Users/Фёдор/Downloads/TX/TXLib.h (12276)
+
+# 2 0x000000000042D443 in W:\Tank\Level Editor\TestWnd.exe: main() at W:/Tank/Level Editor/TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at C:\Users\Фёдор\Downloads\TX\TXLib.h (12276):
+
+  12274:                        HDC sourceImage, double xSource /*= 0*/, double ySource /*= 0*/, COLORREF transColor /*= TX_BLACK*/)
+  12275:     {
+=>12276: $1  if (_TX_HDC_FAILED (destImage))   return false;
+  12277: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  12278: 
+
+# 1 in int main() at W:\Tank\Level Editor\TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 20 2020 17:40:03, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 18:03:53
+
+Run file:	W:\Tank\Level Editor\TestWnd.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\TestWnd.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 12277, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#2: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005798D0 (64-bit), Flags: CMdRE0, Thread: 0x8E0 (Main), GetLastError(): 13 (Недопустимые данные), errno: 22 (Invalid argument), _doserrno: 123 (Unknown error). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\TestWnd.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x00000000004221BF in W:\Tank\Level Editor\TestWnd.exe: txTransparentBlt() at C:/Users/Фёдор/Downloads/TX/TXLib.h (12277)
+
+# 2 0x000000000042D5E9 in W:\Tank\Level Editor\TestWnd.exe: draw() at W:/Tank/Level Editor/TestWnd.cpp (210):
+
+    208: {
+    209: 
+=>  210:     txTransparentBlt (txDC (), x_, y_, 0, 0, image_);
+    211: 
+    212: }
+
+# 3 0x000000000042C250 in W:\Tank\Level Editor\TestWnd.exe: drawWindows() at W:/Tank/Level Editor/WNDLib.h (815):
+
+    813:         if (!windows_[n] || !windows_[n] -> visible_) return;
+    814: 
+=>  815:         windows_[n] -> draw ();
+    816: 
+    817:     }
+
+# 4 0x000000000042C407 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (888):
+
+    886: {
+    887: 
+=>  888:     drawWindows ();
+    889:     updateWindows ();
+    890: 
+
+# 5 0x000000000042B367 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (501):
+
+    499:     click ();
+    500: 
+=>  501:     manager_.run ();
+    502: 
+    503: }
+
+# 6 0x000000000042D243 in W:\Tank\Level Editor\TestWnd.exe: main() at W:/Tank/Level Editor/TestWnd.cpp (151):
+
+    149:     {
+    150: 
+=>  151:         mainWindow -> run ();
+    152: 
+    153:         ColorWnd -> color_ = mainWindow -> getColor ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at C:\Users\Фёдор\Downloads\TX\TXLib.h (12277):
+
+  12275:     {
+  12276: $1  if (_TX_HDC_FAILED (destImage))   return false;
+=>12277: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  12278: 
+  12279: $   POINT size = txGetExtent (sourceImage);
+
+# 1 in virtual void PaintBox::draw() at W:\Tank\Level Editor\TestWnd.cpp (210):
+
+    208: {
+    209: 
+=>  210:     txTransparentBlt (txDC (), x_, y_, 0, 0, image_);
+    211: 
+    212: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 20 2020 17:40:03, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 18:03:53
+
+Run file:	W:\Tank\Level Editor\TestWnd.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\TestWnd.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 12276, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "destImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#3: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005798D0 (64-bit), Flags: CMdRE0, Thread: 0x8E0 (Main), GetLastError(): 13 (Недопустимые данные), errno: 22 (Invalid argument), _doserrno: 123 (Unknown error). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\TestWnd.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x000000000042212D in W:\Tank\Level Editor\TestWnd.exe: txTransparentBlt() at C:/Users/Фёдор/Downloads/TX/TXLib.h (12276)
+
+# 2 0x000000000042D443 in W:\Tank\Level Editor\TestWnd.exe: main() at W:/Tank/Level Editor/TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at C:\Users\Фёдор\Downloads\TX\TXLib.h (12276):
+
+  12274:                        HDC sourceImage, double xSource /*= 0*/, double ySource /*= 0*/, COLORREF transColor /*= TX_BLACK*/)
+  12275:     {
+=>12276: $1  if (_TX_HDC_FAILED (destImage))   return false;
+  12277: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  12278: 
+
+# 1 in int main() at W:\Tank\Level Editor\TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 20 2020 17:40:03, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 18:03:53
+
+Run file:	W:\Tank\Level Editor\TestWnd.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\TestWnd.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 12277, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#4: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005798D0 (64-bit), Flags: CMdRE0, Thread: 0x8E0 (Main), GetLastError(): 13 (Недопустимые данные), errno: 22 (Invalid argument), _doserrno: 123 (Unknown error). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\TestWnd.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x00000000004221BF in W:\Tank\Level Editor\TestWnd.exe: txTransparentBlt() at C:/Users/Фёдор/Downloads/TX/TXLib.h (12277)
+
+# 2 0x000000000042D5E9 in W:\Tank\Level Editor\TestWnd.exe: draw() at W:/Tank/Level Editor/TestWnd.cpp (210):
+
+    208: {
+    209: 
+=>  210:     txTransparentBlt (txDC (), x_, y_, 0, 0, image_);
+    211: 
+    212: }
+
+# 3 0x000000000042C250 in W:\Tank\Level Editor\TestWnd.exe: drawWindows() at W:/Tank/Level Editor/WNDLib.h (815):
+
+    813:         if (!windows_[n] || !windows_[n] -> visible_) return;
+    814: 
+=>  815:         windows_[n] -> draw ();
+    816: 
+    817:     }
+
+# 4 0x000000000042C407 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (888):
+
+    886: {
+    887: 
+=>  888:     drawWindows ();
+    889:     updateWindows ();
+    890: 
+
+# 5 0x000000000042B367 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (501):
+
+    499:     click ();
+    500: 
+=>  501:     manager_.run ();
+    502: 
+    503: }
+
+# 6 0x000000000042D243 in W:\Tank\Level Editor\TestWnd.exe: main() at W:/Tank/Level Editor/TestWnd.cpp (151):
+
+    149:     {
+    150: 
+=>  151:         mainWindow -> run ();
+    152: 
+    153:         ColorWnd -> color_ = mainWindow -> getColor ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at C:\Users\Фёдор\Downloads\TX\TXLib.h (12277):
+
+  12275:     {
+  12276: $1  if (_TX_HDC_FAILED (destImage))   return false;
+=>12277: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  12278: 
+  12279: $   POINT size = txGetExtent (sourceImage);
+
+# 1 in virtual void PaintBox::draw() at W:\Tank\Level Editor\TestWnd.cpp (210):
+
+    208: {
+    209: 
+=>  210:     txTransparentBlt (txDC (), x_, y_, 0, 0, image_);
+    211: 
+    212: }
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 20 2020 17:40:03, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 18:03:53
+
+Run file:	W:\Tank\Level Editor\TestWnd.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\TestWnd.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 12276, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "destImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005798D0 (64-bit), Flags: CMdRE0, Thread: 0x2670 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\TestWnd.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x000000000042212D in W:\Tank\Level Editor\TestWnd.exe: txTransparentBlt() at C:/Users/Фёдор/Downloads/TX/TXLib.h (12276)
+
+# 2 0x000000000042D443 in W:\Tank\Level Editor\TestWnd.exe: main() at W:/Tank/Level Editor/TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at C:\Users\Фёдор\Downloads\TX\TXLib.h (12276):
+
+  12274:                        HDC sourceImage, double xSource /*= 0*/, double ySource /*= 0*/, COLORREF transColor /*= TX_BLACK*/)
+  12275:     {
+=>12276: $1  if (_TX_HDC_FAILED (destImage))   return false;
+  12277: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  12278: 
+
+# 1 in int main() at W:\Tank\Level Editor\TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 20 2020 17:40:03, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 18:04:44
+
+Run file:	W:\Tank\Level Editor\TestWnd.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: W:\Tank\Level Editor\TestWnd.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 12198, функция: HDC__* {anonymous}::TX::txLoadImage(const char*, unsigned int, unsigned int),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "filename && *filename".
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005798D0 (64-bit), Flags: CMdRE0, Thread: 0x1728 (Main), GetLastError(): 160 (Неверны один или несколько аргументов). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\TestWnd.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x0000000000421575 in W:\Tank\Level Editor\TestWnd.exe: txLoadImage() at C:/Users/Фёдор/Downloads/TX/TXLib.h (12198)
+
+# 2 0x000000000042E0CC in W:\Tank\Level Editor\TestWnd.exe: load() at W:/Tank/Level Editor/TestWnd.cpp (380):
+
+    378:                 PaintBox * picture = dynamic_cast <PaintBox*> (wnd -> getParent () -> getParent () -> getWindow (1));
+    379: 
+=>  380:                 picture -> image_ = txLoadImage (writebox -> getText ());
+    381: 
+    382:                 return;
+
+# 3 0x000000000042B245 in W:\Tank\Level Editor\TestWnd.exe: click() at W:/Tank/Level Editor/WNDLib.h (407):
+
+    405:                 {
+    406: 
+=>  407:                     press_ (this);
+    408: 
+    409:                     isPressed_ = true;
+
+# 4 0x000000000042C2FA in W:\Tank\Level Editor\TestWnd.exe: updateWindows() at W:/Tank/Level Editor/WNDLib.h (834):
+
+    832: 
+    833:         windows_[n] -> update ();
+=>  834:         windows_[n] -> click ();
+    835: 
+    836:     }
+
+# 5 0x000000000042C410 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (889):
+
+    887: 
+    888:     drawWindows ();
+=>  889:     updateWindows ();
+    890: 
+    891:     for (int n = 0; n < WINDOWS_MAX; n++)
+
+# 6 0x000000000042B367 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (501):
+
+    499:     click ();
+    500: 
+=>  501:     manager_.run ();
+    502: 
+    503: }
+
+# 7 0x000000000042C474 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (897):
+
+    895:         if (!windows_[n] || !windows_[n] -> visible_) continue;
+    896: 
+=>  897:         windows_[n] -> run ();
+    898: 
+    899:     }
+
+# 8 0x000000000042B367 in W:\Tank\Level Editor\TestWnd.exe: run() at W:/Tank/Level Editor/WNDLib.h (501):
+
+    499:     click ();
+    500: 
+=>  501:     manager_.run ();
+    502: 
+    503: }
+
+# 9 0x000000000042D243 in W:\Tank\Level Editor\TestWnd.exe: main() at W:/Tank/Level Editor/TestWnd.cpp (151):
+
+    149:     {
+    150: 
+=>  151:         mainWindow -> run ();
+    152: 
+    153:         ColorWnd -> color_ = mainWindow -> getColor ();
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in HDC__* {anonymous}::TX::txLoadImage(const char*, unsigned int, unsigned int) at C:\Users\Фёдор\Downloads\TX\TXLib.h (12198):
+
+  12196: HDC txLoadImage (const char filename[], unsigned imageFlags /*= IMAGE_BITMAP*/, unsigned loadFlags /*= LR_LOADFROMFILE*/)
+  12197:     {
+=>12198: $1  if (_TX_ARGUMENT_FAILED (filename && *filename)) return NULL;
+  12199: 
+  12200: $   HBITMAP image = (HBITMAP) Win32::LoadImage ((loadFlags & LR_LOADFROMFILE)? NULL : GetModuleHandle (NULL),
+
+# 1 in void load(Window*) at W:\Tank\Level Editor\TestWnd.cpp (380):
+
+    378:                 PaintBox * picture = dynamic_cast <PaintBox*> (wnd -> getParent () -> getParent () -> getWindow (1));
+    379: 
+=>  380:                 picture -> image_ = txLoadImage (writebox -> getText ());
+    381: 
+    382:                 return;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 20 2020 17:40:03, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 18:05:21
+
+Run file:	W:\Tank\Level Editor\TestWnd.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: W:\Tank\Level Editor\TestWnd.exe, файл: C:\Users\Фёдор\Downloads\TX\TXLib.h, строка: 12276, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "destImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400], Instance: 0x00000000005798D0 (64-bit), Flags: CMdRE0, Thread: 0xB88 (Main), GetLastError(): 13 (Недопустимые данные), errno: 22 (Invalid argument), _doserrno: 123 (Unknown error). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0000000000410FCD in W:\Tank\Level Editor\TestWnd.exe: _txError() at C:/Users/Фёдор/Downloads/TX/TXLib.h (9664)
+# 1 0x000000000042212D in W:\Tank\Level Editor\TestWnd.exe: txTransparentBlt() at C:/Users/Фёдор/Downloads/TX/TXLib.h (12276)
+
+# 2 0x000000000042D443 in W:\Tank\Level Editor\TestWnd.exe: main() at W:/Tank/Level Editor/TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at C:\Users\Фёдор\Downloads\TX\TXLib.h (12276):
+
+  12274:                        HDC sourceImage, double xSource /*= 0*/, double ySource /*= 0*/, COLORREF transColor /*= TX_BLACK*/)
+  12275:     {
+=>12276: $1  if (_TX_HDC_FAILED (destImage))   return false;
+  12277: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  12278: 
+
+# 1 in int main() at W:\Tank\Level Editor\TestWnd.cpp (172):
+
+    170:         }
+    171: 
+=>  172:         txTransparentBlt (picture -> image_, 0, 0, 0, 0, image);
+    173: 
+    174:         txSleep (1);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 165, Date: 2020-02-16 16:26:21 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Фёдор\Downloads\TX\TXLib.h
+Compiled:	Feb 20 2020 17:40:03, GNU g++ 9.2.0, std=201402L, MinGW-W64 Runtime 7.0.0 (alpha - rev. 0) 0000-00-00, 64-bit, DEBUG
+Started:	Feb 20 2020 19:23:06
+
+Run file:	W:\Tank\Level Editor\TestWnd.exe
+Directory:	W:\Tank\Level Editor
+
+--------------------------------------------------

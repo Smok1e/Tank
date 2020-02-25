@@ -1,7 +1,4 @@
-#include <TXLib.h>
-#include "Buttons.h"
-
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
 
 const int wWidth = 800;
 const int wHeight = 800;
@@ -20,6 +17,16 @@ const int ENEMY_SHOOTING_FREQ = 200;
 const int FOOD_SPAWNING_FREQ = 4;
 
 const double EPSILON = 0.1;
+
+const bool ENEMY_SPEAK = true;
+
+//-----------------------------------------------------------------------------
+
+#define TX_USE_SPEAK
+#include <TXLib.h>
+#include "Buttons.h"
+#include "ResourceManager.h"
+#include "EnemyPhrases.h"
 
 //-----------------------------------------------------------------------------
 
@@ -55,6 +62,7 @@ enum ObjectType
     TypeMedkit,
     TypeCoin,
     TypeLevelupText,
+    TypeExplosion,
 
     TypeAmount
 
@@ -67,6 +75,8 @@ double rnd (double from, double to);
 //-----------------------------------------------------------------------------
 
 class ObjectManager;
+
+ResourceManager * ResManager;
 
 struct AbstractObject
 
@@ -171,19 +181,17 @@ struct GameObject : AbstractObject
 
     Animation animation_;
 
-    GameObject (int type, HDC spritesheet, int frame_n, double x, double y, double r);
+    GameObject (int type, int image, double x, double y, double r);
 
     virtual void draw () override;
 
-    virtual void remove () override;
-
 };
 
-GameObject::GameObject (int type, HDC spritesheet, int frame_n, double x, double y, double r) :
+GameObject::GameObject (int type, int image, double x, double y, double r) :
 
     AbstractObject (type, x, y, 0, 0, r, 0, true),
 
-    animation_ (spritesheet, frame_n)
+    animation_ (ResManager -> getImage (image), ResManager -> getFrames (image))
 
 {}
 
@@ -217,7 +225,7 @@ struct Tank : GameObject
 
 Tank::Tank (double x, double y, double speed, COLORREF color, int gun_length_) :
 
-    GameObject (TypeTank, txLoadImage ("Resources\\Images\\Tank.bmp"), 72, x, y, 30),
+    GameObject (TypeTank, ImageTank, x, y, 30),
 
     gun_length (gun_length_),
     health_    (100),
@@ -230,7 +238,7 @@ Tank::Tank (double x, double y, double speed, COLORREF color, int gun_length_) :
 
 //-----------------------------------------------------------------------------
 
-struct Enemy : AbstractObject
+struct Enemy : GameObject
 
 {
 
@@ -245,11 +253,7 @@ struct Enemy : AbstractObject
 
     int moving_time;
 
-    bool isEnd_;
-
     Enemy ();
-
-    Enemy (double x, double y, double vx, double vy, COLORREF color);
 
     virtual void draw () override;
 
@@ -263,25 +267,12 @@ struct Enemy : AbstractObject
 
 Enemy::Enemy () :
 
-    AbstractObject (TypeEnemy, rnd (50, wWidth - 50), rnd (50, wHeight - 50), 0, 0, 20, TX_RED, true),
+    GameObject (TypeEnemy, ImageEnemy, rnd (50, wWidth - 50), rnd (50, wHeight - 50), 20),
 
     health_       (100),
     moving_       (false),
     moving_length (0),
-    moving_time   (0),
-    isEnd_        (false)
-
-{}
-
-Enemy::Enemy (double x, double y, double vx, double vy, COLORREF color) :
-
-    AbstractObject (TypeEnemy, x, y, vx, vy, 20, color, true),
-
-    health_       (100),
-    moving_       (false),
-    moving_length (0),
-    moving_time   (0),
-    isEnd_        (false)
+    moving_time   (0)
 
 {}
 
@@ -300,6 +291,8 @@ struct Bullet : AbstractObject
     Bullet (double x, double y, double vx, double vy, COLORREF color, int damage, double speed, double deflection, bool visible, ObjectManager * manager);
 
     virtual void move () override;
+
+    virtual void remove () override;
 
 };
 
@@ -332,6 +325,8 @@ struct EnemyBullet : AbstractObject
     EnemyBullet (double x, double y, double vx, double vy, ObjectManager * manager);
 
     virtual void move () override;
+
+    virtual void remove () override;
 
 };
 
@@ -376,7 +371,7 @@ struct Medkit : GameObject
 
 Medkit::Medkit (double x, double y) :
 
-    GameObject (TypeMedkit, txLoadImage ("Resources\\Images\\MedKit.bmp"), 1, x, y, 15)
+    GameObject (TypeMedkit, ImageMedkit, x, y, 15)
 
 {}
 
@@ -394,7 +389,7 @@ struct Food : GameObject
 
 Food::Food (double x, double y) :
 
-    GameObject (TypeFood, txLoadImage ("Resources\\Images\\Food.bmp"), 1, x, y, 15)
+    GameObject (TypeFood, ImageFood, x, y, 15)
 
 {}
 
@@ -414,7 +409,7 @@ struct Coin : GameObject
 
 Coin::Coin (double x, double y) :
 
-    GameObject (TypeCoin, txLoadImage ("Resources\\Images\\Coin.bmp"), 6, x, y, 15),
+    GameObject (TypeCoin, ImageCoin, x, y, 15),
 
     counter_ (0)
 
@@ -438,9 +433,33 @@ struct LevelUpText : GameObject
 
 LevelUpText::LevelUpText () :
 
-    GameObject (TypeLevelupText, txLoadImage ("Resources\\Images\\LevelUpText.bmp"), 1, wWidth / 2, wHeight / 2, 0),
+    GameObject (TypeLevelupText, ImageLevelUpText, wWidth / 2, wHeight / 2, 0),
 
     alpha_ (1)
+
+{}
+
+//-----------------------------------------------------------------------------
+
+struct Explosion : GameObject
+
+{
+
+    int counter_;
+
+    Explosion (double x, double y);
+
+    virtual void draw () override;
+
+    virtual void move () override;
+
+};
+
+Explosion::Explosion (double x, double y) :
+
+    GameObject (TypeExplosion, ImageExplosion, x, y, 0),
+
+    counter_ (0)
 
 {}
 
@@ -455,6 +474,8 @@ struct ObjectManager
     COLORREF bkcolor_;
 
     int score_;
+
+    int level_;
 
     ObjectManager ();
 
@@ -476,13 +497,18 @@ struct ObjectManager
 
     void clearObjects ();
 
+    void addScore ();
+
+    void addScore (int score);
+
 };
 
 ObjectManager::ObjectManager () :
 
     objects_         ({}),
+    bkcolor_         (RGB (45, 45, 45)),
     score_           (0),
-    bkcolor_         (RGB (45, 45, 45))
+    level_           (0)
 
 {}
 
@@ -532,18 +558,19 @@ typedef void hit_t (AbstractObject * obj1, AbstractObject * obj2);
 const hit_t * hitTable[TypeAmount][TypeAmount] =
 
     {
-    //   0          1                    2                3                 4                    5                 6                 7                 8
-    //   TypeNone   Tank                 Enemy            Bullet            EnemyBulet           Food              Medkit            Coin              LevelUpText
+    //   0          1                    2                3                 4                    5                 6                 7                 8           9
+    //   TypeNone   Tank                 Enemy            Bullet            EnemyBulet           Food              Medkit            Coin              LevelUpText Explosion
 
-        {hit_Error, hit_Error,           hit_Error,       hit_Error,        hit_Error,           hit_Error,        hit_Error,        hit_Error,        hit_Error}, // 0 TypeNone
-        {hit_Error, hit_Error,           hit_None,        hit_TankBullet,   hit_TankEnemyBullet, hit_TankFood,     hit_TankMedkit,   hit_TankCoin,     hit_None }, // 1 Tank
-        {hit_Error, hit_None,            hit_None,        hit_EnemyBullet,  hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 2 Enemy
-        {hit_Error, hit_TankBullet,      hit_EnemyBullet, hit_None,         hit_None,            hit_BulletObject, hit_BulletObject, hit_BulletObject, hit_None }, // 3 Bullet
-        {hit_Error, hit_TankEnemyBullet, hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 4 EnemyBullet
-        {hit_Error, hit_TankFood,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 5 Food
-        {hit_Error, hit_TankMedkit,      hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 6 Medkit
-        {hit_Error, hit_TankCoin,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None }, // 7 Coin
-        {hit_Error, hit_None,            hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None }  // 8 LevelUpText
+        {hit_Error, hit_Error,           hit_Error,       hit_Error,        hit_Error,           hit_Error,        hit_Error,        hit_Error,        hit_Error,  hit_Error}, // 0 TypeNone
+        {hit_Error, hit_Error,           hit_None,        hit_TankBullet,   hit_TankEnemyBullet, hit_TankFood,     hit_TankMedkit,   hit_TankCoin,     hit_None,   hit_None }, // 1 Tank
+        {hit_Error, hit_None,            hit_None,        hit_EnemyBullet,  hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 2 Enemy
+        {hit_Error, hit_TankBullet,      hit_EnemyBullet, hit_None,         hit_None,            hit_BulletObject, hit_BulletObject, hit_BulletObject, hit_None,   hit_None }, // 3 Bullet
+        {hit_Error, hit_TankEnemyBullet, hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 4 EnemyBullet
+        {hit_Error, hit_TankFood,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 5 Food
+        {hit_Error, hit_TankMedkit,      hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 6 Medkit
+        {hit_Error, hit_TankCoin,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 7 Coin
+        {hit_Error, hit_None,            hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 8 LevelUpText
+        {hit_Error, hit_None,            hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }  // 9 Explosion
 
     };
 
@@ -554,6 +581,10 @@ int main ()
 {
 
     txCreateWindow (wWidth, wHeight);
+
+    ResourceManager resManager (Resources, "Resources\\Images");
+
+    ResManager = &resManager;
 
     while (true)
 
@@ -567,9 +598,7 @@ int main ()
 
         for (int n = 0; n < ENEMY_N; n++) manager.addObject (new Enemy);
 
-        Tank * tank = new Tank {70, 40, SPEED, TX_GREEN, 40};
-
-        manager.addObject (tank);
+        manager.addObject (new Tank {70, 40, SPEED, TX_GREEN, 40});
 
         int result = run (&manager);
 
@@ -609,6 +638,8 @@ int main ()
 
     }
 
+    ResManager = nullptr;
+
     return 0;
 
 }
@@ -631,16 +662,11 @@ int run (ObjectManager * manager)
 
             const int delay = 50;
 
-            bool highlight;
+            bool highlight = false;
 
             int time = 0;
 
-            const char * text = "[Delete]";
-
-            txSetColor (RGB (255, 225, 0));
-            txSelectFont ("Arial", 100);
-
-            txTextOut (wWidth / 2 - txGetTextExtentX (text) / 2, wHeight / 2 - txGetTextExtentY (text) / 2, text);
+            const char * deleteText = "[Delete]";
 
             while (true)
 
@@ -652,7 +678,7 @@ int run (ObjectManager * manager)
 
                     POINT pos = txMousePos ();
 
-                    AbstractObject click = {pos.x, pos.y, 0, 0, 1, 0, false, NULL};
+                    AbstractObject * click = new AbstractObject {TypeNone, pos.x, pos.y, 0, 0, 1, 0, false, NULL};
 
                     for (int n = 0; n < OBJECTS_MAX; n++)
 
@@ -660,7 +686,7 @@ int run (ObjectManager * manager)
 
                         if (!manager -> objects_[n]) continue;
 
-                        if (collisionDetection (manager -> objects_[n], &click))
+                        if (collisionDetection (manager -> objects_[n], click))
 
                         {
 
@@ -720,7 +746,7 @@ int run (ObjectManager * manager)
 
                         double x = object -> x_, y = object -> y_, r = object -> r_;
 
-                        txSetColor (TX_WHITE, 2);
+                        txSetColor (TX_WHITE, 1);
                         txSetFillColor (TX_TRANSPARENT);
 
                         txCircle (x, y, r);
@@ -738,9 +764,20 @@ int run (ObjectManager * manager)
                     txSetColor (RGB (255, 225, 0));
                     txSelectFont ("Arial", 100);
 
-                    txTextOut (wWidth / 2 - txGetTextExtentX (text) / 2, wHeight / 2 - txGetTextExtentY (text) / 2, text);
+                    txTextOut (wWidth / 2 - txGetTextExtentX (deleteText) / 2, wHeight / 2 - txGetTextExtentY (deleteText) / 2, deleteText);
 
                 }
+
+                char text [100] = "";
+
+                txSetColor (RGB (0, 170, 255));
+                txSelectFont ("Arial", 30);
+
+                txTextOut (wWidth - txGetTextExtentX (text) - 2, 2, text);
+
+                sprintf (text, "Objects Amount: %d", manager -> objectsAmount ());
+
+                txTextOut (wWidth - txGetTextExtentX (text) - 2, 2, text);
 
                 time ++;
 
@@ -968,18 +1005,6 @@ void GameObject::draw ()
 
 //-----------------------------------------------------------------------------
 
-void GameObject::remove ()
-
-{
-
-    txDeleteDC (animation_.spritesheet_);
-
-    manager_ -> removeObject (this);
-
-}
-
-//-----------------------------------------------------------------------------
-
 void Tank::draw ()
 
 {
@@ -1060,7 +1085,7 @@ void Tank::control ()
 
 {
 
-    int level = floor (manager_ -> score_ / 10);
+    int level = manager_ -> level_;
 
     if (txMouseButtons () == 1 || GetAsyncKeyState (VK_SPACE))
 
@@ -1070,16 +1095,10 @@ void Tank::control ()
 
         {
 
-            int amount1 = manager_ -> objectsAmount ();
-
             Bullet * bullet = new Bullet {x_ + gun_vx * gun_length, y_ + gun_vy * gun_length, gun_vx + rnd (-0.1, 0.1),
                                           gun_vy + rnd (-0.1, 0.1), TX_WHITE, rnd (DAMAGE_MIN, DAMAGE_MAX), rnd (3, 4) + level / 2.0, rnd (-5, 5), true, manager_};
 
-            int result = manager_ -> addObject (bullet);
-
-            int amount2 = manager_ -> objectsAmount ();
-
-            assert (amount2 > amount1);
+            manager_ -> addObject (bullet);
 
             reloading_ = 0;
 
@@ -1203,9 +1222,8 @@ void Enemy::draw ()
 
     }
 
-    txSetColor (color_);
-    txSetFillColor (color_);
-    txCircle (x_, y_, 20);
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
+    animation_.advanceFrame ();
 
     int x = x_ - 20;
     int y = y_ + 25;
@@ -1319,7 +1337,7 @@ void Enemy::control ()
 
     {
 
-        manager_ -> score_ ++;
+        manager_ -> addScore ();
 
         if (manager_ -> score_ % 10 == 0) manager_ -> addObject (new LevelUpText);
 
@@ -1355,7 +1373,6 @@ void Enemy::control ()
 
 }
 
-//-----------------------------------------------------------------------------
 
 void Enemy::Reset ()
 
@@ -1365,6 +1382,26 @@ void Enemy::Reset ()
     y_ = rnd (50, wHeight - 50);
 
     health_ = 100;
+
+    if (ENEMY_SPEAK)
+
+    {
+
+        int n = 0;
+
+        for (n = 0; EnemyPhrases[n]; n++);
+
+        n = floor (rnd (0, n));
+
+        const char * phrase = EnemyPhrases[n];
+
+        char text[256] = "";
+
+        sprintf (text, "\a%s", phrase);
+
+        txSpeak (text);
+
+    }
 
 }
 
@@ -1427,6 +1464,17 @@ void Bullet::move ()
 
 //-----------------------------------------------------------------------------
 
+void Bullet::remove ()
+
+{
+
+    manager_ -> removeObject (this);
+    manager_ -> addObject (new Explosion (x_, y_));
+
+}
+
+//-----------------------------------------------------------------------------
+
 void EnemyBullet::move ()
 
 {
@@ -1441,6 +1489,17 @@ void EnemyBullet::move ()
         remove ();
 
     }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void EnemyBullet::remove ()
+
+{
+
+    manager_ -> removeObject (this);
+    manager_ -> addObject (new Explosion (x_, y_));
 
 }
 
@@ -1513,6 +1572,36 @@ void LevelUpText::move ()
 
 //-----------------------------------------------------------------------------
 
+void Explosion::draw ()
+
+{
+
+    animation_.draw (x_ - animation_.width_ / 2, y_ - animation_.height_ / 2);
+
+    counter_ ++;
+
+    if (counter_ % 5 == 0)
+
+    {
+
+        animation_.advanceFrame ();
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Explosion::move ()
+
+{
+
+    if (counter_ >= animation_.frame_n_ * 5) remove ();
+
+}
+
+//-----------------------------------------------------------------------------
+
 int gameOver (ObjectManager * manager)
 
 {
@@ -1525,7 +1614,7 @@ int gameOver (ObjectManager * manager)
 
     };
 
-    HDC image = txLoadImage ("Resources\\Images\\Die.bmp");
+    HDC image = ResManager -> getImage (ImageDie);
 
     double width = txGetExtentX (image);
     double height = txGetExtentY (image);
@@ -1533,7 +1622,7 @@ int gameOver (ObjectManager * manager)
     bool videolan = true;
 
     int score = manager -> score_;
-    int level = floor (score / 10) + 1;
+    int level = manager -> level_;
 
     if (txPlayVideo ("") <= 0) videolan = false;
 
@@ -1625,8 +1714,6 @@ int gameOver (ObjectManager * manager)
 
         {
 
-            txDeleteDC (image);
-
             return result;
 
         }
@@ -1634,8 +1721,6 @@ int gameOver (ObjectManager * manager)
         txSleep (1);
 
     }
-
-    txDeleteDC (image);
 
     return ResultExit;
 
@@ -1727,9 +1812,7 @@ void ObjectManager::drawObjects ()
     txSetColor (RGB (120, 120, 120));
     txSelectFont ("Arial", 25);
 
-    int level = floor (score_ / 10) + 1;
-
-    sprintf (text, "Level: %d", level);
+    sprintf (text, "Level: %d", level_);
 
     txTextOut (5, 37, text);
 
@@ -1917,6 +2000,50 @@ void ObjectManager::clearObjects ()
 
 //-----------------------------------------------------------------------------
 
+void ObjectManager::addScore ()
+
+{
+
+    score_ ++;
+
+    if (score_ % 10 == 0)
+
+    {
+
+        level_ ++;
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void ObjectManager::addScore (int score)
+
+{
+
+    for (int i = 0; i < score; i++)
+
+    {
+
+        score_ ++;
+
+        if (score_ % 10 == 0)
+
+        {
+
+            level_ ++;
+
+            addObject (new LevelUpText);
+
+        }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
 template <typename T>
 
 T * getObject (ObjectManager * manager)
@@ -2013,7 +2140,7 @@ void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 
     Tank * tank = checkType <Tank> (obj1);
 
-    tank -> addHealth (-25);
+    tank -> addHealth (-15);
 
     obj2 -> remove ();
 
@@ -2055,7 +2182,7 @@ void hit_TankCoin (AbstractObject * obj1, AbstractObject * obj2)
 
     tank -> addHealth (rnd (20, 30));
 
-    tank -> manager_ -> score_ += 10;
+    tank -> manager_ -> addScore (10);
 
     tank -> manager_ -> addObject (new LevelUpText);
 
@@ -2073,7 +2200,6 @@ void hit_EnemyBullet (AbstractObject * obj1, AbstractObject * obj2)
 
     Enemy  * enemy  = checkType <Enemy>  (obj1);
     Bullet * bullet = checkType <Bullet> (obj2);
-
     enemy -> health_ -= bullet -> damage_;
 
     enemy -> setPosition (enemy -> x_ + bullet -> vx_ * 7, enemy -> y_ + bullet -> vy_ * 7);
