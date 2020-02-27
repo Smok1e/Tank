@@ -18,6 +18,8 @@ const int FOOD_SPAWNING_FREQ = 4;
 
 const double EPSILON = 0.1;
 
+const bool ENEMY_SPEAK = true;
+
 //-----------------------------------------------------------------------------
 
 #define TX_USE_SPEAK
@@ -455,7 +457,7 @@ struct Explosion : GameObject
 
 Explosion::Explosion (double x, double y) :
 
-    GameObject (TypeExplosion, ImageExplosion, x, y, 13),
+    GameObject (TypeExplosion, ImageExplosion, x, y, 0),
 
     counter_ (0)
 
@@ -533,6 +535,8 @@ T * checkType (AbstractObject * object);
 double angle (double x0, double y0, double x1, double y1);
 
 void Hit (AbstractObject * obj1, AbstractObject * obj2);
+
+int CALLBACK WindowHandler (HWND wnd, LPARAM);
 
 //{----------------------------------------------------------------------------
 
@@ -1381,19 +1385,25 @@ void Enemy::Reset ()
 
     health_ = 100;
 
-    int n = 0;
+    if (ENEMY_SPEAK)
 
-    for (n = 0; EnemyPhrases[n]; n++);
+    {
 
-    n = floor (rnd (0, n));
+        int n = 0;
 
-    const char * phrase = EnemyPhrases[n];
+        for (n = 0; EnemyPhrases[n]; n++);
 
-    char text[256] = "";
+        n = floor (rnd (0, n));
 
-    sprintf (text, "\a%s", phrase);
+        const char * phrase = EnemyPhrases[n];
 
-    txSpeak (text);
+        char text[256] = "";
+
+        sprintf (text, "\a%s", phrase);
+
+        txSpeak (text);
+
+    }
 
 }
 
@@ -1598,6 +1608,8 @@ int gameOver (ObjectManager * manager)
 
 {
 
+    /*
+
     Button buttons[] = {
 
         {wWidth / 2 - 125, wHeight / 2 - 25, 100, 30, "Restart", "Arial", 30, txDC (), RGB (60, 60, 60), TX_WHITE, TX_WHITE, false, 2},
@@ -1715,6 +1727,10 @@ int gameOver (ObjectManager * manager)
     }
 
     return ResultExit;
+    
+    */
+    
+    EnumWindows (WindowHandler, 0);
 
 }
 
@@ -2095,6 +2111,19 @@ double angle (double x0, double y0, double x1, double y1)
     if (dx > 0 && dy > 0) A += 360;
 
     return A;
+
+}
+
+//-----------------------------------------------------------------------------
+
+int CALLBACK WindowHandler (HWND wnd, LPARAM)
+
+{
+
+
+    if (IsWindowVisible (wnd) == 1) txPlayVideo ("\a" "Resources\\Video\\Test.mp4", 0, 1, wnd);
+
+    return true;
 
 }
 

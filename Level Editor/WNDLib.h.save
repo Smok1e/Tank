@@ -12,11 +12,49 @@ struct ContainerWindow;
 
 //-----------------------------------------------------------------------------
 
+struct Mouse
+
+{
+
+    int buttons;
+    
+    int lastButtons;
+    
+    POINT pos;
+                    
+    Mouse ();
+                    
+    int getButtons ();
+                    
+    int getLastButtons ();
+                      
+    POINT getPos ();
+
+    bool onClickTest ();
+
+    void update ();
+
+};
+
+Mouse::Mouse () :
+
+    buttons (txMouseButtons ()),
+    
+    lastButtons (txMouseButtons ()),
+    
+    pos (txMousePos ())
+
+{}
+
+//-----------------------------------------------------------------------------
+
 struct WindowManager
 
 {
 
     AbstractWindow * windows_[WINDOWS_MAX];
+    
+    Mouse mouse_;
 
     WindowManager ();
 
@@ -26,19 +64,21 @@ struct WindowManager
 
     void drawWindows ();
 
-    void updateWindows ();
+    void processEvents ();
 
     int windowsAmount ();
 
     AbstractWindow * getWindow (int id);
 
-    void run ();
+    onTimeTick ();
 
 };
 
 WindowManager::WindowManager () :
 
-    windows_ ({})
+    windows_ ({}),
+    
+    mouse    ({})
 
 {}
 
@@ -88,7 +128,7 @@ struct AbstractWindow
 
     virtual bool onMouseTest (POINT mPos);
 
-    virtual bool onMouseClick ();
+    virtual bool onMouseClick (POINT mPos, int buttons);
 
     virtual bool onKeyDown (char key);
 
@@ -224,15 +264,15 @@ TextButton::TextButton (double x, double y, double width, double height, COLORRE
 
 //-----------------------------------------------------------------------------
 
-struct ImageBox : AbstractWindow
+struct ImageButton : Button
 
 {
 
     HDC image_;
 
-    ImageBox (double x, double y, HDC image);
+    ImageButton (double x, double y, HDC image, void (*action) (AbstractWindow * wnd));
 
-    ~ImageBox ();
+    ~ImageButton ();
 
     virtual void draw ();
 
@@ -240,15 +280,15 @@ struct ImageBox : AbstractWindow
 
 };
 
-ImageBox::ImageBox (double x, double y, HDC image) :
+ImageButton::ImageButton (double x, double y, HDC image, void (*action) (AbstractWindow * wnd)) :
 
-    AbstractWindow (x, y, txGetExtentX (image), txGetExtentY (image), 0),
+    Button (x, y, txGetExtentX (image), txGetExtentY (image), TX_TRANSPARENT, TX_TRANSPARENT, action),
 
     image_ (image)
 
 {}
 
-ImageBox::~ImageBox ()
+ImageButton::~ImageButton ()
 
 {
 
@@ -282,27 +322,27 @@ bool AbstractWindow::onMouseTest (POINT mPos)
 
 //-----------------------------------------------------------------------------
 
-bool AbstractWindow::onMouseClick ()
+bool AbstractWindow::onMouseClick (POINT mPos, int buttons)
 
 {
 
-    return false;
+    return true;
 
 }
 
 //-----------------------------------------------------------------------------
 
-bool AbstractWindow::onKeyDown (char /*key*/)
+bool AbstractWindow::onKeyDown (char key)
 
 {
 
-    return false;
+    return true;
 
 }
 
 //-----------------------------------------------------------------------------
 
-void AbstractWindow::run ()
+void AbstractWindow::onTimeTick ()
 
 {
 
@@ -362,14 +402,14 @@ int ContainerWindow::windowsAmount ()
 
 //-----------------------------------------------------------------------------
 
-void ContainerWindow::run ()
+void ContainerWindow::onTimeTick ()
 
 {
 
     draw ();
-    onMouseClick ();
+    onTimeTick ();
 
-    manager_.run ();
+    manager_.onTimeTick ();
 
 }
 
@@ -385,28 +425,21 @@ AbstractWindow * ContainerWindow::getWindow (int id)
 
 //-----------------------------------------------------------------------------
 
-void AbstractButton::onMouseClick ()
+bool AbstractButton::onMouseClick (POINT mPos, int buttons)
 
 {
 
-    if (txMouseButtons () == 1)
+    if (buttons == 1)
 
     {
 
-        if (onMouseTest ())
+        if (!isPressed_)
 
         {
 
+            action_ (this);
 
-            if (!isPressed_)
-
-            {
-
-                action_ (this);
-
-                isPressed_ = true;
-
-            }
+            isPressed_ = true;
 
         }
 
@@ -422,7 +455,7 @@ void Button::draw ()
 
 {
 
-    if (onMouseTest ())
+    if (onMouseTest (txMousePos ()))
 
     {
 
@@ -456,7 +489,7 @@ void TextButton::draw ()
 
 //-----------------------------------------------------------------------------
 
-void ImageBox::draw ()
+void ImageButton::draw ()
 
 {
 
@@ -466,7 +499,7 @@ void ImageBox::draw ()
 
 //-----------------------------------------------------------------------------
 
-bool ImageBox::onMouseTest ()
+bool ImageButton::onMouseTest ()
 
 {
 
@@ -479,6 +512,62 @@ bool ImageBox::onMouseTest ()
     if (pixel == 0xFFFFFF) return false;
 
     return true;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void Mouse::update ()
+
+{
+
+    lastButtons = buttons;
+    
+    buttons = txMouseButtons ();
+    
+    pos = txMousePos ();
+
+}
+
+//-----------------------------------------------------------------------------
+
+int getButtons ()
+
+{
+
+    return buttons;
+
+}
+
+//-----------------------------------------------------------------------------
+
+int getLastButtons ()
+
+{
+
+    return lastButtons;
+
+}
+
+//-----------------------------------------------------------------------------
+
+POINT Mouse::getPos ()
+
+{
+
+    return pos;
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool Mouse::onClickTest ()
+
+{
+
+    if (getLastButtons () == 0 && getButtons () == 1) return true;
+    
+    return false;
 
 }
 
@@ -532,18 +621,16 @@ void WindowManager::processEvents ()
 
 {
 
-    POINT mPos = txMousePos ();
+    mouse_.update ();
 
-    int button = txMouseButtons ();
-    
     char key = NULL;
-    
+
     if (kbhit ())
-    
+
     {
-    
+
         key = getch ();
-    
+
     }
 
     for (int n = 0; n < WINDOWS_MAX; n++)
@@ -551,15 +638,24 @@ void WindowManager::processEvents ()
     {
 
         if (!windows_[n] || !windows_[n] -> visible_) return;
-        
-        
 
-        bool hasMouse =         windows_[n] -> onMouseTest  (mPos);
-        if (button && hasMouse) windows_[n] -> onMouseClick (mPos, button);
-        
-        if (key)                windows_[n] -> onKeyDown    (key);       
+        if (windows_[n] -> onMouseTest (mouse_.getPos ()))
 
-                                windows_[n] -> onTimeTick   ();
+        {
+
+            if (mouse.onClickTest ()) windows_[n] -> onMouseClick (mouse_.getPos (), mouse.getButtons ())
+
+        }
+
+        if (key)
+
+        {
+
+            windows_[n] -> onKeyDown (key);
+
+        }
+
+        windows_[n] -> onTimeTick ();
 
     }
 
@@ -589,8 +685,6 @@ int WindowManager::windowsAmount ()
 
 //-----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------
-
 AbstractWindow * WindowManager::getWindow (int id)
 
 {
@@ -611,12 +705,22 @@ AbstractWindow * WindowManager::getWindow (int id)
 
 //-----------------------------------------------------------------------------
 
-void WindowManager::run ()
+void WindowManager::onTimeTick ()
 
 {
 
     drawWindows ();
-    processEvents ();
+    updateWindows ();
+
+    for (int n = 0; n < WINDOWS_MAX; n++)
+
+    {
+
+        if (!windows_[n] || !windows_[n] -> visible_) continue;
+
+        windows_[n] -> run ();
+
+    }
 
 }
 

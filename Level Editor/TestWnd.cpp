@@ -29,9 +29,7 @@ int main ()
 
     ContainerWindow * container = new ContainerWindow ({0, 0, wWidth, wHeight, TX_WHITE});
 
-    container -> addWindow (new ImageBox {0, 0, ResManager.getImage (ImageIlluminati)});
-
-    container -> addWindow (new TextButton {0, 150, 100, 30, RGB (45, 45, 45), TX_GREEN, "Test", "Arial", 30, TX_WHITE, testAction});
+    container -> addWindow (new ImageButton {0, 150, ResManager.getImage (ImageIlluminati), testAction});
 
     double r = 100;
 
@@ -41,7 +39,7 @@ int main ()
 
     {
 
-        container -> run ();
+        container -> onTimeTick ();
 
         txSleep (1);
 

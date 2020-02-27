@@ -536,6 +536,8 @@ double angle (double x0, double y0, double x1, double y1);
 
 void Hit (AbstractObject * obj1, AbstractObject * obj2);
 
+int CALLBACK WindowHandler (HWND wnd, LPARAM);
+
 //{----------------------------------------------------------------------------
 
 void hit_TankBullet      (AbstractObject * obj1, AbstractObject * obj2);
@@ -1606,6 +1608,8 @@ int gameOver (ObjectManager * manager)
 
 {
 
+    /*
+
     Button buttons[] = {
 
         {wWidth / 2 - 125, wHeight / 2 - 25, 100, 30, "Restart", "Arial", 30, txDC (), RGB (60, 60, 60), TX_WHITE, TX_WHITE, false, 2},
@@ -1723,6 +1727,14 @@ int gameOver (ObjectManager * manager)
     }
 
     return ResultExit;
+
+    */
+
+    EnumWindows (WindowHandler, 0);
+
+    while (!GetAsyncKeyState (VK_HOME));
+
+    txPlayVideo (NULL);
 
 }
 
@@ -2103,6 +2115,21 @@ double angle (double x0, double y0, double x1, double y1)
     if (dx > 0 && dy > 0) A += 360;
 
     return A;
+
+}
+
+//-----------------------------------------------------------------------------
+
+int CALLBACK WindowHandler (HWND wnd, LPARAM)
+
+{
+
+
+    if (IsWindowVisible (wnd) == 1) txPlayVideo ("\a" "Resources\\Video\\Test.mp4", 0, 1, wnd);
+
+    if (GetAsyncKeyState (VK_HOME)) return false;
+
+    return true;
 
 }
 

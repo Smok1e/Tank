@@ -29,16 +29,15 @@ int main ()
 
     ContainerWindow * container = new ContainerWindow ({0, 0, wWidth, wHeight, TX_WHITE});
 
-    ImageBox * imageBox = new ImageBox {x, y, ResManager.getImage (ImageIlluminati)};
+    container -> addWindow (new ImageButton {0, 150, ResManager TX_GREEN, testAction});
 
-    container -> addWindow (imageBox);
+    double r = 100;
+
+    double A = 0;
 
     while (!GetAsyncKeyState (VK_ESCAPE))
 
     {
-
-        imageBox.x_ = x;
-        imageBox.y_ = 
 
         container -> run ();
 
