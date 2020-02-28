@@ -29,11 +29,7 @@ int main ()
 
     ContainerWindow * container = new ContainerWindow ({0, 0, wWidth, wHeight, TX_WHITE});
 
-    container -> addWindow (new ImageButton {0, 150, ResManager.getImage (ImageIlluminati), testAction});
-
-    double r = 100;
-
-    double A = 0;
+    container -> addWindow (new Button {350, 350, 100, 100, RGB (45, 45, 45), TX_RED, testAction});
 
     while (!GetAsyncKeyState (VK_ESCAPE))
 

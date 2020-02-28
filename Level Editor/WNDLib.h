@@ -6,6 +6,19 @@ const int WINDOWS_MAX = 300;
 
 //-----------------------------------------------------------------------------
 
+enum MouseState
+
+{
+
+    MouseNone,
+    MouseHover,
+    MouseClick,
+    MouseRelease
+
+};
+
+//-----------------------------------------------------------------------------
+
 struct AbstractWindow;
 
 struct ContainerWindow;
@@ -22,6 +35,8 @@ struct Mouse
 
     POINT pos;
 
+    int state_;
+
     Mouse ();
 
     int getButtons ();
@@ -31,6 +46,8 @@ struct Mouse
     POINT getPos ();
 
     bool onClickTest ();
+
+    bool onReleaseTest ();
 
     void update ();
 
@@ -70,7 +87,7 @@ struct WindowManager
 
     AbstractWindow * getWindow (int id);
 
-    onTimeTick ();
+    void onTimeTick ();
 
 };
 
@@ -78,7 +95,7 @@ WindowManager::WindowManager () :
 
     windows_ ({}),
 
-    mouse    ({})
+    mouse_   ({})
 
 {}
 
@@ -126,7 +143,7 @@ struct AbstractWindow
 
     virtual void draw ();
 
-    virtual bool onMouseRelease (Mouse * mouse)
+    virtual bool onMouseRelease (Mouse * mouse);
 
     virtual bool onMouseTest (Mouse * mouse);
 
@@ -192,11 +209,15 @@ struct AbstractButton : AbstractWindow
 
     void (*action_) (AbstractWindow * wnd);
 
-    bool isPressed_;
+    int state_;
 
     AbstractButton (double x, double y, double width, double height, COLORREF color, void (*action) (AbstractWindow * wnd));
 
-    virtual void onMouseClick ();
+    virtual bool onMouseTest (Mouse * mouse);
+
+    virtual bool onMouseClick (Mouse * mouse);
+
+    int getState ();
 
 };
 
@@ -204,9 +225,9 @@ AbstractButton::AbstractButton (double x, double y, double width, double height,
 
     AbstractWindow (x, y, width, height, color),
 
-    action_    (action),
+    action_ (action),
 
-    isPressed_ (false)
+    state_  (MouseNone)
 
 {}
 
@@ -278,7 +299,7 @@ struct ImageButton : Button
 
     virtual void draw ();
 
-    virtual bool onMouseTest ();
+    virtual bool onMouseTest (Mouse * mouse);
 
 };
 
@@ -312,9 +333,11 @@ void AbstractWindow::draw ()
 
 //-----------------------------------------------------------------------------
 
-bool AbstractWindow::onMouseTest (POINT mPos)
+bool AbstractWindow::onMouseTest (Mouse * mouse)
 
 {
+
+    POINT mPos = mouse -> getPos ();
 
     if (mPos.x >= x_ && mPos.x < x_ + width_ && mPos.y >= y_ && mPos.y < y_ + height_) return true;
 
@@ -324,11 +347,19 @@ bool AbstractWindow::onMouseTest (POINT mPos)
 
 //-----------------------------------------------------------------------------
 
-bool AbstractWindow::onMouseClick (POINT mPos, int buttons)
+bool AbstractWindow::onMouseClick (Mouse * mouse)
 
 {
 
     return true;
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool AbstractWindow::onMouseRelease (Mouse * mouse)
+
+{
 
 }
 
@@ -409,7 +440,6 @@ void ContainerWindow::onTimeTick ()
 {
 
     draw ();
-    onTimeTick ();
 
     manager_.onTimeTick ();
 
@@ -427,27 +457,43 @@ AbstractWindow * ContainerWindow::getWindow (int id)
 
 //-----------------------------------------------------------------------------
 
-bool AbstractButton::onMouseClick (POINT mPos, int buttons)
+bool AbstractButton::onMouseTest (Mouse * mouse)
 
 {
 
-    if (buttons == 1)
+    state_ = MouseNone;
+
+    if (AbstractWindow::onMouseTest (mouse))
 
     {
 
-        if (!isPressed_)
+        state_ = MouseHover;
 
-        {
-
-            action_ (this);
-
-            isPressed_ = true;
-
-        }
+        return true;
 
     }
 
-    else isPressed_ = false;
+    return false;
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool AbstractButton::onMouseClick (Mouse * mouse)
+
+{
+
+    action_ (this);
+
+}
+
+//-----------------------------------------------------------------------------
+
+int AbstractButton::getState ()
+
+{
+
+    return state_;
 
 }
 
@@ -457,7 +503,7 @@ void Button::draw ()
 
 {
 
-    if (onMouseTest (txMousePos ()))
+    if (getState () == MouseHover)
 
     {
 
@@ -501,11 +547,11 @@ void ImageButton::draw ()
 
 //-----------------------------------------------------------------------------
 
-bool ImageButton::onMouseTest ()
+bool ImageButton::onMouseTest (Mouse * mouse)
 
 {
 
-    if (!AbstractWindow::onMouseTest ()) return false;
+    if (!AbstractWindow::onMouseTest (mouse)) return false;
 
     POINT mPos = txMousePos ();
 
@@ -529,11 +575,13 @@ void Mouse::update ()
 
     pos = txMousePos ();
 
+    state_ = MouseNone;
+
 }
 
 //-----------------------------------------------------------------------------
 
-int getButtons ()
+int Mouse::getButtons ()
 
 {
 
@@ -543,7 +591,7 @@ int getButtons ()
 
 //-----------------------------------------------------------------------------
 
-int getLastButtons ()
+int Mouse::getLastButtons ()
 
 {
 
@@ -567,7 +615,35 @@ bool Mouse::onClickTest ()
 
 {
 
-    if (getLastButtons () == 0 && getButtons () == 1) return true;
+    if (getLastButtons () == 0 && getButtons () == 1)
+
+    {
+
+        state_ = MouseClick;
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool Mouse::onReleaseTest ()
+
+{
+
+    if (getLastButtons () == 1 && getButtons () == 0)
+
+    {
+
+        state_ = MouseRelease;
+
+        return true;
+
+    }
 
     return false;
 
@@ -641,11 +717,11 @@ void WindowManager::processEvents ()
 
         if (!windows_[n] || !windows_[n] -> visible_) return;
 
-        if (windows_[n] -> onMouseTest (&mouse))
+        if (windows_[n] -> onMouseTest (&mouse_))
 
         {
 
-            if (mouse.onClickTest ()) windows_[n] -> onMouseClick (&mouse);
+            if (mouse_.onClickTest ()) windows_[n] -> onMouseClick (&mouse_);
 
         }
 
@@ -712,17 +788,6 @@ void WindowManager::onTimeTick ()
 {
 
     drawWindows ();
-    updateWindows ();
-
-    for (int n = 0; n < WINDOWS_MAX; n++)
-
-    {
-
-        if (!windows_[n] || !windows_[n] -> visible_) continue;
-
-        windows_[n] -> run ();
-
-    }
+    processEvents ();
 
 }
-

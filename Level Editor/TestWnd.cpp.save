@@ -29,7 +29,7 @@ int main ()
 
     ContainerWindow * container = new ContainerWindow ({0, 0, wWidth, wHeight, TX_WHITE});
 
-    container -> addWindow (new ImageButton {0, 150, ResManager TX_GREEN, testAction});
+    container -> addWindow (new ImageButton {});
 
     double r = 100;
 
@@ -39,7 +39,7 @@ int main ()
 
     {
 
-        container -> run ();
+        container -> onTimeTick ();
 
         txSleep (1);
 
