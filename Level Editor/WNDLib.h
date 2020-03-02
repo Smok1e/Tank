@@ -25,6 +25,42 @@ struct ContainerWindow;
 
 //-----------------------------------------------------------------------------
 
+struct ArrayString
+
+{
+
+    char text_[PATH_MAX];
+
+    int length_;
+
+    ArrayString (const char * text);
+
+    int getLength ();
+
+    void uppend (char symbol);
+
+    void removeChar (int n);
+
+    const char * getText ();
+
+};
+
+ArrayString::ArrayString (const char * text) :
+
+    text_ (""),
+
+    length_ (0)
+
+{
+
+    strcpy (text_, text);
+
+    length_ = strlen (text_);
+
+}
+
+//-----------------------------------------------------------------------------
+
 struct Mouse
 
 {
@@ -73,6 +109,8 @@ struct WindowManager
 
     Mouse mouse_;
 
+    AbstractWindow * activeWindow_;
+
     WindowManager ();
 
     ~WindowManager ();
@@ -89,13 +127,17 @@ struct WindowManager
 
     void onTimeTick ();
 
+    bool setActiveWindow (AbstractWindow * window);
+
 };
 
 WindowManager::WindowManager () :
 
-    windows_ ({}),
+    windows_      ({}),
 
-    mouse_   ({})
+    mouse_        ({}),
+
+    activeWindow_ (nullptr)
 
 {}
 
@@ -150,6 +192,10 @@ struct AbstractWindow
     virtual bool onMouseClick (Mouse * mouse);
 
     virtual bool onKeyDown (char key);
+
+    virtual void onActivate ();
+
+    virtual bool onDeactivate ();
 
     virtual void onTimeTick ();
 
@@ -321,6 +367,76 @@ ImageButton::~ImageButton ()
 
 //-----------------------------------------------------------------------------
 
+struct TextBox : AbstractWindow
+
+{
+
+    ArrayString text_;
+    const char * font_;
+
+    double fontSize_;
+
+    COLORREF textColor_;
+
+    TextBox (double x, double y, double width, double height, COLORREF color, const char * text, const char * font, double fontSize, COLORREF textColor);
+
+    virtual void draw ();
+
+};
+
+TextBox::TextBox (double x, double y, double width, double height, COLORREF color, const char * text, const char * font, double fontSize, COLORREF textColor) :
+
+    AbstractWindow (x, y, width, height, color),
+
+    text_      (text),
+    font_      (font),
+
+    fontSize_  (fontSize),
+
+    textColor_ (textColor)
+
+{}
+
+//-----------------------------------------------------------------------------
+
+struct WriteBox : TextBox
+
+{
+
+    bool isActive_;
+
+    int counter_;
+
+    COLORREF strokeColor_;
+
+    WriteBox (double x, double y, double width, double height, COLORREF color, const char * text, const char * font, double fontSize, COLORREF textColor, COLORREF strokeColor);
+
+    virtual void draw ();
+
+    virtual void onTimeTick ();
+
+    virtual void onActivate ();
+
+    virtual bool onDeactivate ();
+
+    virtual bool onKeyDown (char key);
+
+};
+
+WriteBox::WriteBox (double x, double y, double width, double height, COLORREF color, const char * text, const char * font, double fontSize, COLORREF textColor, COLORREF strokeColor) :
+
+    TextBox (x, y, width, height, color, text, font, fontSize, textColor),
+
+    isActive_    (false),
+
+    counter_     (0),
+
+    strokeColor_ (strokeColor)
+
+{}
+
+//-----------------------------------------------------------------------------
+
 void AbstractWindow::draw ()
 
 {
@@ -360,6 +476,24 @@ bool AbstractWindow::onMouseClick (Mouse * mouse)
 bool AbstractWindow::onMouseRelease (Mouse * mouse)
 
 {
+
+}
+
+//-----------------------------------------------------------------------------
+
+void AbstractWindow::onActivate ()
+
+{
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool AbstractWindow::onDeactivate ()
+
+{
+
+    return true;
 
 }
 
@@ -483,7 +617,7 @@ bool AbstractButton::onMouseClick (Mouse * mouse)
 
 {
 
-    action_ (this);
+    if (action_) action_ (this);
 
 }
 
@@ -560,6 +694,171 @@ bool ImageButton::onMouseTest (Mouse * mouse)
     if (pixel == 0xFFFFFF) return false;
 
     return true;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void TextBox::draw ()
+
+{
+
+    AbstractWindow::draw ();
+
+    txSelectFont (font_, fontSize_);
+    txSetColor (textColor_);
+    txSetFillColor (textColor_);
+
+    txDrawText (x_, y_, x_ + width_, y_ + height_, text_.getText ());
+
+}
+
+//-----------------------------------------------------------------------------
+
+void WriteBox::draw ()
+
+{
+
+    if (isActive_)
+
+    {
+
+        txSetColor (strokeColor_);
+        txSetFillColor (strokeColor_);
+        txRectangle (x_ - 2, y_ - 2, x_ + width_ + 2, y_ + height_ + 2);
+
+    }
+
+    TextBox::draw ();
+
+    const char * text = text_.getText ();
+
+    if (isActive_)
+
+    {
+
+        if (counter_ < 40)
+
+        {
+
+            POINT line = {x_ + width_ / 2 + txGetTextExtentX (text) / 2, y_ + height_ / 2 - (fontSize_ * 0.75) / 2};
+
+            if (line.x > x_ + width_) line.x = x_ + width_;
+
+            txSetColor (textColor_, 1);
+            txSetFillColor (textColor_);
+
+            txLine (line.x, line.y, line.x, line.y + (fontSize_ * 0.75));
+
+        }
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void WriteBox::onTimeTick ()
+
+{
+
+    counter_ ++;
+
+    if (counter_ >= 80) counter_ = 0;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void WriteBox::onActivate ()
+
+{
+
+    isActive_ = true;
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool WriteBox::onDeactivate ()
+
+{
+
+    isActive_ = false;
+
+    return true;
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool WriteBox::onKeyDown (char key)
+
+{
+
+    if (key == VK_BACK) text_.removeChar (text_.getLength ());
+
+    else text_.uppend (key);
+
+}
+
+//-----------------------------------------------------------------------------
+
+int ArrayString::getLength ()
+
+{
+
+    return length_;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void ArrayString::uppend (char symbol)
+
+{
+
+    if (getLength () < PATH_MAX)
+
+    {
+
+        const char * text = text_;
+
+        int n = getLength () + 1;
+
+        sprintf (text_, "%s%c", text, symbol);
+
+        length_ ++;
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+void ArrayString::removeChar (int n)
+
+{
+
+    if (n >= 0 && n < PATH_MAX)
+
+    {
+
+        text_ [n] = NULL;
+
+        length_ --;
+
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+const char * ArrayString::getText ()
+
+{
+
+    return text_;
 
 }
 
@@ -665,6 +964,8 @@ int WindowManager::addWindow (AbstractWindow * window)
 
             windows_[n] = window;
 
+            setActiveWindow (window);
+
             return n;
 
         }
@@ -721,7 +1022,15 @@ void WindowManager::processEvents ()
 
         {
 
-            if (mouse_.onClickTest ()) windows_[n] -> onMouseClick (&mouse_);
+            if (mouse_.onClickTest ())
+
+            {
+
+                windows_[n] -> onMouseClick (&mouse_);
+
+                setActiveWindow (windows_[n]);
+
+            }
 
         }
 
@@ -789,5 +1098,25 @@ void WindowManager::onTimeTick ()
 
     drawWindows ();
     processEvents ();
+
+}
+
+//-----------------------------------------------------------------------------
+
+bool WindowManager::setActiveWindow (AbstractWindow * window)
+
+{
+
+    if (activeWindow_)
+
+    {
+
+        if (!activeWindow_ -> onDeactivate ()) return false;
+
+    }
+
+    activeWindow_ = window;
+
+    activeWindow_ -> onActivate ();
 
 }
