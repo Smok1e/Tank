@@ -1,0 +1,220 @@
+bool WindowManager::setActiveWindow(AbstractWindow*): changing active window from 0000000000000000 to 000000000093b4a0
+void WindowManager::processEvents(): key =  (8), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key =  (8), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key =  (8), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key =  (8), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key =  (8), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key =  (8), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key =  (8), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key =  (8), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = a (97), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = a (97), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = s (115), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = s (115), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = f (102), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = f (102), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = a (97), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = a (97), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = s (115), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = s (115), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = f (102), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = f (102), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = k (107), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = k (107), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = a (97), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = a (97), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = s (115), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = s (115), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = j (106), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = j (106), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = n (110), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = n (110), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = d (100), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = d (100), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = l (108), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = l (108), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = k (107), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = k (107), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = a (97), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = a (97), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = n (110), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = n (110), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = s (115), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = s (115), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = j (106), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = j (106), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = f (102), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = f (102), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = a (97), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = a (97), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = s (115), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = s (115), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = f (102), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = f (102), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = x (120), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = x (120), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = c (99), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = c (99), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = z (122), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = z (122), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = x (120), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = x (120), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = c (99), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = c (99), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = f (102), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = f (102), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = m (109), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = m (109), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = n (110), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = n (110), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = n (110), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = n (110), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = n (110), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = n (110), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = m (109), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = m (109), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = j (106), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = j (106), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = h (104), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = h (104), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = l (108), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = l (108), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = k (107), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = k (107), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = j (106), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = j (106), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 1 (49), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 1 (49), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = 2 (50), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = 2 (50), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = j (106), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = j (106), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1
+void WindowManager::processEvents(): key = l (108), active window = 000000000093b4a0
+virtual bool WriteBox::onKeyDown(char): key = l (108), window #000000000093b4a0, return true
+void WindowManager::processEvents(): getActiveWindow -> onKeyDown (key) = 1

@@ -18,7 +18,7 @@ const int FOOD_SPAWNING_FREQ = 4;
 
 const double EPSILON = 0.1;
 
-const bool ENEMY_SPEAK = true;
+const bool ENEMY_SPEAK = false;
 
 //-----------------------------------------------------------------------------
 
@@ -536,7 +536,7 @@ double angle (double x0, double y0, double x1, double y1);
 
 void Hit (AbstractObject * obj1, AbstractObject * obj2);
 
-//{----------------------------------------------------------------------------
+//{--Hit funcs-----------------------------------------------------------------
 
 void hit_TankBullet      (AbstractObject * obj1, AbstractObject * obj2);
 void hit_TankEnemyBullet (AbstractObject * obj1, AbstractObject * obj2);
@@ -547,6 +547,7 @@ void hit_TankCoin        (AbstractObject * obj1, AbstractObject * obj2);
 void hit_EnemyBullet     (AbstractObject * obj1, AbstractObject * obj2);
 
 void hit_BulletObject    (AbstractObject * obj1, AbstractObject * obj2);
+void hit_BulletBullet    (AbstractObject * obj1, AbstractObject * obj2);
 
 void hit_Error           (AbstractObject * obj1, AbstractObject * obj2);
 void hit_None            (AbstractObject * obj1, AbstractObject * obj2);
@@ -564,8 +565,8 @@ const hit_t * hitTable[TypeAmount][TypeAmount] =
         {hit_Error, hit_Error,           hit_Error,       hit_Error,        hit_Error,           hit_Error,        hit_Error,        hit_Error,        hit_Error,  hit_Error}, // 0 TypeNone
         {hit_Error, hit_Error,           hit_None,        hit_TankBullet,   hit_TankEnemyBullet, hit_TankFood,     hit_TankMedkit,   hit_TankCoin,     hit_None,   hit_None }, // 1 Tank
         {hit_Error, hit_None,            hit_None,        hit_EnemyBullet,  hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 2 Enemy
-        {hit_Error, hit_TankBullet,      hit_EnemyBullet, hit_None,         hit_None,            hit_BulletObject, hit_BulletObject, hit_BulletObject, hit_None,   hit_None }, // 3 Bullet
-        {hit_Error, hit_TankEnemyBullet, hit_None,        hit_None,         hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 4 EnemyBullet
+        {hit_Error, hit_TankBullet,      hit_EnemyBullet, hit_None,         hit_BulletBullet,    hit_BulletObject, hit_BulletObject, hit_BulletObject, hit_None,   hit_None }, // 3 Bullet
+        {hit_Error, hit_TankEnemyBullet, hit_None,        hit_BulletBullet, hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 4 EnemyBullet
         {hit_Error, hit_TankFood,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 5 Food
         {hit_Error, hit_TankMedkit,      hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 6 Medkit
         {hit_Error, hit_TankCoin,        hit_None,        hit_BulletObject, hit_None,            hit_None,         hit_None,         hit_None,         hit_None,   hit_None }, // 7 Coin
@@ -1095,10 +1096,8 @@ void Tank::control ()
 
         {
 
-            Bullet * bullet = new Bullet {x_ + gun_vx * gun_length, y_ + gun_vy * gun_length, gun_vx + rnd (-0.1, 0.1),
-                                          gun_vy + rnd (-0.1, 0.1), TX_WHITE, rnd (DAMAGE_MIN, DAMAGE_MAX), rnd (3, 4) + level / 2.0, rnd (-5, 5), true, manager_};
-
-            manager_ -> addObject (bullet);
+            for (int i = 0; i <= 1; i++) manager_ -> addObject (new Bullet {x_ + gun_vx * gun_length, y_ + gun_vy * gun_length, gun_vx + rnd (-0.1, 0.1),
+                                                                            gun_vy + rnd (-0.1, 0.1), TX_WHITE, rnd (DAMAGE_MIN, DAMAGE_MAX), rnd (3, 4) + level / 2.0, rnd (-5, 5), true, manager_});
 
             reloading_ = 0;
 
@@ -2218,6 +2217,15 @@ void hit_BulletObject (AbstractObject * obj1, AbstractObject * obj2)
 
     obj1 -> vx_ = -obj1 -> vx_;
     obj1 -> vy_ = -obj1 -> vy_;
+
+}
+
+void hit_BulletBullet    (AbstractObject * obj1, AbstractObject * obj2)
+
+{
+
+    obj1 -> remove ();
+    obj2 -> remove ();
 
 }
 

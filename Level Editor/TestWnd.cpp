@@ -29,7 +29,7 @@ int main ()
 
     ContainerWindow * container = new ContainerWindow ({0, 0, wWidth, wHeight, TX_WHITE});
 
-    container -> addWindow (new WriteBox {100, 375, 600, 20, RGB (45, 45, 45), "test", "Arial", 20, TX_WHITE, RGB (255, 0, 0)});
+    container -> addWindow (new WriteBox {100, 375, 600, 20, RGB (45, 45, 45), "Test", "Arial", 20, TX_WHITE, RGB (255, 0, 0)});
 
     while (!GetAsyncKeyState (VK_ESCAPE))
 
@@ -40,6 +40,8 @@ int main ()
         txSleep (1);
 
     }
+
+    fclose (EventLog);
 
 }
 
